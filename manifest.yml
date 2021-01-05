@@ -1,0 +1,5 @@
+---
+applications:
+ - name: hazard_elicitation
+   memory: 256M
+   timeout: 300
