@@ -1,0 +1,108 @@
+.light-theme
+{
+  --arrowhead-color       : #555555;
+  --edge-color            : #999999;
+  --node-label-color      : #000000;
+  --edge-label-color      : #000000;
+  --context-menu-color    : #000000;
+  --context-menu-color-bg : #CCCCCC;
+  --graph-color-bg        : #EEEEEE;
+}
+
+.dark-theme
+{
+  --arrowhead-color       : #EEEEEE;
+  --edge-color            : #AAAAAA;
+  --node-label-color      : #DDDDDD;
+  --edge-label-color      : #DDDDDD;
+  --context-menu-color    : #EEEEEE;
+  --context-menu-color-bg : #555555;
+  --graph-color-bg        : #333333;
+}
+
+.settings
+{
+  height : 10rem;
+}
+
+.graph-wrapper
+{
+  flex-grow: 1;
+}
+
+.graph
+{
+  display          : block;
+  width            : 100%;
+  height           : 100%;
+  font-family      : SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background-color : var(--graph-color-bg);
+}
+
+#context-menu
+{
+  font-family      : "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+  visibility       : hidden;
+  position         : absolute;
+  opacity          : 0;
+  padding          : 5px;
+  border           : 1px solid black;
+  border-radius    : 3px;
+  transition       : 500ms;
+  min-width        : 200px;
+  min-height       : 75px;
+  color            : var(--context-menu-color);
+  background-color : var(--context-menu-color-bg);
+}
+
+#tooltip
+{
+
+}
+
+.arrowhead
+{
+  fill : var(--arrowhead-color);
+}
+
+.nodes
+{
+  stroke-width : 0;
+}
+
+.nodes:hover
+{
+
+}
+
+.nodes:focus
+{
+  fill : #FF0000;
+}
+
+.edges
+{
+  fill         : transparent;
+  stroke       : var(--edge-color);
+  stroke-width : 1px;
+}
+
+.edges:hover
+{
+
+}
+
+.edges:focus
+{
+
+}
+
+.edge-labels
+{
+  fill : var(--edge-label-color);
+}
+
+.node-labels
+{
+  fill : var(--node-label-color);
+}

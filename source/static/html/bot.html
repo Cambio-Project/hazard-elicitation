@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Third party JS -->
+  <script src="../../static/js/jqueryslim.js"></script>
+  <script src="../../static/js/bootstrap.js"></script>
+  <script src="../../static/js/split.js"></script>
+  <script src="../../static/js/d3.js"></script>
+
+  <!-- Custom JS -->
+  <script src="../../static/js/main.js"></script>
+  <script src="../../static/js/util.js"></script>
+  <script src="../../static/js/websocket.js"></script>
+  <script src="../../static/js/chat.js"></script>
+  <script src="../../static/js/graph.js"></script>
+  <script src="../../static/js/sample_graph.js"></script>
+
+  <!-- Third party CSS -->
+  <!--<link rel="stylesheet" href="../../static/css/bootstrap.css">-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../../static/css/main.css">
+  <link rel="stylesheet" href="../../static/css/chat.css">
+  <link rel="stylesheet" href="../../static/css/graph.css">
+
+  <title>Hello, world!</title>
+</head>
+<body onload="loadTheme();">
+
+<div class="main">
+  <div class="split">
+
+    <!-- Split Architecture content | Chat -->
+    <div class="h-flex">
+
+      <!-- Architecture content -->
+      <div id="left">
+
+        <!-- Split Graph | Hazard content -->
+        <div class="v-flex">
+
+          <!-- Graph -->
+          <div id="arch" class="v-flex">
+
+            <!-- Graph settings -->
+
+            <div class="d-flex justify-content-around">
+
+              <div class="flex-column">
+                <p class="tool-settings"><label for="zoom">Zoom</label></p>
+                <input type="range" min="0.1" max="4" value="1" step="0.1" id="zoom" onchange="zoom(this.value);"/>
+              </div>
+
+              <div class="flex-column">
+                <p class="tool-settings"><label for="stickynodes">Sticky nodes</label></p>
+                <input type="checkbox" id="stickynodes" onchange="Graph.stickyNodes(this.checked);"/>
+              </div>
+
+              <div class="flex-column">
+                <p class="tool-settings"><label for="shownode">Show nodes</label></p>
+                <input type="checkbox" id="shownode" onchange="Graph.showNodes(this.checked);" checked/>
+              </div>
+
+              <div class="flex-column">
+                <p class="tool-settings"><label for="showlink">Show links</label></p>
+                <input type="checkbox" id="showlink" onchange="Graph.showEdges(this.checked);" checked/>
+              </div>
+
+              <div class="flex-column">
+                <p class="tool-settings"><label for="shownodelabel">Show node labels</label></p>
+                <input type="checkbox" id="shownodelabel" onchange="Graph.showNodeLabels(this.checked);" checked/>
+              </div>
+
+              <div class="flex-column">
+                <p class="tool-settings"><label for="showlinklabel">Show link labels</label></p>
+                <input type="checkbox" id="showlinklabel" onchange="Graph.showEdgeLabels(this.checked);" checked/>
+              </div>
+
+              <div class="flex-column">
+                <p class="tool-settings"><label for="theme" class="switch">Dark Theme</label></p>
+                <input class="toggle" type="checkbox" id="theme" onchange="setDarkTheme(this.checked);">
+              </div>
+
+            </div>
+
+            <!-- Graph -->
+
+            <div class="graph-wrapper">
+
+              <div id="context-menu">
+                <div class="header"></div>
+                <div class="body"></div>
+              </div>
+
+              <div id="tooltip">
+                <div class="header"></div>
+                <div class="body"></div>
+              </div>
+
+              <svg id="graph" class="graph"></svg>
+            </div>
+
+          </div>
+
+          <!-- Hazard content -->
+          <div id="content">
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat -->
+      <div id="bot">
+        <div id="chat" class="chat"></div>
+        <div id="chat-input">
+          <div class="user-input">
+            <textarea class="w-100 h-100 input-area" id="user-input-input"
+                      placeholder="Type something and press enter &#128522;"></textarea>
+            <button class="send-button" type="button" id="send">&#10148;</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+    Split(['#left', '#bot'], {
+        sizes:      [75, 25],
+        minSize:    [525, 375],
+        gutterSize: 5
+    })
+
+    Split(['#arch', '#content'], {
+        sizes:      [75, 25],
+        minSize:    [600, 300],
+        gutterSize: 5,
+        direction:  'vertical'
+    })
+
+    Split(['#chat', '#chat-input'], {
+        sizes:      [90, 10],
+        minSize:    [500, 100],
+        gutterSize: 5,
+        direction:  'vertical'
+    })
+
+    let graph = new Graph("#graph", sample_graph)
+
+    let df_websocket = new DFWebSocket();
+    let chat         = new Chat(df_websocket, "chat", "user-input-input");
+
+    chat.add(new ChatMessage(Chat.User, 'Hello'));
+    chat.add(new ChatMessage(Chat.Bot, 'Hey, how can I help you?'));
+    chat.add(new ChatMessage(Chat.User, 'What is your purpose?'));
+    chat.add(new ChatMessage(Chat.Bot, 'I can help you in a detailed way to define the following:'
+        + '<ul><li>setup</li><li>tear down</li><li>manage</li></ul>'));
+    chat.add(new ChatCard({
+        title:   'By the way...',
+        message: 'Did you know that Cows ‘moo’ in accents specific to their region? They have dialects, just like humans.',
+        image:   null,
+        link:    'OK then'
+    }));
+    chat.add(new ChatMessage(Chat.User, 'Awsome, how do you know so much stuff?'));
+
+    chat.add(new ChatAccordion([
+        {title: "Test 1", content: "Spoiler!"},
+        {title: "Test 2", content: "Nevermind"},
+        {title: "Test 3", content: "Gotcha"}
+    ]));
+
+    chat.add(new ChatQuickReply(["Maybe", "Service 1", "Very Long Text indeed", "even longer wow"]));
+    chat.add(new ChatMessage(Chat.Bot, 'Hello' +
+        'asdasdasd' +
+        'asdasdadasd' +
+        'as s das dasd asd asd asd as' +
+        'asdasd asd ads s asd' +
+        'sad as asd asd asd as d' +
+        'asd as das da sd'));
+    chat.add(new ChatMessage(Chat.User, 'Hello' +
+        'asdasdasd' +
+        'asdasdadasd' +
+        'as s das dasd asd asd asd as' +
+        'asdasd asd ads s asd' +
+        'sad as asd asd asd as d' +
+        'asd as das da sd'));
+    chat.add(new ChatQuickReply(["Yes", "No"]));
+</script>
+
+
+</body>
+</html>
