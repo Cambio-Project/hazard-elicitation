@@ -1,0 +1,25 @@
+TEXT_ID = 0
+
+
+def text_id():
+    global TEXT_ID
+    TEXT_ID += 1
+    return TEXT_ID
+
+
+DEFAULT = text_id()
+
+INTENT_FALLBACK_NAME = text_id()
+INTENT_FALLBACK_TEXT = text_id()
+INTENT_FALLBACK_GIBBERISH_NAME = text_id()
+INTENT_FALLBACK_GIBBERISH_TEXT = text_id()
+INTENT_FALLBACK_INSULT_NAME = text_id()
+INTENT_FALLBACK_INSULT_TEXT = text_id()
+INTENT_HELP_NAME = text_id()
+INTENT_HELP_TEXT = text_id()
+INTENT_WELCOME_NAME = text_id()
+INTENT_WELCOME_TEXT = text_id()
+
+
+INTENT_FACT_NAME = text_id()
+INTENT_JOKE_NAME = text_id()
