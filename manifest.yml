@@ -1,5 +1,8 @@
 ---
 applications:
- - name: hazard_elicitation
+ - name: hazardelicitation
    memory: 256M
    timeout: 300
+   instances: 1
+   routes:
+     hazardelicitation.eu-gb.mybluemix.net

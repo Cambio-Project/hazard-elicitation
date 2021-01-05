@@ -11,7 +11,7 @@ def path(first: str, *other):
 ALLOWED_HOSTS = ['*']
 BASE_DIR = path(realpath(__file__), '..', '..')
 CONFIG = Config(path(BASE_DIR, '..', 'config.json'))
-DEBUG = True
+DEBUG = False
 KEYS = Config(path(BASE_DIR, '..', 'keys.json'))
 LANGUAGE_CODE = 'en-us'
 ROOT_URLCONF = 'hazard_elicitation.urls'

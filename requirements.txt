@@ -1,8 +1,8 @@
 requests~=2.25.0
 django~=3.1.4
-gunicorn
-dialogflow~=1.1.0
-google-cloud-dialogflow
-
+daphne
 asgiref~=3.2.10
 channels
+
+dialogflow~=1.1.0
+google-cloud-dialogflow

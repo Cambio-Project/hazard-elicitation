@@ -1,3 +1,5 @@
+## Rich Responses
+
 ```python
 text = {
     'type':    'text',

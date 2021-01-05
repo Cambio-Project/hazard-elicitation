@@ -1,3 +1,17 @@
+## Setup Django
+1. Create a new Django secret key.
+2. Fill the Django secret key into the `keys.json` file.
+
+## Setup Dialogflow
+
+1. Create a Google account and sign-in [here](https://dialogflow.cloud.google.com/#/login).
+2. Navigate to `Create a new agent` in the left panel.
+3. Fill in the details and choose a Google Cloud project (you will need the project name later).
+4. Navigate to the agents settings and choose `Export and Import`.
+   - choose `Restore from zip`
+   - place the Hazard Dialogflow agent into the drag & drop area.
+5. Fill the Google Cloud project name into the `keys.json` file.
+
 ## Setup Cloud Foundry
 
 This project runs on IBM Clouds' Cloud Foundry.
@@ -12,19 +26,19 @@ Follow these steps to deploy a python app on Cloud Foundry:
 4. Deploy your python application ([Example](https://cloud.ibm.com/docs/cloud-foundry?topic=cloud-foundry-getting-started-python))
     1. Install latest IBM Cloud CLI [binaries](https://github.com/IBM-Cloud/ibm-cloud-cli-release/releases/)
     2. Navigate to the root folder of your application
-    3. Create a `manifest.yml` file for custom deployment information
-    4. Create a `Procfile` to define the entry point for your application
-    5. Run the deployment script or use the following CLI commands in a terminal window to deploy:
+    3. Modify the `manifest.yml` file to your custom deployment information
+    4. Run the deployment script or use the following CLI commands in a terminal window to deploy:
         - via deployment script:
             - define `IBM_CLOUD_USER`, `IBM_CLOUD_PW`, `IBM_CLOUD_GROUP`, `IBM_CLOUD_ORG`, and `IBM_CLOUD_SPACE` in your environment
+            - > ./deploy.sh
         - via manual cli input:
             1. > ibmcloud login -u `<your username>` -p `<your password>`
             2. > ibmcloud target -r `<Cloud Foundry region>` -g `<Cloud Foundry group>` -o `<Cloud Foundry organisation>` -s `<Cloud Foundry space>`
             3. > ibmcloud cf push
+       - via docker:
+         - > ibmcloud cf push --docker-image styinx/hazard_elicitation_slim
 
-If everything went successfully you should [see](https://cloud.ibm.com/cloudfoundry/public) your app running
+If everything went successfully you should [see](https://cloud.ibm.com/cloudfoundry/public) your app running.
 
 > Note that the free Lite plan limits the number of groups, organisation, and spaces to one each.
 > The default group is called `Default`, and the default space is called `dev`.
-
-## Setup Dialogflow

@@ -1,9 +1,14 @@
 FROM python:3.8-slim
 
 WORKDIR .
-COPY source/ .
 COPY requirements.txt .
+COPY keys.json .
+COPY source/ .
+
+RUN apt-get update && apt-get install -y --no-install-recommends gcc python-dev
 RUN pip install -r requirements.txt
+RUN apt-get purge -y --auto-remove gcc python-dev
+RUN python manage.py migrate
 
 EXPOSE 8080
-ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:8080", "hazard_elicitation.asgi"]
+ENTRYPOINT ["daphne", "-b", "0.0.0.0", "-p", "8080", "hazard_elicitation.asgi:application"]
