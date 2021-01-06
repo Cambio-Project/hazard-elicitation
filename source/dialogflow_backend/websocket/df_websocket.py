@@ -4,6 +4,7 @@ from google.api_core.exceptions import InvalidArgument
 from dialogflow_backend.client import DialogFlowClient
 from dialogflow_backend.intents.intents import INTENTS
 from dialogflow_backend.intents.intent_handler import *
+from util.log import info, warning, error, debug
 
 
 class DFWebsocket(AsyncWebsocketConsumer):
@@ -11,27 +12,27 @@ class DFWebsocket(AsyncWebsocketConsumer):
         await self.channel_layer.group_add('dialogflow', self.channel_name)
 
         await self.accept()
-        print('acc')
+        info('Accept connection.')
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard('dialogflow', self.channel_name)
 
-        print('disc')
+        info('Disconnect connection.')
 
     async def receive(self, **kwargs):
         data = json.loads(kwargs.get('text_data'))
 
         if not data:
-            print('no text')
+            warning('No text data received.')
             return
 
         msg_type = data.get('type')
         if not msg_type:
-            print('no message type')
+            warning('No message type defined.')
             return
 
         if not hasattr(self, msg_type):
-            print('no handler for ', msg_type)
+            warning('No handler for message type "{}"'.format(msg_type))
             return
 
         await getattr(self, msg_type)(data.get('data'))
@@ -53,14 +54,21 @@ class DFWebsocket(AsyncWebsocketConsumer):
             sentiment_score = result.query_result.sentiment_analysis_result.query_text_sentiment.score
             sentiment_magnitude = result.query_result.sentiment_analysis_result.query_text_sentiment.magnitude
 
-            # print(intent,
-            #       all_parameters_present,
-            #       action,
-            #       contexts,
-            #       parameters,
-            #       confidence,
-            #       sentiment_score,
-            #       sentiment_magnitude, sep='\n')
+            debug(str('Intent processing result:\n'
+                      '- Confidence: {}\n'
+                      '- Contexts; {}\n'
+                      '- Action: {}\n'
+                      '- All parameters present: {}\n'
+                      '- Parameters: {}\n'
+                      '- Sentiment (Score/Magnitude): {}/{}').format(
+                confidence,
+                contexts,
+                action,
+                all_parameters_present,
+                parameters,
+                sentiment_score,
+                sentiment_magnitude,
+            ))
 
             if intent in INTENTS:
                 if intent == '0-fallback':
@@ -84,6 +92,7 @@ class DFWebsocket(AsyncWebsocketConsumer):
                     'payload': result.query_result.fulfillment_text
                 }
         except InvalidArgument:
+            error('DF WS intent handler produced invalid argument.')
             pass
 
         await self.send(json.dumps({

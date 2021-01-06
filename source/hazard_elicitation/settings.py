@@ -1,21 +1,21 @@
 import os
-from os.path import normpath, join, realpath
-
 from util.config import Config
-
-
-def path(first: str, *other):
-    return normpath(join(first, *other))
-
+from util.path import path
 
 ALLOWED_HOSTS = ['*']
-BASE_DIR = path(realpath(__file__), '..', '..')
+BASE_DIR = path(__file__, '..', '..')
 CONFIG = Config(path(BASE_DIR, '..', 'config.json'))
+CSRF_COOKIE_SECURE = True
 DEBUG = False
+FORMATTED_LOGGING = True
 KEYS = Config(path(BASE_DIR, '..', 'keys.json'))
 LANGUAGE_CODE = 'en-us'
 ROOT_URLCONF = 'hazard_elicitation.urls'
 SECRET_KEY = KEYS.get('django_secret')
+SESSION_COOKIE_SECURE = True
+STATIC_ROOT = path(BASE_DIR, 'static') if DEBUG else path(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [] if DEBUG else [path(BASE_DIR, 'static')]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_URL = '/static/'
 TIME_ZONE = 'UTC'
 USE_I18N = True
@@ -62,16 +62,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-STATICFILES_DIRS = [
-    path(BASE_DIR, 'static')
 ]
 
 TEMPLATES = [

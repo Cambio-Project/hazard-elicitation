@@ -1,11 +1,12 @@
 import os
-import sys
-
+from hazard_elicitation.settings import LANGUAGE_CODE, KEYS
 from util.text.languages import LanguageConfig
+from util.log import *
 
 
 def setup():
-    LanguageConfig.LANGUAGE = 'en'
+    LanguageConfig.LANGUAGE = LANGUAGE_CODE
+    info('"{}" set as default language.'.format(LanguageConfig.LANGUAGE))
 
 
 def main():
@@ -18,6 +19,11 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+
+    setup()
+    if not KEYS.get('django_secret'):
+        error('Check your "keys.json" file.')
+
     execute_from_command_line(sys.argv)
 
 

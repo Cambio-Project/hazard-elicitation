@@ -3,6 +3,9 @@ import json
 
 
 class Config:
+    """
+    Stores key value pairs read from a *.json file.
+    """
     def __init__(self, json_file: str):
         self._file = ''
         self._dict = {}
