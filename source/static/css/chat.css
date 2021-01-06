@@ -131,6 +131,8 @@
 .btn-link
 {
   color : var(--link-color);
+  white-space : normal;
+  word-wrap: break-word;
 }
 
 .btn-link:hover, .btn-link:active, .btn-link:focus
@@ -149,13 +151,13 @@
 
 [aria-expanded="true"] .arrow
 {
-  transform         : rotate(45deg);
+  transform : rotate(45deg);
 }
 
 [aria-expanded="false"] .arrow,
 [aria-expanded].collapsed .arrow
 {
-  transform         : rotate(-45deg);
+  transform : rotate(-45deg);
 }
 
 

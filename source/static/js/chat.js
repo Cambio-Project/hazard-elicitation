@@ -158,7 +158,7 @@ class ChatAccordion extends ChatElement {
                     <div class="card-header rounded-0" 
                          id="accordion-${ChatAccordion.ID}-${section}-button">
                         <h5 class="mb-0">
-                            <button class="btn btn-link w-100 text-left" 
+                            <button class="btn btn-link w-100 text-left"
                                     data-toggle="collapse"
                                     data-target="#${ChatAccordion.ID}-${section}"
                                     aria-expanded="false" 
