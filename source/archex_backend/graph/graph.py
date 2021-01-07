@@ -64,7 +64,7 @@ class Graph:
         return None
 
     def neighbours(self, node: Node) -> List[Node]:
-        return [e.target for _, e in self._edges.items() if e.source.id == node.id]
+        return [self._nodes[n_id] for n_id in self._adjacency[node.id].keys()]
 
     def add_node(self, node: Node):
         if node.id in self._nodes:

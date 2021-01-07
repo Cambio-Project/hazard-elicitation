@@ -73,9 +73,9 @@ class Architecture:
                 'id': n_id
             })
 
-        for e in self._graph.edges:
+        for e_id, e in self._graph.edges.items():
             result['links'].append({
-                'id': e.id,
+                'id': e_id,
                 'label': e.label,
                 'source': e.source.id,
                 'target': e.target.id
