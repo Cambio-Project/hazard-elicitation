@@ -29,7 +29,7 @@
 
   <title>Hello, world!</title>
 </head>
-<body onload="loadTheme();">
+<body onload="onLoad();">
 
 <div class="main">
   <div class="split">
@@ -117,9 +117,8 @@
       <div id="bot">
         <div id="chat" class="chat"></div>
         <div id="chat-input">
-          <div class="user-input">
-            <textarea class="w-100 h-100 input-area" id="user-input-input"
-                      placeholder="Type something and press enter &#128522;"></textarea>
+          <div class="chat-area">
+            <textarea class="w-100 h-100 input-area" id="user-input" placeholder="Type something and press enter &#128522;"></textarea>
             <button class="send-button" type="button" id="send">&#10148;</button>
           </div>
         </div>
@@ -129,70 +128,6 @@
   </div>
 
 </div>
-
-<script>
-    Split(['#left', '#bot'], {
-        sizes:      [75, 25],
-        minSize:    [525, 375],
-        gutterSize: 5
-    })
-
-    Split(['#arch', '#content'], {
-        sizes:      [75, 25],
-        minSize:    [600, 300],
-        gutterSize: 5,
-        direction:  'vertical'
-    })
-
-    Split(['#chat', '#chat-input'], {
-        sizes:      [90, 10],
-        minSize:    [500, 100],
-        gutterSize: 5,
-        direction:  'vertical'
-    })
-
-    let graph = new Graph("#graph", sample_graph)
-
-    let df_websocket = new DFWebSocket();
-    let chat         = new Chat(df_websocket, "chat", "user-input-input");
-
-    chat.add(new ChatMessage(Chat.User, 'Hello'));
-    chat.add(new ChatMessage(Chat.Bot, 'Hey, how can I help you?'));
-    chat.add(new ChatMessage(Chat.User, 'What is your purpose?'));
-    chat.add(new ChatMessage(Chat.Bot, 'I can help you in a detailed way to define the following:'
-        + '<ul><li>setup</li><li>tear down</li><li>manage</li></ul>'));
-    chat.add(new ChatCard({
-        title:   'By the way...',
-        message: 'Did you know that Cows ‘moo’ in accents specific to their region? They have dialects, just like humans.',
-        image:   null,
-        link:    'OK then'
-    }));
-    chat.add(new ChatMessage(Chat.User, 'Awsome, how do you know so much stuff?'));
-
-    chat.add(new ChatAccordion([
-        {title: "Test 1", content: "Spoiler!"},
-        {title: "Test 2", content: "Nevermind"},
-        {title: "Test 3", content: "Gotcha"}
-    ]));
-
-    chat.add(new ChatQuickReply(["Maybe", "Service 1", "Very Long Text indeed", "even longer wow"]));
-    chat.add(new ChatMessage(Chat.Bot, 'Hello' +
-        'asdasdasd' +
-        'asdasdadasd' +
-        'as s das dasd asd asd asd as' +
-        'asdasd asd ads s asd' +
-        'sad as asd asd asd as d' +
-        'asd as das da sd'));
-    chat.add(new ChatMessage(Chat.User, 'Hello' +
-        'asdasdasd' +
-        'asdasdadasd' +
-        'as s das dasd asd asd asd as' +
-        'asdasd asd ads s asd' +
-        'sad as asd asd asd as d' +
-        'asd as das da sd'));
-    chat.add(new ChatQuickReply(["Yes", "No"]));
-</script>
-
 
 </body>
 </html>
