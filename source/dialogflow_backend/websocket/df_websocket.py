@@ -1,9 +1,9 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from google.api_core.exceptions import InvalidArgument
 
-from dialogflow_backend.client import DialogFlowClient
-from dialogflow_backend.intents.intents import INTENTS
-from dialogflow_backend.intents.intent_handler import *
+from dialogflow_backend.dialogflow.client import DialogFlowClient
+from dialogflow_backend.dialogflow.intents import INTENTS
+from dialogflow_backend.dialogflow.intent_handler import *
 from util.log import info, warning, error, debug
 
 
@@ -87,20 +87,16 @@ class DFWebsocket(AsyncWebsocketConsumer):
                     response_data = await joke_handler()
 
             else:
-                response_data = {
+                response_data = [{
                     'type':    'text',
                     'payload': result.query_result.fulfillment_text
-                }
+                }]
+
         except InvalidArgument:
             error('DF WS intent handler produced invalid argument.')
             pass
 
         await self.send(json.dumps({
             'type': 'dialogflow_response',
-            'data': [
-                response_data,
-                # quick_reply,
-                # card,
-                # accordion
-            ]
+            'data': response_data
         }))
