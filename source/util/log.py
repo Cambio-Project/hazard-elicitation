@@ -12,14 +12,14 @@ BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, DEFAULT, WHITE = [30, 31, 32, 33
 logger = logging.getLogger('HAZARD')
 handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter(
-    '{0}{2} [{3}] | {4}{5}: {6}{1}'.format(
+    '{0}{1} [{2}] | {3}{4}: {5}{6}'.format(
         BOLD if USE_STYLE else '',
-        RESET if USE_STYLE else '',
         '%(asctime)s',
-        '%(_filename)s:%(_lineno) 5d',
+        '%(_filename)s:L%(_lineno) 5d',
         '%(color)s',
         '%(levelname)-8s',
-        '%(message)s'),
+        '%(message)s',
+        RESET if USE_STYLE else ''),
     datefmt='%Y-%m-%d %H:%M:%S'
 ))
 logger.setLevel(logging.DEBUG if DEBUG else logging.INFO)
