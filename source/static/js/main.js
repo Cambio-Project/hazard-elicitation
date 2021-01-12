@@ -1,13 +1,55 @@
-let graph        = null;
-let df_websocket = null;
-let chat         = null;
-
 String.prototype.format = function () {
     let i = 0, args = arguments;
     return this.replace(/{}/g, function () {
         return typeof args[i] != 'undefined' ? args[i++] : '';
     });
 };
+
+Object.defineProperty(Object.prototype, '_keys', {
+    value:      function () { return Object.keys(this); },
+    enumerable: false
+});
+
+Object.defineProperty(Object.prototype, '_values', {
+    value:      function () { return Object.keys(this).map(k => this[k]); },
+    enumerable: false
+});
+
+Object.defineProperty(Object.prototype, '_empty', {
+    value:      function () { return Object.keys(this).length === 0; },
+    enumerable: false
+});
+
+function time(date) {
+    return "{}-{}-{} {}:{}:{}".format(
+        date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
+        date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds())
+}
+
+function formattedStack(...args) {
+    const date = new Date();
+    const stack = new Error().stack.split("\n");
+    const parent = stack[stack.length - 2];
+    const start = parent.lastIndexOf("/") + 1;
+    const file = parent.substr(start, parent.length - start - 1);
+    return "{} [{}] | {}: {}".format(time(date), file, args[0], ...args.slice(1))
+}
+
+function debug() {
+    console.debug(formattedStack("DEBUG  ", ...arguments))
+}
+
+function info() {
+    console.info(formattedStack("INFO   ", ...arguments))
+}
+
+function warn() {
+    console.warn(formattedStack("WARNING", ...arguments))
+}
+
+function error(what) {
+    console.error(formattedStack("ERROR  ", ...arguments))
+}
 
 function setDarkTheme(value) {
     localStorage.setItem("dark-theme", value ? "1" : "0");
@@ -42,11 +84,47 @@ function splitAreas() {
     })
 }
 
+function addExamples() {
+	chat.add(new ChatMessage(Chat.Bot, "Hello I am a chatbot and I can help you with:"
+		+ "<ul>"
+			+ "<li>...</li>"
+			+ "<li>...</li>"
+		+ "</ul>"));
+	chat.add(new ChatMessage(Chat.User, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud "));
+	chat.add(new ChatMessage(Chat.Bot, "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui ."));
+	chat.add(new ChatMessage(Chat.User, "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ."));
+	chat.add(new ChatMessage(Chat.Bot, "Here you have some options ..."));
+	chat.add(new ChatQuickReply(["finish", "continue", "another option"]));
+	chat.add(new ChatCard({
+		"title": "Some Fact",
+		"message": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
+		}));
+	chat.add(new ChatAccordion([{
+		"title": "Some Fact",
+		"content": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
+		},
+		{
+		"title": "AnotherFact",
+		"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
+		}]));
+}
+
+/**
+ * Constants
+ */
+let graph        = null;
+let chat         = null;
+
+/**
+ * Runs on page load.
+ */
 function onLoad() {
     loadTheme();
     splitAreas();
 
-    graph        = new Graph("#graph", sample_graph)
-    df_websocket = new DFWebSocket();
-    chat         = new Chat(df_websocket, "chat", "user-input");
+    graph        = new Graph("#graph", "#context-menu", sample_graph);
+    Graph.showEdgeLabels(this.checked);
+
+    chat         = new Chat("chat", "user-input");
+	addExamples()
 }
