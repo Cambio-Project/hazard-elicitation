@@ -78,9 +78,9 @@ html, body
 
 .tool-settings
 {
-  margin  : 0;
-  font-weight: bold;
-  display : inline-block;
+  margin      : 0;
+  font-weight : bold;
+  display     : inline-block;
 }
 
 label, input

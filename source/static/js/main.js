@@ -27,28 +27,32 @@ function time(date) {
 }
 
 function formattedStack(...args) {
-    const date = new Date();
-    const stack = new Error().stack.split("\n");
+    const date   = new Date();
+    const stack  = new Error().stack.split("\n");
     const parent = stack[stack.length - 2];
-    const start = parent.lastIndexOf("/") + 1;
-    const file = parent.substr(start, parent.length - start - 1);
-    return "{} [{}] | {}: {}".format(time(date), file, args[0], ...args.slice(1))
+    const start  = parent.lastIndexOf("/") + 1;
+    const file   = parent.substr(start, parent.length - start - 1);
+    return ["{} [{}] | {}:".format(time(date), file, args[0]), ...args.slice(1)];
+}
+
+function dir() {
+    console.dir(...formattedStack("DEBUG  ", ...arguments))
 }
 
 function debug() {
-    console.debug(formattedStack("DEBUG  ", ...arguments))
+    console.debug(...formattedStack("DEBUG  ", ...arguments))
 }
 
 function info() {
-    console.info(formattedStack("INFO   ", ...arguments))
+    console.info(...formattedStack("INFO   ", ...arguments))
 }
 
 function warn() {
-    console.warn(formattedStack("WARNING", ...arguments))
+    console.warn(...formattedStack("WARNING", ...arguments))
 }
 
 function error(what) {
-    console.error(formattedStack("ERROR  ", ...arguments))
+    console.error(...formattedStack("ERROR  ", ...arguments))
 }
 
 function setDarkTheme(value) {
@@ -84,36 +88,70 @@ function splitAreas() {
     })
 }
 
-function addExamples() {
-	chat.add(new ChatMessage(Chat.Bot, "Hello I am a chatbot and I can help you with:"
-		+ "<ul>"
-			+ "<li>...</li>"
-			+ "<li>...</li>"
-		+ "</ul>"));
-	chat.add(new ChatMessage(Chat.User, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud "));
-	chat.add(new ChatMessage(Chat.Bot, "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui ."));
-	chat.add(new ChatMessage(Chat.User, "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ."));
-	chat.add(new ChatMessage(Chat.Bot, "Here you have some options ..."));
-	chat.add(new ChatQuickReply(["finish", "continue", "another option"]));
-	chat.add(new ChatCard({
-		"title": "Some Fact",
-		"message": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
-		}));
-	chat.add(new ChatAccordion([{
-		"title": "Some Fact",
-		"content": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
-		},
-		{
-		"title": "AnotherFact",
-		"content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
-		}]));
+function addChatExamples() {
+    chat.add(new ChatMessage(Chat.Bot, "Hello I am a chatbot and I can help you with:"
+        + "<ul>"
+        + "<li>...</li>"
+        + "<li>...</li>"
+        + "</ul>"));
+    chat.add(new ChatMessage(Chat.User, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud "));
+    chat.add(new ChatMessage(Chat.Bot, "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui ."));
+    chat.add(new ChatMessage(Chat.User, "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ."));
+    chat.add(new ChatMessage(Chat.Bot, "Here you have some options ..."));
+    chat.add(new ChatQuickReply(["finish", "continue", "another option"]));
+    chat.add(new ChatCard({
+        "title":   "Some Fact",
+        "message": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
+    }));
+    chat.add(new ChatAccordion([{
+        "title":   "Some Fact",
+        "content": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
+    }, {
+        "title":   "AnotherFact",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
+    }]));
+}
+
+function addContentExamples() {
+    content.addTab({
+        "title":   "bla",
+        "content": `<div class='card'>
+            <div class="card shadow">
+              <div class = "card-body">
+                <h5 class="card-title">Helloooooo</h5>
+                <p class="card-text">asdasd asd asd asd </p>
+              </div>
+            </div><div class='card'>
+            <div class="card shadow">
+              <div class = "card-body">
+                <h5 class="card-title">Helloooooo</h5>
+                <p class="card-text">asdasd asd asd asd </p>
+              </div>
+            </div><div class='card'>
+            <div class="card shadow">
+              <div class = "card-body">
+                <h5 class="card-title">Helloooooo</h5>
+                <p class="card-text">asdasd asd asd asd </p>
+              </div>
+            </div>`
+    });
+    content.addTab({
+        "title":   "bla",
+        "content": "2"
+    });
+    content.addTab({
+        "title":   "bla",
+        "content": "3"
+    });
+    content.removeTab(1);
 }
 
 /**
  * Constants
  */
-let graph        = null;
-let chat         = null;
+let graph   = null;
+let chat    = null;
+let content = null;
 
 /**
  * Runs on page load.
@@ -122,9 +160,12 @@ function onLoad() {
     loadTheme();
     splitAreas();
 
-    graph        = new Graph("#graph", "#context-menu", sample_graph);
+    graph = new Graph("#graph", "#context-menu", sample_graph);
     Graph.showEdgeLabels(this.checked);
 
-    chat         = new Chat("chat", "user-input");
-	addExamples()
+    chat = new Chat("#chat", "#user-input");
+    addChatExamples()
+
+    content = new Content("#content");
+    addContentExamples();
 }

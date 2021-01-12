@@ -1,0 +1,70 @@
+.light-theme
+{
+  --tab-color       : #000000;
+  --tab-color-bg    : #DDDDDD;
+  --hazard-color    : #333333;
+  --hazard-color-bg : #EEEE00;
+}
+
+.dark-theme
+{
+  --tab-color       : #EEEEEE;
+  --tab-color-bg    : #777777;
+  --hazard-color    : #333333;
+  --hazard-color-bg : #EEEE00;
+}
+
+.nav-tabs
+{
+  border-bottom: 1px solid var(--tab-color-bg);
+}
+
+.nav-link
+{
+  position : relative;
+}
+
+.nav-tabs .nav-link
+{
+  font-weight: bold;
+  border  : none;
+  padding : 8px 35px 8px 8px;
+  margin  : 0 1px;
+}
+
+.nav-link.hazard
+{
+  color            : var(--tab-color);
+  background-color : var(--tab-color-bg);
+}
+
+.nav-link.hazard.active
+{
+  background-color : var(--hazard-color-bg);
+}
+
+.nav-item > a.nav-link::after
+{
+  background-position : 0 0;
+  background-size     : 1.4rem 1.4rem;
+  height              : 1.4rem;
+  width               : 1.4rem;
+  position            : absolute;
+  top                 : calc(50% - 0.7rem);
+  right               : 0.3rem;
+  content             : "";
+  display             : inline-block;
+  background-image    : url("../img/hazard.png");
+}
+
+.tab-content
+{
+  padding: 15px;
+  height: calc(100% - 30px - 16px);
+  overflow: auto;
+}
+
+.tab-pane
+{
+  flex-grow: 1;
+}
