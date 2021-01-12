@@ -3,7 +3,7 @@ import random
 from util.text.languages import LanguageConfig, TEXT
 
 
-def text(text_id: int):
+def text(text_id: int) -> str:
     if LanguageConfig.LANGUAGE not in TEXT:
         LanguageConfig.LANGUAGE = 'en'
         # log: fallback to default language 'en'
@@ -14,6 +14,6 @@ def text(text_id: int):
         return '<NO TEXT ID "{}">'.format(text_id)
 
 
-def random_text(text_id: int):
+def random_text(text_id: int) -> str:
     result = text(text_id)
     return result[random.randint(0, len(result) - 1)]
