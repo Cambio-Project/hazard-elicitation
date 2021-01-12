@@ -86,9 +86,9 @@ class Chat {
     constructor(chat_id, chat_input_id) {
         Chat.CHAT       = this;
         this.ws         = new DFWebSocket();
-        this.chat       = document.getElementById(chat_id);
-        this.chat_input = document.getElementById(chat_input_id);
-        this.chat_input.addEventListener("keyup", this.send);
+        this.chat       = $(chat_id);
+        this.chat_input = $(chat_input_id);
+        this.chat_input.on("keyup", this.send);
     }
 
     scroll() {
@@ -96,7 +96,7 @@ class Chat {
     }
 
     add(what) {
-        this.chat.innerHTML += what.html();
+        this.chat.append(what.html());
     }
 
     setPending() {
@@ -108,7 +108,7 @@ class Chat {
     }
 
     append(what) {
-        this.chat.innerHTML += what;
+        this.chat.append(what);
     }
 
     send(e) {

@@ -321,7 +321,7 @@ class Graph {
         Graph.EdgeLabels.style("visibility", show ? "visible" : "hidden");
     }
 
-    static toggleSimulation() {  }
+    static toggleSimulation() { }
 
     static pauseSimulation() { Graph.Simulation.alphaTarget(0); }
 
@@ -332,9 +332,9 @@ class Graph {
 
 class ContextMenu {
     constructor(context_menu) {
-        this.context_menu = d3.select(context_menu);
-        this.body         = this.context_menu.select(".body");
-        this.anchor       = this.body.select(".dropdown-menu");
+        this.context_menu = $(context_menu);
+        this.body         = this.context_menu.find(".body");
+        this.anchor       = this.body.find(".dropdown-menu");
     }
 
     createItems(data) {
@@ -343,7 +343,7 @@ class ContextMenu {
             if (typeof data[key] === "object") {
                 let nested = data[key]._empty() ? "" : "<ul class='dropdown-menu'>" + this.createItems(data[key]) + "</ul>";
                 content +=
-                      `<li class="dropdown-submenu">
+                    `<li class="dropdown-submenu">
                         <a class="dropdown-item">${key}</a>
                         ${nested}      
                       </li>`;
@@ -356,22 +356,31 @@ class ContextMenu {
 
     show(x, y, element) {
         this.context_menu
-            .style("visibility", "visible")
-            .style("opacity", "1")
-            .style("left", x + "px")
-            .style("top", y + "px");
+            .css({
+                "visibility": "visible",
+                "opacity":    "1",
+                "left":       x + "px",
+                "top":        y + "px"
+            });
+
+        const type = "source" in element ? "edge" : "node";
 
         this.anchor.html("");
-        // this.body
-        //     .append("div")
-        //     .attr("class", "context-menu-item")
-        //     .html("<b>" + element.label + "</b>");
-        this.anchor.html(this.createItems(element.data))
+        this.anchor.append(`<li><a class="dropdown-item"><b>${element.label}</b></a></li>`);
+        this.anchor.append("<div class='dropdown-divider'></div>");
+        this.anchor.append(
+            `<li class="dropdown-action" name="hazard">
+              <a class="dropdown-item" onclick="Content.addHazard('${element.id}', '${type}');">Mark as Hazard</a>
+            </li>`);
+        this.anchor.append("<div class='dropdown-divider'></div>");
+        this.anchor.append(this.createItems(element.data));
     }
 
     hide() {
         this.context_menu
-            .style("visibility", "hidden")
-            .style("opacity", "0");
+            .css({
+                "visibility": "hidden",
+                "opacity":    "0"
+            });
     }
 }
