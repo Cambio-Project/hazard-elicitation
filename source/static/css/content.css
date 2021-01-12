@@ -3,7 +3,7 @@
   --tab-color       : #000000;
   --tab-color-bg    : #DDDDDD;
   --hazard-color    : #333333;
-  --hazard-color-bg : #EEEE00;
+  --hazard-color-bg : #FFDC00;
 }
 
 .dark-theme
@@ -11,7 +11,7 @@
   --tab-color       : #EEEEEE;
   --tab-color-bg    : #777777;
   --hazard-color    : #333333;
-  --hazard-color-bg : #EEEE00;
+  --hazard-color-bg : #FFDC00;
 }
 
 .nav-tabs
