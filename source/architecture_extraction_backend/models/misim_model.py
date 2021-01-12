@@ -2,9 +2,9 @@ import json
 
 from typing import IO, Union, Dict, Any
 
-from archex_backend.models.model import IModel, UnknownOperation, WrongFormatException
-from archex_backend.models.operation import Operation
-from archex_backend.models.service import Service
+from architecture_extraction_backend.models.model import IModel, UnknownOperation, WrongFormatException
+from architecture_extraction_backend.models.operation import Operation
+from architecture_extraction_backend.models.service import Service
 
 
 class MiSimModel(IModel):

@@ -1,4 +1,4 @@
-from archex_backend.graph.node import Node
+from architecture_extraction_backend.graph.node import Node
 
 
 class Edge:

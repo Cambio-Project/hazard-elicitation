@@ -1,7 +1,7 @@
 from typing import Dict, List, Union
 
-from archex_backend.graph.edge import Edge
-from archex_backend.graph.node import Node
+from architecture_extraction_backend.graph.edge import Edge
+from architecture_extraction_backend.graph.node import Node
 
 
 class Graph:

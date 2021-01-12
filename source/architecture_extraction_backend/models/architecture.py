@@ -1,8 +1,8 @@
 import json
 from typing import Tuple, List
 
-from archex_backend.graph.graph import Graph, Node, Edge
-from archex_backend.models.model import IModel, UnknownOperation
+from architecture_extraction_backend.graph.graph import Graph, Node, Edge
+from architecture_extraction_backend.models.model import IModel, UnknownOperation
 
 
 class CyclicServiceOperations(BaseException):
@@ -12,8 +12,9 @@ class CyclicServiceOperations(BaseException):
 
 class Architecture:
     """
-
+    Creates a architectural representation of a generic model from services, operations, and dependencies.
     """
+
     def __init__(self, model: IModel):
         self._model = model
         self._graph = Graph()
@@ -23,27 +24,31 @@ class Architecture:
     def _build_graph(self):
         temp = None
 
+        # Add nodes
         for _, s in self._model.services.items():
             self._graph.add_node(Node(s.name))
 
+        # Add edges
         for _, s in self._model.services.items():
             for _, o in s.operations.items():
-                source = self._graph.node(s.name)
+                source = self._graph.node(s.id)
 
+                # Self edge
                 if not o.dependencies:
                     self._graph.add_edge(Edge(source, source, o.name))
 
                 else:
                     for d in o.dependencies:
-                        target = self._graph.node(d.service.label)
+                        target = self._graph.node(d.service.id)
 
+                        # Self edge (already handled)
                         if temp == target:
                             continue
 
                         temp = target
                         try:
                             self._graph.add_edge(Edge(source, target, o.name))
-                        except UnknownOperation(d.service.label, d.label):
+                        except UnknownOperation(d.service.name, d.name):
                             pass
 
     @property
@@ -65,21 +70,30 @@ class Architecture:
         return valid, stack
 
     def d3_graph(self, pretty: bool = False) -> str:
-        result = {'nodes': [], 'links': []}
+        result = {'nodes': {}, 'edges': {}}
 
-        for n_id, n in self._graph.nodes.items():
-            result['nodes'].append({
+        for _, n in self._graph.nodes.items():
+            result['nodes'][n.id] = {
+                'id':    n.id,
                 'label': n.label,
-                'id': n_id
-            })
+                'data':  {
+                    'tags': self._model.services[n.label].tags
+                }
+            }
 
-        for e_id, e in self._graph.edges.items():
-            result['links'].append({
-                'id': e_id,
-                'label': e.label,
+        for _, e in self._graph.edges.items():
+            operation = self._model.services[e.source.label].operations[e.label]
+            result['edges'][e.id] = {
+                'id':     e.id,
+                'label':  e.label,
                 'source': e.source.id,
-                'target': e.target.id
-            })
+                'target': e.target.id,
+                'data':   {
+                    'duration': operation.duration,
+                    'logs':     operation.logs,
+                    'tags':     operation.tags
+                }
+            }
 
         if pretty:
             return json.dumps(result, indent=2)

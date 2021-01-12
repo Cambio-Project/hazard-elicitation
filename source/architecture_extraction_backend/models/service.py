@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from archex_backend.models.operation import Operation
+from architecture_extraction_backend.models.operation import Operation
 
 
 class Service:
@@ -10,6 +10,9 @@ class Service:
         self._id = Service.ID
         self._name = name
         self._operations = {}
+
+        # Runtime
+        self._tags = {}
 
         Service.ID += 1
 
@@ -33,6 +36,14 @@ class Service:
     @property
     def operations(self) -> Dict[str, Operation]:
         return self._operations
+
+    @property
+    def tags(self) -> Dict[str, str]:
+        return self._tags
+
+    @tags.setter
+    def tags(self, tags: Dict[str, str]):
+        self._tags = tags
 
     def print(self):
         print(self)

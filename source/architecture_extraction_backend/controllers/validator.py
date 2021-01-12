@@ -1,7 +1,7 @@
 from typing import Tuple, List
 
-from archex_backend.models.architecture import Architecture
-from archex_backend.models.model import IModel
+from architecture_extraction_backend.models.architecture import Architecture
+from architecture_extraction_backend.models.model import IModel
 
 
 class Validator:

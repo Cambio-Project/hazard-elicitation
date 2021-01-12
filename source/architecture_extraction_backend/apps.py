@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class ArchexBackendConfig(AppConfig):
-    name = 'archex_backend'
+    name = 'architecture_extraction_backend'

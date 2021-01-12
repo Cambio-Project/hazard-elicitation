@@ -1,17 +1,25 @@
 import json
 
-from archex_backend.models.model import IModel
+from architecture_extraction_backend.models.model import IModel
 from typing import Union, Any, Dict
 
 from typing.io import IO
 
-from archex_backend.models.operation import Operation
-from archex_backend.models.service import Service
+from architecture_extraction_backend.models.operation import Operation
+from architecture_extraction_backend.models.service import Service
 
 
 class JaegerTrace(IModel):
     def __init__(self, source: Union[str, IO] = None):
         super().__init__(self.__class__.__name__, source)
+
+    @staticmethod
+    def _parse_logs(logs) -> Dict[int, Dict[str, str]]:
+        operation_logs = {}
+        for log in logs:
+            operation_logs[log['timestamp']] = {f['key']: f['value'] for f in log['fields']}
+
+        return operation_logs
 
     def _parse(self, model: Dict[str, Any]) -> bool:
         # Store process_id: service_name
@@ -24,21 +32,34 @@ class JaegerTrace(IModel):
             # Identify all services (processes)
             for process_id, process in trace['processes'].items():
                 service_name = process['serviceName']
-                self._services[service_name] = Service(service_name)
+
+                service = Service(service_name)
+                service.tags = {tag['key']: tag['value'] for tag in process['tags']}
+                service.tags['serviceName'] = service_name
+
+                self._services[service_name] = service
                 process_ids[process_id] = service_name
 
             # Add operations to the corresponding services.
             for span in trace['spans']:
-                span_ids[span['spanID']] = span
-                operation_name = span['operationName']
                 pid = span['processID']
 
                 # Unknown process
                 if pid not in process_ids:
                     return False
 
-                service_name = process_ids[pid]
+                span_ids[span['spanID']] = span
+                operation_name = span['operationName']
+                operation_duration = span['duration']
+                operation_tags = span['tags']
+                operation_logs = span['logs']
+
                 operation = Operation(operation_name)
+                operation.duration = operation_duration
+                operation.tags = {tag['key']: tag['value'] for tag in operation_tags}
+                operation.logs = JaegerTrace._parse_logs(operation_logs)
+
+                service_name = process_ids[pid]
                 self._services[service_name].add_operation(operation)
 
             # Add dependencies

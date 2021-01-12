@@ -1,12 +1,12 @@
 import json
 
-from archex_backend.models.model import IModel
+from architecture_extraction_backend.models.model import IModel
 from typing import Union, Any, Dict, List
 
 from typing.io import IO
 
-from archex_backend.models.operation import Operation
-from archex_backend.models.service import Service
+from architecture_extraction_backend.models.operation import Operation
+from architecture_extraction_backend.models.service import Service
 
 
 class ZipkinTrace(IModel):
@@ -31,13 +31,15 @@ class ZipkinTrace(IModel):
             if source_name:
                 if source_name not in self._services:
                     source = Service(source_name)
+                    source.tags = local
                     self._services[source_name] = source
                     service_ips[local['ipv4']] = source_name
 
             if target_name:
                 if target_name not in self._services:
-                    source = Service(target_name)
-                    self._services[target_name] = source
+                    target = Service(target_name)
+                    target.tags = remote
+                    self._services[target_name] = target
                     service_ips[remote['ipv4']] = target_name
 
         # Add operations
@@ -51,7 +53,16 @@ class ZipkinTrace(IModel):
             else:
                 return False
 
-            self._services[service].add_operation(Operation(span['name']))
+            operation_name = span['name']
+            operation_duration = span['duration']
+            operation_tags = span['tags']
+            operation_annotation = span['annotations']
+
+            operation = Operation(operation_name)
+            operation.duration = operation_duration
+            operation.tags = operation_tags
+            operation.logs = {a['timestamp']: {'log': a['value']} for a in operation_annotation}
+            self._services[service].add_operation(operation)
 
         # Add dependencies
         for span in model:

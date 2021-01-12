@@ -8,10 +8,10 @@ class Hint:
         self._category = ''
         self._type = ''
         self._severity = ''
-        self._stakeholder = ''
-
-    def __str__(self):
-        pass
+        self._impact = ''
 
     def __repr__(self):
-        pass
+        return '{}({}|{})'.format(self.__class__.__name__, self._category, self._type)
+
+    def __str__(self):
+        return self.__repr__()
