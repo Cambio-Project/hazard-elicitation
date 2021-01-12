@@ -1,23 +1,25 @@
 .light-theme
 {
-  --arrowhead-color       : #555555;
-  --edge-color            : #999999;
-  --node-label-color      : #000000;
-  --edge-label-color      : #000000;
-  --context-menu-color    : #000000;
-  --context-menu-color-bg : #CCCCCC;
-  --graph-color-bg        : #EEEEEE;
+  --arrowhead-color          : #555555;
+  --edge-color               : #999999;
+  --node-label-color         : #000000;
+  --edge-label-color         : #000000;
+  --context-menu-color       : #000000;
+  --context-menu-color-bg    : #CCCCCC;
+  --graph-color-bg           : #EEEEEE;
+  --context-menu-arrow-color : #00BBFF;
 }
 
 .dark-theme
 {
-  --arrowhead-color       : #EEEEEE;
-  --edge-color            : #AAAAAA;
-  --node-label-color      : #DDDDDD;
-  --edge-label-color      : #DDDDDD;
-  --context-menu-color    : #EEEEEE;
-  --context-menu-color-bg : #555555;
-  --graph-color-bg        : #333333;
+  --arrowhead-color          : #EEEEEE;
+  --edge-color               : #AAAAAA;
+  --node-label-color         : #DDDDDD;
+  --edge-label-color         : #DDDDDD;
+  --context-menu-color       : #EEEEEE;
+  --context-menu-color-bg    : #555555;
+  --graph-color-bg           : #333333;
+  --context-menu-arrow-color : #00BBFF;
 }
 
 .settings
@@ -27,7 +29,7 @@
 
 .graph-wrapper
 {
-  flex-grow: 1;
+  flex-grow : 1;
 }
 
 .graph
@@ -36,26 +38,71 @@
   width            : 100%;
   height           : 100%;
   font-family      : SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size        : 0.75rem;
   background-color : var(--graph-color-bg);
 }
 
-#context-menu
+.context-menu
 {
   font-family      : "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
   visibility       : hidden;
   position         : absolute;
+  padding          : 0;
   opacity          : 0;
-  padding          : 5px;
-  border           : 1px solid black;
-  border-radius    : 3px;
   transition       : 500ms;
-  min-width        : 200px;
-  min-height       : 75px;
   color            : var(--context-menu-color);
   background-color : var(--context-menu-color-bg);
 }
 
-#tooltip
+.dropdown-menu
+{
+  padding : 0;
+}
+
+.dropdown-submenu
+{
+  position : relative;
+
+}
+
+.dropdown-submenu > a.dropdown-item:after
+{
+  position     : absolute;
+  top          : calc(50% - 5px);
+  right        : 10px;
+  border       : solid var(--context-menu-arrow-color);
+  border-width : 0 4px 4px 0;
+  content      : "";
+  width        : 10px;
+  height       : 10px;
+  transform    : rotate(-45deg);
+  transition   : 300ms;
+}
+
+.dropdown-submenu:hover > a.dropdown-item:after
+{
+  transform : rotate(45deg);
+}
+
+.dropdown-submenu > .dropdown-menu
+{
+  top         : 0;
+  left        : 100%;
+  margin-top  : -1px;
+  margin-left : 0;
+}
+
+.dropdown-submenu:hover > .dropdown-menu
+{
+  display : block;
+}
+
+.dropdown-item
+{
+  border-radius : 3px;
+}
+
+.tooltip
 {
 
 }
@@ -84,7 +131,7 @@
 {
   fill         : transparent;
   stroke       : var(--edge-color);
-  stroke-width : 1px;
+  stroke-width : 2px;
 }
 
 .edges:hover
