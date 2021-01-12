@@ -56,7 +56,7 @@ INSTALLED_APPS = [
 
     'channels',
 
-    'archex_backend',
+    'architecture_extraction_backend',
     'dialogflow_backend'
 ]
 
