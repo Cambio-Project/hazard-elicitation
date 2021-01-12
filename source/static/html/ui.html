@@ -4,8 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  {% load static %}
-
   <!-- Third party JS -->
   <script type="text/javascript" src="../../static/js/third_party/jqueryslim.js"></script>
   <script type="text/javascript" src="../../static/js/third_party/bootstrap.js"></script>
@@ -14,7 +12,6 @@
 
   <!-- Custom JS -->
   <script type="text/javascript" src="../../static/js/main.js"></script>
-  <script type="text/javascript" src="../../static/js/websocket.js"></script>
   <script type="text/javascript" src="../../static/js/chat.js"></script>
   <script type="text/javascript" src="../../static/js/graph.js"></script>
   <script type="text/javascript" src="../../static/js/sample_graph.js"></script>
@@ -27,7 +24,7 @@
   <link type="text/css" rel="stylesheet" href="../../static/css/chat.css">
   <link type="text/css" rel="stylesheet" href="../../static/css/graph.css">
 
-  <title>Hello, world!</title>
+  <title>Hazard Elicitation</title>
 </head>
 <body onload="onLoad();">
 
@@ -77,8 +74,18 @@
 
               <div class="flex-column">
                 <p class="tool-settings"><label for="showlinklabel">Show link labels</label></p>
-                <input type="checkbox" id="showlinklabel" onchange="Graph.showEdgeLabels(this.checked);" checked/>
+                <input type="checkbox" id="showlinklabel" onchange="Graph.showEdgeLabels(this.checked);"/>
               </div>
+
+              <!--
+              <div class="flex-column">
+                <button type="button" onclick="Graph.pauseSimulation();">||</button>
+              </div>
+
+              <div class="flex-column">
+                <button type="button" onclick="Graph.resumeSimulation();">>||</button>
+              </div>
+              -->
 
               <div class="flex-column">
                 <p class="tool-settings"><label for="theme" class="switch">Dark Theme</label></p>
@@ -91,14 +98,17 @@
 
             <div class="graph-wrapper">
 
-              <div id="context-menu">
+              <div id="context-menu" class="context-menu">
                 <div class="header"></div>
-                <div class="body"></div>
+                <div class="body">
+                  <ul class="dropdown-menu" style="display: block"></ul>
+                </div>
               </div>
 
-              <div id="tooltip">
+              <div id="tooltip" class="tooltip">
                 <div class="header"></div>
-                <div class="body"></div>
+                <div class="body">
+                </div>
               </div>
 
               <svg id="graph" class="graph"></svg>

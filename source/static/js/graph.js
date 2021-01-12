@@ -1,38 +1,44 @@
 class Graph {
     static GRAPH = null;
 
-    constructor(svg, graph) {
+    constructor(svg, context_menu, graph) {
         Graph.GRAPH = this;
 
         this.properties = {
-            sticky_nodes: false,
-            node_size:    5,
-            colors:       d3.scaleOrdinal(d3.schemeCategory10)
+            sticky_nodes:    false,
+            node_size:       5,
+            edge_size:       2,
+            edge_arrow_size: {w: 2, h: 6},
+            colors:          d3.scaleOrdinal(d3.schemeCategory10)
         }
 
+        this.context_menu = new ContextMenu(context_menu);
+
         this.svg = d3.select(svg);
-        this.svg.on("click", Graph.hideContextMenu);
+        this.svg.on("click", function () { Graph.ContextMenu.hide() });
 
         this.anchor = this.svg.append("g");
-        this.anchor.on("click", Graph.hideContextMenu);
+        this.anchor.on("click", function () { Graph.ContextMenu.hide() });
 
-        this.graph = graph;
-        const width  = this.svg.node().getBoundingClientRect().width;
-        const height = this.svg.node().getBoundingClientRect().height;
+        this.graph       = graph;
+        this.graph_nodes = graph.nodes._values();
+        this.graph_edges = graph.edges._values();
+        const width      = this.svg.node().getBoundingClientRect().width;
+        const height     = this.svg.node().getBoundingClientRect().height;
 
         this.createContainer();
-        this.createLinks();
+        this.createEdges();
         this.createNodes();
         this.createLinkLabels();
         this.createNodeLabels();
 
         this.simulation = d3
-            .forceSimulation(this.graph.nodes)
+            .forceSimulation(this.graph_nodes)
             .force("charge", d3.forceManyBody().strength(-10000))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .force("x", d3.forceX(width / 2).strength(0.1))
             .force("y", d3.forceY(height / 2).strength(0.1))
-            .force("link", d3.forceLink(this.graph.links).id(function (l) {return l.id; }).distance(25).strength(1))
+            .force("link", d3.forceLink(this.graph_edges).id(function (l) { return l.id; }).distance(25).strength(1))
             .on("tick", Graph.onTick);
 
         this.zoom_level = d3
@@ -53,7 +59,7 @@ class Graph {
               .on("drag", function (n) {
                   n.fx = d3.event.x;
                   n.fy = d3.event.y;
-                  Graph.hideContextMenu();
+                  Graph.ContextMenu.hide();
               })
               .on("end", function (n) {
                   if (!Graph.get("sticky")) {
@@ -65,7 +71,7 @@ class Graph {
               })
         );
 
-        Graph.zoom(2)
+        Graph.zoom(1.5);
     }
 
     static get SVG() { return Graph.GRAPH.svg; }
@@ -84,6 +90,8 @@ class Graph {
 
     static get EdgeLabels() { return Graph.GRAPH.edge_labels; }
 
+    static get ContextMenu() { return Graph.GRAPH.context_menu; }
+
     static get(property) { return Graph.GRAPH.get(property); }
 
     static set(property, value) { Graph.GRAPH.set(property, value); }
@@ -95,7 +103,8 @@ class Graph {
     /* Init Graph */
 
     createContainer() {
-        const node_size = this.get("node_size");
+        const node_size  = this.get("node_size");
+        const arrow_size = this.get("edge_arrow_size");
         this.anchor
             .append("svg:defs")
             .selectAll("marker")
@@ -104,25 +113,26 @@ class Graph {
             .append("svg:marker")
             .attr("id", String)
             .attr("class", "arrowhead")
-            .attr("viewBox", "0 -2 6 4")
-            .attr("markerWidth", node_size * 1.25)
-            .attr("markerHeight", node_size * 1.25)
+            .attr("viewBox", "0 -{} {} {}".format(arrow_size.w, arrow_size.h, arrow_size.w * 2))
+            .attr("markerWidth", node_size)
+            .attr("markerHeight", node_size)
             .attr("orient", "auto")
             .append("svg:path")
-            .attr("d", "M 0,-2 L 6,0 L 0,2");
+            .attr("d", "M 0,-{} L {},0 L 0,{}".format(arrow_size.w, arrow_size.h, arrow_size.w));
     }
 
-    createLinks() {
+    createEdges() {
         this.edges = this
             .anchor
             .append("g")
             .attr("class", "edges")
             .selectAll("line")
-            .data(this.graph.links)
+            .data(this.graph_edges)
             .enter()
             .append("path")
             .attr("marker-end", "url(#end)")
             .attr("d", "M 0 0 L 0 0")
+            .on("contextmenu", Graph.onContextMenu)
             .on("click", Graph.onLinkClick);
     }
 
@@ -132,35 +142,35 @@ class Graph {
             .append("g")
             .attr("class", "nodes")
             .selectAll("g")
-            .data(this.graph.nodes)
+            .data(this.graph_nodes)
             .enter()
             .append("circle")
             .attr("r", this.get("node_size"))
             .attr("id", function (n) { return n.id; })
-            .attr("fill", function (n) { if (n.hazard) return 'red'; else return Graph.get("colors")(n.group); })
+            .attr("fill", function (n) { if (n.hazard) return "red"; else return Graph.get("colors")(n.group); })
             .on("contextmenu", Graph.onContextMenu)
             .on("click", Graph.onNodeClick);
     }
 
     createLinkLabels() {
-        this.node_labels = this
+        this.edge_labels = this
             .anchor
             .append("g")
-            .attr("class", "node-labels")
+            .attr("class", "edge-labels")
             .selectAll("g")
-            .data(this.graph.nodes)
+            .data(this.graph_edges)
             .enter()
             .append("text")
             .text(function (n) { return n.label; });
     }
 
     createNodeLabels() {
-        this.edge_labels = this
+        this.node_labels = this
             .anchor
             .append("g")
-            .attr("class", "edge-labels")
+            .attr("class", "node-labels")
             .selectAll("g")
-            .data(this.graph.links)
+            .data(this.graph_nodes)
             .enter()
             .append("text")
             .text(function (l) { return l.label; });
@@ -170,10 +180,11 @@ class Graph {
 
     static onTick() {
         Graph.Edges.attr("d", function (l) {
-            const x1 = l.source.x,
-                  y1 = l.source.y,
-                  x2 = l.target.x,
-                  y2 = l.target.y;
+            const node_size = Graph.get("node_size");
+            const x1        = l.source.x,
+                  y1        = l.source.y,
+                  x2        = l.target.x,
+                  y2        = l.target.y;
 
             if (l.source !== l.target) {
                 const dx = x2 - x1,
@@ -184,17 +195,21 @@ class Graph {
                 // return "M {} {} L {} {}".format(x1, y1, x2, y2) // straight line
             }
             const scale = l.label.length * 3; // TODO size of the curve
-            return "M {} {} C {} {} {} {} {} {}".format(x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, x2, y2);
+            return "M {} {} C {} {} {} {} {} {}".format(x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, x2 + node_size / 2, y2 + node_size / 2);
         })
 
         Graph.Edges.attr("d", function (l) {
+            const node_size  = Graph.get("node_size");
+            const edge_size  = Graph.get("edge_size");
+            const arrow_size = Graph.get("edge_arrow_size");
+
             const x1 = l.source.x,
                   y1 = l.source.y,
                   x2 = l.target.x,
                   y2 = l.target.y;
 
             const pl = this.getTotalLength(),
-                  r  = 5 + 6,
+                  r  = node_size + arrow_size.h + edge_size * 2,
                   m  = this.getPointAtLength(pl - r);
 
             const dx = m.x - x1,
@@ -225,7 +240,7 @@ class Graph {
     static onZoom() {
         Graph.Anchor.attr("transform", d3.event.transform);
         d3.select("#zoom").property("value", d3.event.transform.k);
-        Graph.hideContextMenu();
+        Graph.ContextMenu.hide();
     }
 
     static onLinkClick(e, _, arr) {
@@ -244,7 +259,7 @@ class Graph {
     }
 
     static onNodeClick(e, _, arr) {
-        if(e.defaultPrevented)
+        if (e.defaultPrevented)
             return;
 
         let n = d3.select(arr[e.index]);
@@ -263,8 +278,8 @@ class Graph {
 
     static onContextMenu(e) {
         // Position
-        let svg_pos       = Graph.SVG.node().getBoundingClientRect();
-        let mouse_pos     = d3.mouse(this)
+        let svg_pos   = Graph.SVG.node().getBoundingClientRect();
+        let mouse_pos = d3.mouse(this)
 
         // Transformation
         let transform     = d3.zoomTransform(Graph.Anchor.node());
@@ -272,55 +287,91 @@ class Graph {
         let scroll_offset = transform.invert(mouse_pos);
 
         // New coordinates
-        let x             = mouse_pos[0] + (mouse_pos[0] - scroll_offset[0] + 20) * zoom_factor;
-        let y             = mouse_pos[1] + (mouse_pos[1] - scroll_offset[1]) * zoom_factor;
+        let x = mouse_pos[0] + (mouse_pos[0] - scroll_offset[0] + 20) * zoom_factor;
+        let y = mouse_pos[1] + (mouse_pos[1] - scroll_offset[1]) * zoom_factor;
 
-        let context_menu = d3.select('#context-menu');
-        context_menu
-            .style('visibility', 'visible')
-            .style('opacity', '1')
-            .style('left', svg_pos.x + x + 'px')
-            .style('top', svg_pos.y + y + 'px');
-
-        context_menu.select('.header').text(e.label).style("font-weight", "bold");
-        let body = context_menu.select('.body');
-        body.html('');
-        if (e.hazard) {
-            body.append('div').html("<b>" + e.hazard.title + "</b> &rArr; " + e.hazard.content).style("color", "red");
-        }
+        Graph.ContextMenu.show(svg_pos.x + x, svg_pos.y + y, e);
 
         d3.event.preventDefault();
     }
 
-    static hideContextMenu() {
-        d3.select('#context-menu')
-          .style("visibility", "hidden")
-          .style("opacity", "0");
-    }
-
     /* Control Callbacks*/
+
+    static zoom(zoom_value) {
+        Graph.GRAPH.zoom_level.scaleTo(Graph.SVG, Math.round(zoom_value * 10) / 10)
+    }
 
     static stickyNodes(sticky) {
         Graph.set("sticky", sticky);
     }
 
     static showNodes(show) {
-        Graph.Nodes.style('visibility', show ? 'visible' : 'hidden');
+        Graph.Nodes.style("visibility", show ? "visible" : "hidden");
     }
 
     static showEdges(show) {
-        Graph.Edges.style('visibility', show ? 'visible' : 'hidden');
+        Graph.Edges.style("visibility", show ? "visible" : "hidden");
     }
 
     static showNodeLabels(show) {
-        Graph.NodeLabels.style('visibility', show ? 'visible' : 'hidden');
+        Graph.NodeLabels.style("visibility", show ? "visible" : "hidden");
     }
 
     static showEdgeLabels(show) {
-        Graph.EdgeLabels.style('visibility', show ? 'visible' : 'hidden');
+        Graph.EdgeLabels.style("visibility", show ? "visible" : "hidden");
     }
 
-    static zoom(zoom_value) {
-        Graph.GRAPH.zoom_level.scaleTo(Graph.SVG, Math.round(zoom_value * 10) / 10)
+    static toggleSimulation() {  }
+
+    static pauseSimulation() { Graph.Simulation.alphaTarget(0); }
+
+    static resumeSimulation() { Graph.Simulation.alphaTarget(0.5); }
+
+    static restartSimulation() { Graph.Simulation.alphaTarget(0.1).restart(); }
+}
+
+class ContextMenu {
+    constructor(context_menu) {
+        this.context_menu = d3.select(context_menu);
+        this.body         = this.context_menu.select(".body");
+        this.anchor       = this.body.select(".dropdown-menu");
+    }
+
+    createItems(data) {
+        let content = "";
+        for (const key in data) {
+            if (typeof data[key] === "object") {
+                let nested = data[key]._empty() ? "" : "<ul class='dropdown-menu'>" + this.createItems(data[key]) + "</ul>";
+                content +=
+                      `<li class="dropdown-submenu">
+                        <a class="dropdown-item">${key}</a>
+                        ${nested}      
+                      </li>`;
+            } else {
+                content += `<li><a class="dropdown-item"><b>${key}</b>: ${data[key]}</a></li>`;
+            }
+        }
+        return content
+    }
+
+    show(x, y, element) {
+        this.context_menu
+            .style("visibility", "visible")
+            .style("opacity", "1")
+            .style("left", x + "px")
+            .style("top", y + "px");
+
+        this.anchor.html("");
+        // this.body
+        //     .append("div")
+        //     .attr("class", "context-menu-item")
+        //     .html("<b>" + element.label + "</b>");
+        this.anchor.html(this.createItems(element.data))
+    }
+
+    hide() {
+        this.context_menu
+            .style("visibility", "hidden")
+            .style("opacity", "0");
     }
 }
