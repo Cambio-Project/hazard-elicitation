@@ -34,24 +34,28 @@ def fmt(color=WHITE):
     return {'_filename': file, '_lineno': line, 'color': '\033[{}m'.format(color) if USE_STYLE else ''}
 
 
-def debug(what: str):
-    logger.debug(what, extra=fmt(GREEN))
+def pretty_print(*what):
+    return ', '.join(map(str, what))
 
 
-def info(what: str):
-    logger.info(what, extra=fmt(CYAN))
+def debug(*what):
+    logger.debug(pretty_print(*what), extra=fmt(GREEN))
 
 
-def warning(what: str):
-    logger.warning(what, extra=fmt(YELLOW))
+def info(*what):
+    logger.info(pretty_print(*what), extra=fmt(CYAN))
 
 
-def error(what: str):
-    logger.error(what, extra=fmt(RED))
+def warning(*what):
+    logger.warning(pretty_print(*what), extra=fmt(YELLOW))
 
 
-def critical(what: str):
-    logger.critical(what, extra=fmt(MAGENTA))
+def error(*what):
+    logger.error(pretty_print(*what), extra=fmt(RED))
+
+
+def critical(*what):
+    logger.critical(pretty_print(*what), extra=fmt(MAGENTA))
 
 
 def tb(e: BaseException) -> str:
