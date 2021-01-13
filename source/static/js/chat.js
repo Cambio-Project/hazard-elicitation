@@ -188,14 +188,17 @@ class ChatCard extends ChatElement {
     constructor(card) {
         super(Chat.Rich);
         this.title   = card.title;
-        this.message = card.message;
+        this.message = card.message || "";
         this.image   = card.image || null;
-        this.href    = card.link || null;
+        this.link    = card.link || null;
     }
 
     html() {
         let image = this.image ? `<img class="card-img-top" src='${this.image}' alt=""/>` : "";
-        let link  = this.href ? `<a class="btn btn-primary text-white">${this.href}</a>` : "";
+        let link  = this.link ? `
+            <a class="btn btn-dark text-white" href="${this.link.url}" target="_blank">
+              ${this.link.text}
+            </a>` : "";
 
         return super.html().format(`
             <div class="card shadow">
@@ -210,15 +213,17 @@ class ChatCard extends ChatElement {
 }
 
 class ChatQuickReply extends ChatElement {
-    constructor(titles) {
+    constructor(replies) {
         super(Chat.Rich);
-        this.titles = titles;
+        this.replies = replies;
     }
 
     html() {
         let content = "";
-        for (const title in this.titles) {
-            content += `<button type="button" class="btn btn-secondary shadow quick-reply">${this.titles[title]}</button>`;
+        for (const id in this.replies) {
+            const reply = this.replies[id];
+            // TODO const action = reply.action;
+            content += `<button type="button" class="btn btn-secondary shadow quick-reply">${reply.text}</button>`;
         }
 
         return super.html(true).format(content);

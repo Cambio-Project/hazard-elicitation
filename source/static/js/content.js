@@ -12,6 +12,12 @@ class Content {
         this.tabs   = {};
     }
 
+    show(tab_id) {
+        if (tab_id in this.tabs) {
+            $('a[href="#' + this.tabs[tab_id][1][0].id + '"]').tab('show');
+        }
+    }
+
     addTab(data, class_name="") {
         const id      = this.TAB_ID;
         const tab_id  = "tab-" + id;

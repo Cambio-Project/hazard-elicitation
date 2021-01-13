@@ -8,7 +8,16 @@ text = {
 
 quick_reply = {
     'type':    'quick_reply',
-    'payload': ['Yes', 'No']
+    'payload': [
+        {
+            'text':   'Yes',
+            'action': ''
+        },
+        {
+            'text':   'No',
+            'action': ''
+        }
+    ]
 }
 
 card = {
@@ -16,7 +25,10 @@ card = {
     'payload': {
         'title':   'Hi',
         'message': 'Hi there that is wonderful!',
-        'link':    'Yep',
+        'link':    {
+            'text': 'Yep',
+            'url':  'www.example.com'
+        },
     }
 }
 
