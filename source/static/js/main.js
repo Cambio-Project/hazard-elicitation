@@ -66,6 +66,11 @@ function loadTheme() {
     setDarkTheme(dark_mode);
 }
 
+function showAdvancedElements(show) {
+    const elements = $(".advanced");
+    show ? elements.css("display", "inline-block") : elements.css("display", "none");
+}
+
 function splitAreas() {
     Split(['#left', '#bot'], {
         sizes:      [75, 25],
@@ -110,31 +115,23 @@ function addChatExamples() {
         "title":   "AnotherFact",
         "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
     }]));
+    chat.scroll();
 }
 
 function addContentExamples() {
     content.addTab({
-        "title":   "bla",
-        "content": `<div class='card'>
-            <div class="card shadow">
-              <div class = "card-body">
-                <h5 class="card-title">Helloooooo</h5>
-                <p class="card-text">asdasd asd asd asd </p>
+        "title":   "Help",
+        "content":
+            `<div class='card'>
+              <div class="card shadow">
+                <div class = "card-body">
+                  <h5 class="card-title">Help needed?</h5>
+                  <p class="card-text">Continue reading here!</p>
+                </div>
               </div>
-            </div><div class='card'>
-            <div class="card shadow">
-              <div class = "card-body">
-                <h5 class="card-title">Helloooooo</h5>
-                <p class="card-text">asdasd asd asd asd </p>
-              </div>
-            </div><div class='card'>
-            <div class="card shadow">
-              <div class = "card-body">
-                <h5 class="card-title">Helloooooo</h5>
-                <p class="card-text">asdasd asd asd asd </p>
-              </div>
-            </div>`
-    });
+            </div>
+            <p>bla</p>`
+    }, "help");
     content.addTab({
         "title":   "bla",
         "content": "2"
@@ -144,6 +141,11 @@ function addContentExamples() {
         "content": "3"
     });
     content.removeTab(1);
+
+    content.addTab({
+        "title":   "secret",
+        "content": "secret"
+    }, "advanced");
 }
 
 /**

@@ -52,8 +52,13 @@ class DFWebSocket extends CustomWebSocket {
     dialogflow_response(data) {
         chat.removePending();
         for (const i in data) {
-            const type = data[i].type;
-            const payload = data[i].payload;
+            const intent  = data[i].intent;
+            const type    = data[i].type;
+            let payload = data[i].payload;
+
+            if(intent === "1-elicitation-question") {
+                payload = payload.format("FRONTEND");
+            }
 
             switch (type) {
                 case 'text':
@@ -92,7 +97,7 @@ class Chat {
     }
 
     scroll() {
-        this.chat.scrollTop = this.chat.scrollHeight - this.chat.clientHeight;
+        this.chat.animate({scrollTop: this.chat.height()}, 500);
     }
 
     add(what) {

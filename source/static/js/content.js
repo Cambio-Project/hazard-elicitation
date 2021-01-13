@@ -9,11 +9,12 @@ class Content {
         this.tabcontent = this.container.find("#tabcontent");
 
         this.TAB_ID = 0;
-        this.tabs = {};
+        this.tabs   = {};
     }
 
-    addTab(data) {
-        const id      = "tab-" + this.TAB_ID;
+    addTab(data, class_name="") {
+        const id      = this.TAB_ID;
+        const tab_id  = "tab-" + id;
         const title   = data.title || "_";
         const content = data.content || "...";
 
@@ -21,13 +22,13 @@ class Content {
             .addClass("nav-item")
             .append($('<a></a>')
                 .text(title)
-                .addClass("nav-link hazard")
+                .addClass("nav-link " + class_name)
                 .attr({
                     "role":          "tab",
                     "data-toggle":   "tab",
-                    "id":            `${id}-title`,
-                    "href":          `#${id}`,
-                    "aria-controls": id,
+                    "id":            `${tab_id}-title`,
+                    "href":          `#${tab_id}`,
+                    "aria-controls": tab_id,
                     "aria-selected": "true",
                 })
             );
@@ -37,8 +38,8 @@ class Content {
             .addClass("tab-pane fade")
             .attr({
                 "role":            "tabpanel",
-                "id":              id,
-                "aria-labelledby": `${id}-title`,
+                "id":              tab_id,
+                "aria-labelledby": `${tab_id}-title`,
             });
 
         this.tabbar.append(header);
@@ -46,27 +47,28 @@ class Content {
         this.tabs[this.TAB_ID] = [header, body];
 
         this.TAB_ID += 1;
+        return id;
     }
 
     removeTab(tab_id) {
-        if(tab_id in this.tabs) {
+        if (tab_id in this.tabs) {
             this.tabs[tab_id].map(e => e.remove());
         }
     }
 
     static addHazard(id, type) {
         let element;
-        if(type === "node") {
+        if (type === "node") {
             element = Graph.Graph.nodes[id];
-            type = "Service";
+            type    = "Service";
         } else {
             element = Graph.Graph.edges[id];
-            type = "Operation";
+            type    = "Operation";
         }
 
         Content.CONTENT.addTab({
-            "title": "{}: {}".format(type, element.label),
+            "title":   "{}: {}".format(type, element.label),
             "content": JSON.stringify(element),
-        })
+        }, "hazard")
     }
 }
