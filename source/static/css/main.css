@@ -20,11 +20,12 @@ html, body
   color            : var(--primary-color);
   background-color : var(--primary-color-bg);
   transition       : background-color 300ms;
+  overflow         : hidden;
 }
 
 .advanced
 {
-  display: none;
+  display : none;
 }
 
 /* Splitter */

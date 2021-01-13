@@ -1,21 +1,27 @@
 .light-theme
 {
-  --tab-color       : #000000;
-  --tab-color-bg    : #DDDDDD;
-  --hazard-color    : #333333;
-  --hazard-color-bg : #FFDC00;
-  --help-color      : #EEEEEE;
-  --help-color-bg   : #3377FF;
+  --tab-color          : #000000;
+  --tab-color-bg       : #DDDDDD;
+  --tab-color-hover-bg : #BBBBBB;
+  --hazard-color       : #333333;
+  --hazard-color-bg    : #FFDC00;
+  --help-color         : #EEEEEE;
+  --help-color-bg      : #3377FF;
+  --network-color      : #444444;
+  --network-color-bg   : #44BB44;
 }
 
 .dark-theme
 {
-  --tab-color       : #EEEEEE;
-  --tab-color-bg    : #777777;
-  --hazard-color    : #333333;
-  --hazard-color-bg : #FFDC00;
-  --help-color      : #EEEEEE;
-  --help-color-bg   : #3377DD;
+  --tab-color          : #EEEEEE;
+  --tab-color-bg       : #777777;
+  --tab-color-hover-bg : #999999;
+  --hazard-color       : #333333;
+  --hazard-color-bg    : #FFDC00;
+  --help-color         : #EEEEEE;
+  --help-color-bg      : #3377DD;
+  --network-color      : #EEEEEE;
+  --network-color-bg   : #117711;
 }
 
 .nav-tabs
@@ -55,6 +61,11 @@
   display             : inline-block;
 }
 
+.nav-link.active
+{
+  background-color : var(--tab-color-hover-bg);
+}
+
 .nav-link.hazard.active
 {
   background-color : var(--hazard-color-bg);
@@ -74,6 +85,17 @@
 .nav-item > a.nav-link.help::after
 {
   background-image : url("../img/help.png");
+}
+
+.nav-link.network.active
+{
+  color            : var(--network-color);
+  background-color : var(--network-color-bg);
+}
+
+.nav-item > a.nav-link.network::after
+{
+  background-image : url("../img/network.png");
 }
 
 .tab-content
