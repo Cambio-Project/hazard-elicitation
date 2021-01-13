@@ -22,6 +22,11 @@ html, body
   transition       : background-color 300ms;
 }
 
+.advanced
+{
+  display: none;
+}
+
 /* Splitter */
 
 .split

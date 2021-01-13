@@ -4,6 +4,8 @@
   --tab-color-bg    : #DDDDDD;
   --hazard-color    : #333333;
   --hazard-color-bg : #FFDC00;
+  --help-color      : #EEEEEE;
+  --help-color-bg   : #3377FF;
 }
 
 .dark-theme
@@ -12,11 +14,13 @@
   --tab-color-bg    : #777777;
   --hazard-color    : #333333;
   --hazard-color-bg : #FFDC00;
+  --help-color      : #EEEEEE;
+  --help-color-bg   : #3377DD;
 }
 
 .nav-tabs
 {
-  border-bottom: 1px solid var(--tab-color-bg);
+  border-bottom : 1px solid var(--tab-color-bg);
 }
 
 .nav-link
@@ -26,21 +30,16 @@
 
 .nav-tabs .nav-link
 {
-  font-weight: bold;
-  border  : none;
-  padding : 8px 35px 8px 8px;
-  margin  : 0 1px;
+  font-weight : bold;
+  border      : none;
+  padding     : 8px 35px 8px 8px;
+  margin      : 0 1px;
 }
 
-.nav-link.hazard
+.nav-link
 {
   color            : var(--tab-color);
   background-color : var(--tab-color-bg);
-}
-
-.nav-link.hazard.active
-{
-  background-color : var(--hazard-color-bg);
 }
 
 .nav-item > a.nav-link::after
@@ -54,17 +53,37 @@
   right               : 0.3rem;
   content             : "";
   display             : inline-block;
-  background-image    : url("../img/hazard.png");
+}
+
+.nav-link.hazard.active
+{
+  background-color : var(--hazard-color-bg);
+}
+
+.nav-item > a.nav-link.hazard::after
+{
+  background-image : url("../img/hazard.png");
+}
+
+.nav-link.help.active
+{
+  color            : var(--help-color);
+  background-color : var(--help-color-bg);
+}
+
+.nav-item > a.nav-link.help::after
+{
+  background-image : url("../img/help.png");
 }
 
 .tab-content
 {
-  padding: 15px;
-  height: calc(100% - 30px - 16px);
-  overflow: auto;
+  padding  : 15px;
+  height   : calc(100% - 30px - 16px);
+  overflow : auto;
 }
 
 .tab-pane
 {
-  flex-grow: 1;
+  flex-grow : 1;
 }
