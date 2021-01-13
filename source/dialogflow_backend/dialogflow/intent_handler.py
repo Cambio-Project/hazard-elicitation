@@ -42,15 +42,25 @@ async def welcome_handler() -> List[Dict]:
     }]
 
 
+async def elicitation_question_handler() -> List[Dict]:
+    return [{
+        'type':    'text',
+        'payload': random_text(INTENT_ELICITATION_QUESTION_TEXT)
+    }, {
+        'type':    'quick_reply',
+        'payload': ['Yes', 'No']
+    }]
+
+
 async def fact_handler() -> List[Dict]:
     random = 'http://numbersapi.com/random/trivia'
     data = requests.get(random)
     fact = data.text
 
     return [{
-        'type': 'card',
+        'type':    'card',
         'payload': {
-            'title': 'Fact from numbersapi.com',
+            'title':   'Fact from numbersapi.com',
             'message': fact}
     }]
 
@@ -66,7 +76,7 @@ async def joke_handler() -> List[Dict]:
         'type':    'accordion',
         'payload': [
             {
-                'title': joke['setup'],
+                'title':   joke['setup'],
                 'content': joke['punchline']}
         ]
     }]

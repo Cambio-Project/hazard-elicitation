@@ -2,9 +2,10 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from google.api_core.exceptions import InvalidArgument
 
 from dialogflow_backend.dialogflow.client import DialogFlowClient
-from dialogflow_backend.dialogflow.intents import INTENTS
+from dialogflow_backend.dialogflow.intents import INTENT_HANDLERS
 from dialogflow_backend.dialogflow.intent_handler import *
 from util.log import info, warning, error, debug
+from util.text.text import text
 
 
 class DFWebsocket(AsyncWebsocketConsumer):
@@ -55,12 +56,14 @@ class DFWebsocket(AsyncWebsocketConsumer):
             sentiment_magnitude = result.query_result.sentiment_analysis_result.query_text_sentiment.magnitude
 
             debug(str('Intent processing result:\n'
+                      '- Name: {}\n'
                       '- Confidence: {}\n'
                       '- Contexts; {}\n'
                       '- Action: {}\n'
                       '- All parameters present: {}\n'
                       '- Parameters: {}\n'
                       '- Sentiment (Score/Magnitude): {}/{}').format(
+                intent,
                 confidence,
                 contexts,
                 action,
@@ -70,27 +73,33 @@ class DFWebsocket(AsyncWebsocketConsumer):
                 sentiment_magnitude,
             ))
 
-            if intent in INTENTS:
-                if intent == '0-fallback':
+            if intent in INTENT_HANDLERS:
+                if intent == text(INTENT_FALLBACK_NAME):
                     response_data = await fallback_handler()
-                elif intent == '0-fallback-gibberish':
+                elif intent == text(INTENT_FALLBACK_GIBBERISH_NAME):
                     response_data = await fallback_gibberish_handler()
-                elif intent == '0-fallback-insult':
+                elif intent == text(INTENT_FALLBACK_INSULT_NAME):
                     response_data = await fallback_insult_handler()
-                elif intent == '0-help':
+                elif intent == text(INTENT_HELP_NAME):
                     response_data = await help_handler()
-                elif intent == '0-welcome':
+                elif intent == text(INTENT_WELCOME_NAME):
                     response_data = await welcome_handler()
-                elif intent == 'x-fact':
+                elif intent == text(INTENT_ELICITATION_QUESTION_NAME):
+                    response_data = await elicitation_question_handler()
+                elif intent == text(INTENT_FACT_NAME):
                     response_data = await fact_handler()
-                elif intent == 'x-joke':
+                elif intent == text(INTENT_JOKE_NAME):
                     response_data = await joke_handler()
 
             else:
                 response_data = [{
                     'type':    'text',
-                    'payload': result.query_result.fulfillment_text
+                    'payload': result.query_result.fulfillment_text or 'EMPTY TEXT'
                 }]
+
+            # TODO remove
+            add_intent = lambda r: {'type': r['type'], 'intent': intent, 'payload': r['payload']}
+            response_data = list(map(add_intent, response_data))
 
         except InvalidArgument:
             error('DF WS intent handler produced invalid argument.')
