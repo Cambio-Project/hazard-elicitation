@@ -69,8 +69,8 @@ class Architecture:
 
         return valid, stack
 
-    def d3_graph(self, pretty: bool = False) -> str:
-        result = {'nodes': {}, 'edges': {}}
+    def export(self, pretty: bool = False) -> str:
+        result = {'nodes': {}, 'edges': {}, 'hazards': {}}
 
         for _, n in self._graph.nodes.items():
             result['nodes'][n.id] = {
