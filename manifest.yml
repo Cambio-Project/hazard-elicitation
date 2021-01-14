@@ -4,5 +4,5 @@ applications:
    memory: 256M
    timeout: 300
    instances: 1
-   routes:
-     hazardelicitation.eu-gb.mybluemix.net
+#   routes:
+#     hazardelicitation.eu-gb.mybluemix.net
