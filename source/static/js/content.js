@@ -72,9 +72,19 @@ class Content {
             type    = "Operation";
         }
 
+        let properties = "";
+        for(const p in element.data) {
+            if(typeof element.data[p] !== "object")
+                properties += `<tr><th>${p}</th><td>${element.data[p]}</td></tr>`;
+        }
+
         Content.CONTENT.addTab({
             "title":   "{}: {}".format(type, element.label),
-            "content": JSON.stringify(element),
+            "content": `
+              <table>
+                <tr><th>Label</th><td>${element.label}</td></tr>
+                ${properties}
+              </table>`,
         }, "hazard")
     }
 }
