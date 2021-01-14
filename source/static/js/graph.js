@@ -6,6 +6,7 @@ class Graph {
 
         this.properties = {
             sticky_nodes:    false,
+            tooltip:         false,
             node_size:       5,
             edge_size:       2,
             edge_arrow_size: {w: 2, h: 6},
@@ -133,7 +134,10 @@ class Graph {
             .attr("marker-end", "url(#end)")
             .attr("d", "M 0 0 L 0 0")
             .on("contextmenu", Graph.onContextMenu)
-            .on("click", Graph.onLinkClick);
+            .on("click", Graph.onLinkClick)
+            .on("mouseover", Graph.onMouseover)
+            .on("mousemove", Graph.onMouseover)
+            .on("mouseout", Graph.onMouseout);
     }
 
     createNodes() {
@@ -149,7 +153,10 @@ class Graph {
             .attr("id", function (n) { return n.id; })
             .attr("fill", function (n) { if (n.hazard) return "red"; else return Graph.get("colors")(n.group); })
             .on("contextmenu", Graph.onContextMenu)
-            .on("click", Graph.onNodeClick);
+            .on("click", Graph.onNodeClick)
+            .on("mouseover", Graph.onMouseover)
+            .on("mousemove", Graph.onMouseover)
+            .on("mouseout", Graph.onMouseout);
     }
 
     createLinkLabels() {
@@ -174,6 +181,22 @@ class Graph {
             .enter()
             .append("text")
             .text(function (l) { return l.label; });
+    }
+
+    static transformCoordinates(ctx, x_offset = 0, y_offset = 0) {
+        // Position
+        const svg_pos   = Graph.SVG.node().getBoundingClientRect();
+        const mouse_pos = d3.mouse(ctx);
+
+        // Transformation
+        const transform     = d3.zoomTransform(Graph.Anchor.node());
+        const zoom_factor   = transform.k;
+        const scroll_offset = transform.invert(mouse_pos);
+
+        // New coordinates
+        const x = mouse_pos[0] + (mouse_pos[0] - scroll_offset[0] + x_offset / zoom_factor) * zoom_factor;
+        const y = mouse_pos[1] + (mouse_pos[1] - scroll_offset[1] + y_offset / zoom_factor) * zoom_factor;
+        return {"x": svg_pos.x + x, "y": svg_pos.y + y}
     }
 
     /* Callbacks */
@@ -277,29 +300,30 @@ class Graph {
     }
 
     static onContextMenu(e) {
-        // Position
-        let svg_pos   = Graph.SVG.node().getBoundingClientRect();
-        let mouse_pos = d3.mouse(this)
-
-        // Transformation
-        let transform     = d3.zoomTransform(Graph.Anchor.node());
-        let zoom_factor   = transform.k;
-        let scroll_offset = transform.invert(mouse_pos);
-
-        // New coordinates
-        let x = mouse_pos[0] + (mouse_pos[0] - scroll_offset[0] + 20) * zoom_factor;
-        let y = mouse_pos[1] + (mouse_pos[1] - scroll_offset[1]) * zoom_factor;
-
-        Graph.ContextMenu.show(svg_pos.x + x, svg_pos.y + y, e);
+        const coords = Graph.transformCoordinates(this, 20, 10)
+        Graph.ContextMenu.show(coords.x, coords.y, e);
 
         d3.event.preventDefault();
     }
 
-    /* Control Callbacks*/
-
-    static zoom(zoom_value) {
-        Graph.GRAPH.zoom_level.scaleTo(Graph.SVG, Math.round(zoom_value * 10) / 10)
+    static onMouseover(e) {
+        if(Graph.get("tooltip")) {
+            const len    = e.label.length * 6 + 20;
+            const coords = Graph.transformCoordinates(this, -len / 2, -40);
+            d3.select("#tooltip")
+              .text(e.label)
+              .style("visibility", "visible")
+              .style("opacity", "1")
+              .style("left", coords.x + "px")
+              .style("top", coords.y + "px");
+        }
     }
+
+    static onMouseout(e) {
+        d3.select("#tooltip").style("visibility", "hidden").style("opacity", 0);
+    }
+
+    /* Control Callbacks*/
 
     static stickyNodes(sticky) {
         Graph.set("sticky", sticky);
@@ -319,6 +343,14 @@ class Graph {
 
     static showEdgeLabels(show) {
         Graph.EdgeLabels.style("visibility", show ? "visible" : "hidden");
+    }
+
+    static useTooltip(use) {
+        Graph.set("tooltip", use);
+    }
+
+    static zoom(zoom_value) {
+        Graph.GRAPH.zoom_level.scaleTo(Graph.SVG, Math.round(zoom_value * 10) / 10)
     }
 
     static toggleSimulation() { }
