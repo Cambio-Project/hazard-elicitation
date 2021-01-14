@@ -3,12 +3,16 @@
   --tab-color          : #000000;
   --tab-color-bg       : #DDDDDD;
   --tab-color-hover-bg : #BBBBBB;
-  --hazard-color       : #333333;
+  --hazard-color       : #222222;
   --hazard-color-bg    : #FFDC00;
   --help-color         : #EEEEEE;
   --help-color-bg      : #3377FF;
-  --network-color      : #444444;
-  --network-color-bg   : #44BB44;
+  --network-color      : #EEEEEE;
+  --network-color-bg   : #339933;
+  --code-color         : #EE3388;
+  --code-color-bg      : #CCCCCC;
+  --tip-1-img          : url("../img/tip_1.png");
+  --tip-2-img          : url("../img/tip_2.png");
 }
 
 .dark-theme
@@ -16,22 +20,21 @@
   --tab-color          : #EEEEEE;
   --tab-color-bg       : #777777;
   --tab-color-hover-bg : #999999;
-  --hazard-color       : #333333;
+  --hazard-color       : #222222;
   --hazard-color-bg    : #FFDC00;
   --help-color         : #EEEEEE;
   --help-color-bg      : #3377DD;
   --network-color      : #EEEEEE;
   --network-color-bg   : #117711;
+  --code-color         : #DD3377;
+  --code-color-bg      : #444444;
+  --tip-1-img          : url("../img/tip_1_dark.png");
+  --tip-2-img          : url("../img/tip_2_dark.png");
 }
 
 .nav-tabs
 {
   border-bottom : 1px solid var(--tab-color-bg);
-}
-
-.nav-link
-{
-  position : relative;
 }
 
 .nav-tabs .nav-link
@@ -40,6 +43,17 @@
   border      : none;
   padding     : 8px 35px 8px 8px;
   margin      : 0 1px;
+}
+
+.nav-link:hover
+{
+  color           : var(--tab-color);
+  text-decoration : underline;
+}
+
+.nav-link
+{
+  position : relative;
 }
 
 .nav-link
@@ -68,6 +82,7 @@
 
 .nav-link.hazard.active
 {
+  color            : var(--hazard-color);
   background-color : var(--hazard-color-bg);
 }
 
@@ -100,7 +115,7 @@
 
 .tab-content
 {
-  padding  : 15px;
+  padding  : 10px;
   height   : calc(100% - 30px - 16px);
   overflow : auto;
 }
@@ -108,4 +123,47 @@
 .tab-pane
 {
   flex-grow : 1;
+}
+
+code
+{
+  color            : var(--code-color);
+  background-color : var(--code-color-bg);
+  border-radius    : 3px;
+  padding          : 2px 4px;
+}
+
+.tip-wrapper
+{
+  height : 150px;
+  width  : 300px;
+}
+
+.tip-wrapper-sm
+{
+  height         : 1.5rem;
+  width          : 1.5rem;
+  display        : inline-block;
+  vertical-align : text-bottom;
+}
+
+.tip
+{
+  vertical-align      : middle;
+  background-repeat   : no-repeat;
+  background-size     : contain;
+  background-position : center;
+  object-fit          : contain;
+  min-width           : 100%;
+  min-height          : 100%
+}
+
+.tip-1
+{
+  background-image : var(--tip-1-img);
+}
+
+.tip-2
+{
+  background-image : var(--tip-2-img);
 }

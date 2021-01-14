@@ -144,8 +144,8 @@
 
 .dropdown-divider
 {
-  margin : 2px 0;
-  border-top: 1px solid var(--context-menu-divider-color);
+  margin     : 2px 0;
+  border-top : 1px solid var(--context-menu-divider-color);
 }
 
 .dropdown-action > a.dropdown-item::after
@@ -170,5 +170,28 @@
 
 .tooltip
 {
+  padding          : 5px 10px;
+  color            : white;
+  font-size        : 10pt;
+  font-weight      : bold;
+  display          : block;
+  background-color : black;
+  border-radius    : 3px;
+  position         : absolute;
+  visibility       : hidden;
+  opacity          : 0;
+  transition       : 50ms;
+}
 
+.tooltip::after
+{
+  position     : absolute;
+  bottom       : -4px;
+  right        : calc(50% - 5px);
+  border       : solid black;
+  border-width : 0 4px 4px 0;
+  content      : "";
+  width        : 10px;
+  height       : 10px;
+  transform    : rotate(45deg);
 }
