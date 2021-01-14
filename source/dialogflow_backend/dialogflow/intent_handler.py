@@ -48,7 +48,16 @@ async def elicitation_question_handler() -> List[Dict]:
         'payload': random_text(INTENT_ELICITATION_QUESTION_TEXT)
     }, {
         'type':    'quick_reply',
-        'payload': ['Yes', 'No']
+        'payload': [
+            {
+                'text':   'Yes',
+                'action': ''
+            },
+            {
+                'text':   'No',
+                'action': ''
+            }
+        ]
     }]
 
 
