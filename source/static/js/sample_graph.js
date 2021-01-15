@@ -1,4 +1,10 @@
 const sample_graph={
+  "hazards": {
+    "0": {
+      "nodes": [1, 5],
+      "edges": [1, 11]
+    }
+  },
   "nodes": {
     "0": {
       "id": 0,

@@ -56,7 +56,7 @@ class DFWebSocket extends CustomWebSocket {
             const type    = data[i].type;
             let payload = data[i].payload;
 
-            if(intent === "1-elicitation-question") {
+            if(intent === "1-elicitation-question" && typeof payload === "string") {
                 payload = payload.format("FRONTEND");
             }
 
@@ -97,11 +97,12 @@ class Chat {
     }
 
     scroll() {
-        this.chat.animate({scrollTop: this.chat.height()}, 500);
+        this.chat.animate({scrollTop: this.chat.prop("scrollHeight")}, 500);
     }
 
     add(what) {
         this.chat.append(what.html());
+        this.scroll();
     }
 
     setPending() {
@@ -113,7 +114,7 @@ class Chat {
     }
 
     append(what) {
-        this.chat.append(what);
+        this.add(what);
     }
 
     send(e) {

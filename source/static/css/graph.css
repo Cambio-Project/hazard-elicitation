@@ -10,6 +10,8 @@
   --context-menu-item-color          : #000000;
   --context-menu-item-hover-color-bg : #C4DCFF;
   --context-menu-arrow-color         : rgba(0, 90, 200, 0.75);
+  --tooltip-color                    : #FFFFFF;
+  --tooltip-color-bg                 : rgba(0, 0, 0, 0.75);
 }
 
 .dark-theme
@@ -24,6 +26,8 @@
   --context-menu-item-color          : #DDDDDD;
   --context-menu-item-hover-color-bg : #4477AA;
   --context-menu-arrow-color         : #00BBFF;
+  --tooltip-color                    : #FFFFFF;
+  --tooltip-color-bg                 : rgba(0, 0, 0, 0.75);
 }
 
 .graph-wrapper
@@ -171,11 +175,11 @@
 .tooltip
 {
   padding          : 5px 10px;
-  color            : white;
+  color            : var(--tooltip-color);
   font-size        : 10pt;
   font-weight      : bold;
   display          : block;
-  background-color : black;
+  background-color : var(--tooltip-color-bg);
   border-radius    : 3px;
   position         : absolute;
   visibility       : hidden;
@@ -185,13 +189,12 @@
 
 .tooltip::after
 {
-  position     : absolute;
-  bottom       : -4px;
-  right        : calc(50% - 5px);
-  border       : solid black;
-  border-width : 0 4px 4px 0;
-  content      : "";
-  width        : 10px;
-  height       : 10px;
-  transform    : rotate(45deg);
+  position   : absolute;
+  bottom     : -12px;
+  right      : calc(50% - 5px);
+  border     : 6px solid transparent;
+  border-top : 6px solid var(--tooltip-color-bg);
+  content    : "";
+  width      : 0;
+  height     : 0;
 }

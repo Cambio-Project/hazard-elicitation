@@ -11,8 +11,7 @@ const HELP = `
 <p class="d-inline">
     The chat is connected to a chatbot. 
     Use the send button (<div class="tip-wrapper-sm"><div class="tip tip-2"></div></div>) to send a message.
-</p>
-<div class="tip-wrapper"><div class="tip tip-1"></div></div>`;
+</p>`;
 
 const SETTINGS = `
 <div class="col">
