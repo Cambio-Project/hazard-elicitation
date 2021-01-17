@@ -15,10 +15,18 @@ Object.defineProperty(Object.prototype, '_values', {
     enumerable: false
 });
 
+Object.defineProperty(Object.prototype, '_entries', {
+    value:      function () { return Object.entries(this); },
+    enumerable: false
+});
+
 Object.defineProperty(Object.prototype, '_empty', {
     value:      function () { return Object.keys(this).length === 0; },
     enumerable: false
 });
+
+function isString(what) { return typeof what === "string"; }
+function isObject(what) { return typeof what === "object"; }
 
 function time(date) {
     return "{}-{}-{} {}:{}:{}".format(
@@ -110,7 +118,7 @@ function addChatExamples() {
     ]));
     chat.add(new ChatCard({
         "title":   "Some Fact",
-        "message": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
+        "text": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
     }));
     chat.add(new ChatCard({
         "title": "More Cards",
@@ -122,10 +130,10 @@ function addChatExamples() {
     }));
     chat.add(new ChatAccordion([{
         "title":   "Some Fact",
-        "content": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
+        "text": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
     }, {
         "title":   "AnotherFact",
-        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
     }]));
     chat.scroll();
 }
