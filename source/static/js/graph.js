@@ -72,6 +72,21 @@ class Graph {
               })
         );
 
+        const na = $(".nodes");
+        const ea = $(".edges");
+        const vs = graph.hazards._values();
+        for (const v in vs) {
+            for (const n in vs[v].nodes) {
+                na.find("#" + vs[v].nodes[n])
+                  .attr("fill", "#FFDC00")
+            }
+
+            for (const n in vs[v].edges) {
+                ea.find("#" + vs[v].edges[n])
+                  .attr("stroke", "#FFDC00")
+            }
+        }
+
         Graph.zoom(1.5);
     }
 
@@ -131,12 +146,13 @@ class Graph {
             .data(this.graph_edges)
             .enter()
             .append("path")
+            .attr("id", function (e) { return e.id; })
             .attr("marker-end", "url(#end)")
             .attr("d", "M 0 0 L 0 0")
             .on("contextmenu", Graph.onContextMenu)
             .on("click", Graph.onLinkClick)
             .on("mouseover", Graph.onMouseover)
-            .on("mousemove", Graph.onMouseover)
+            .on("mousemove", Graph.onMousemove)
             .on("mouseout", Graph.onMouseout);
     }
 
@@ -155,7 +171,7 @@ class Graph {
             .on("contextmenu", Graph.onContextMenu)
             .on("click", Graph.onNodeClick)
             .on("mouseover", Graph.onMouseover)
-            .on("mousemove", Graph.onMouseover)
+            .on("mousemove", Graph.onMousemove)
             .on("mouseout", Graph.onMouseout);
     }
 
@@ -168,7 +184,7 @@ class Graph {
             .data(this.graph_edges)
             .enter()
             .append("text")
-            .text(function (n) { return n.label; });
+            .text(function (e) { return e.label; });
     }
 
     createNodeLabels() {
@@ -180,7 +196,7 @@ class Graph {
             .data(this.graph_nodes)
             .enter()
             .append("text")
-            .text(function (l) { return l.label; });
+            .text(function (n) { return n.label; });
     }
 
     static transformCoordinates(ctx, x_offset = 0, y_offset = 0) {
@@ -269,34 +285,34 @@ class Graph {
     static onLinkClick(e, _, arr) {
         let n = d3.select(arr[e.index]);
 
-        if (n.attr("hazard") === "true")
-            return;
-
-        if (!n.attr("active") || n.attr("active") === "false") {
-            n.attr("active", "true");
-            n.style("stroke", "red");
-        } else {
-            n.attr("active", "false");
-            n.style("stroke", e.group);
-        }
+        // if (n.attr("hazard") === "true")
+        //     return;
+        //
+        // if (!n.attr("active") || n.attr("active") === "false") {
+        //     n.attr("active", "true");
+        //     n.style("stroke", "red");
+        // } else {
+        //     n.attr("active", "false");
+        //     n.style("stroke", e.group);
+        // }
     }
 
     static onNodeClick(e, _, arr) {
         if (e.defaultPrevented)
             return;
 
-        let n = d3.select(arr[e.index]);
-
-        if (n.attr("hazard") === "true")
-            return;
-
-        if (!n.attr("active") || n.attr("active") === "false") {
-            n.attr("active", "true");
-            n.style("fill", "red");
-        } else {
-            n.attr("active", "false");
-            n.style("fill", e.group);
-        }
+        // let n = d3.select(arr[e.index]);
+        //
+        // if (n.attr("hazard") === "true")
+        //     return;
+        //
+        // if (!n.attr("active") || n.attr("active") === "false") {
+        //     n.attr("active", "true");
+        //     n.style("fill", "red");
+        // } else {
+        //     n.attr("active", "false");
+        //     n.style("fill", e.group);
+        // }
     }
 
     static onContextMenu(e) {
@@ -307,9 +323,17 @@ class Graph {
     }
 
     static onMouseover(e) {
-        if(Graph.get("tooltip")) {
+        if (e.hasOwnProperty("source")) {
+            d3.select(this).attr("stroke-width", Graph.get("edge_size") + 1);
+        } else {
+            d3.select(this).attr("r", Graph.get("node_size") + 1);
+        }
+    }
+
+    static onMousemove(e) {
+        if (Graph.get("tooltip")) {
             const len    = e.label.length * 6 + 20;
-            const coords = Graph.transformCoordinates(this, -len / 2, -40);
+            const coords = Graph.transformCoordinates(this, -len / 2, -50);
             d3.select("#tooltip")
               .text(e.label)
               .style("visibility", "visible")
@@ -320,6 +344,11 @@ class Graph {
     }
 
     static onMouseout(e) {
+        if (e.hasOwnProperty("source")) {
+            d3.select(this).attr("stroke-width", Graph.get("edge_size"));
+        } else {
+            d3.select(this).attr("r", Graph.get("node_size"));
+        }
         d3.select("#tooltip").style("visibility", "hidden").style("opacity", 0);
     }
 
@@ -371,16 +400,16 @@ class ContextMenu {
 
     createItems(data) {
         let content = "";
-        for (const key in data) {
-            if (typeof data[key] === "object") {
-                let nested = data[key]._empty() ? "" : "<ul class='dropdown-menu'>" + this.createItems(data[key]) + "</ul>";
+        for (const [key, val] of Object.entries(data)) {
+            if (isObject(val)) {
+                let nested = val._empty() ? "" : "<ul class='dropdown-menu'>" + this.createItems(val) + "</ul>";
                 content +=
                     `<li class="dropdown-submenu">
                         <a class="dropdown-item">${key}</a>
                         ${nested}      
                       </li>`;
             } else {
-                content += `<li><a class="dropdown-item"><b>${key}</b>: ${data[key]}</a></li>`;
+                content += `<li><a class="dropdown-item"><b>${key}</b>: ${val}</a></li>`;
             }
         }
         return content

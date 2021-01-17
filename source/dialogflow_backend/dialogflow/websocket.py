@@ -92,18 +92,15 @@ class DFWebsocket(AsyncWebsocketConsumer):
                     response_data = await joke_handler()
 
             else:
-                response_data = [{
-                    'type':    'text',
-                    'payload': result.query_result.fulfillment_text or 'EMPTY TEXT'
-                }]
-
-            # TODO remove
-            add_intent = lambda r: {'type': r['type'], 'intent': intent, 'payload': r['payload']}
-            response_data = list(map(add_intent, response_data))
+                response = TextMessage()
+                response.intent = ''
+                response.text = result.query_result.fulfillment_text or 'EMPTY TEXT'
+                response_data = [response.__repr__()]
 
         except InvalidArgument:
             error('DF WS intent handler produced invalid argument.')
-            pass
+
+        debug(response_data)
 
         await self.send(json.dumps({
             'type': 'dialogflow_response',

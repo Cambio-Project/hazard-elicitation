@@ -1,48 +1,65 @@
 ## Rich Responses
 
 ```python
-text = {
-    'type':    'text',
-    'payload': 'Some text!'
+generic_response = {
+    'intent':  '',
+    'type':  '',
+    'payload':  {},
 }
 
-quick_reply = {
-    'type':    'quick_reply',
-    'payload': [
-        {
-            'text':   'Yes',
-            'action': ''
-        },
-        {
-            'text':   'No',
-            'action': ''
-        }
-    ]
+text = {
+    'intent':  '',
+    'type':    'text',
+    'payload': {
+        'text': 'Some text!'
+    }
 }
 
 card = {
+    'intent':  '',
     'type':    'card',
     'payload': {
-        'title':   'Hi',
-        'message': 'Hi there that is wonderful!',
-        'link':    {
+        'title': 'Hi',
+        'text':  'Hi there that is wonderful!',
+        'image':  'www.example.com/image',
+        'link':  {
             'text': 'Yep',
             'url':  'www.example.com'
         },
     }
 }
 
+quick_reply = {
+    'intent':  '',
+    'type':    'quick_reply',
+    'payload': {
+        'entries': [
+            {
+                'text':   'Yes',
+                'action': ''
+            },
+            {
+                'text':   'No',
+                'action': ''
+            }
+        ]
+    }
+}
+
 accordion = {
+    'intent':  '',
     'type':    'accordion',
-    'payload': [
-        {
-            'title':   'Spoiler!',
-            'content': 'The cake is a lie!'
-        },
-        {
-            'title':   'Look out!',
-            'content': 'nevermind'
-        }
-    ]
+    'payload': {
+        'entries': [
+            {
+                'title': 'Spoiler!',
+                'text':  'The cake is a lie!'
+            },
+            {
+                'title': 'Look out!',
+                'text':  'nevermind'
+            }
+        ]
+    }
 }
 ```

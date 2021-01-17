@@ -51,27 +51,27 @@ class DFWebSocket extends CustomWebSocket {
 
     dialogflow_response(data) {
         chat.removePending();
-        for (const i in data) {
-            const intent  = data[i].intent;
-            const type    = data[i].type;
-            let payload = data[i].payload;
+        for (const [key, val] of data._entries()) {
+            const intent = val.intent;
+            const type   = val.type;
+            let payload  = val.payload;
 
-            if(intent === "1-elicitation-question" && typeof payload === "string") {
+            if (intent === "1-elicitation-question" && isString(payload)) {
                 payload = payload.format("FRONTEND");
             }
 
             switch (type) {
                 case 'text':
-                    chat.add(new ChatMessage(Chat.Bot, payload));
-                    break;
-                case 'quick_reply':
-                    chat.add(new ChatQuickReply(payload));
+                    chat.add(new ChatMessage(Chat.Bot, payload.text));
                     break;
                 case 'card':
                     chat.add(new ChatCard(payload));
                     break;
+                case 'quick_reply':
+                    chat.add(new ChatQuickReply(payload.entries));
+                    break;
                 case 'accordion':
-                    chat.add(new ChatAccordion(payload));
+                    chat.add(new ChatAccordion(payload.entries));
                     break;
                 default:
                     debug("Unknown data type '" + type + "'.")
@@ -170,16 +170,16 @@ class ChatPendingMessage extends ChatElement {
 }
 
 class ChatMessage extends ChatElement {
-    constructor(actor, message) {
+    constructor(actor, text) {
         super(actor);
-        this.message = message;
+        this.text = text;
     }
 
     html() {
         return super.html().format(`
             <div class="card shadow ${this.actor}">
               <div class="card-body">
-                <p class="card-text">${this.message}</p>              
+                <p class="card-text">${this.text}</p>              
               </div>
             </div>`);
     }
@@ -188,10 +188,10 @@ class ChatMessage extends ChatElement {
 class ChatCard extends ChatElement {
     constructor(card) {
         super(Chat.Rich);
-        this.title   = card.title;
-        this.message = card.message || "";
-        this.image   = card.image || null;
-        this.link    = card.link || null;
+        this.title = card.title;
+        this.text  = card.text || "";
+        this.image = card.image || null;
+        this.link  = card.link || null;
     }
 
     html() {
@@ -206,7 +206,7 @@ class ChatCard extends ChatElement {
               <div class="card-body">
                 <h5 class="card-title">${this.title}</h5>
                 ${image}
-                <p class="card-text">${this.message}</p>
+                <p class="card-text">${this.text}</p>
                 ${link}
               </div>
             </div>`);
@@ -221,8 +221,7 @@ class ChatQuickReply extends ChatElement {
 
     html() {
         let content = "";
-        for (const id in this.replies) {
-            const reply = this.replies[id];
+        for (const [_, reply] of this.replies._entries()) {
             // TODO const action = reply.action;
             content += `<button type="button" class="btn btn-secondary shadow quick-reply">${reply.text}</button>`;
         }
@@ -242,28 +241,28 @@ class ChatAccordion extends ChatElement {
 
     html() {
         let content = "";
-        for (const section in this.sections) {
+        for (const [index, section] of this.sections._entries()) {
             content += "" +
                 `<div class="card rounded-0">
                     <div class="card-header rounded-0" 
-                         id="accordion-${ChatAccordion.ID}-${section}-button">
+                         id="accordion-${ChatAccordion.ID}-${index}-button">
                         <h5 class="mb-0">
                             <button class="btn btn-link w-100 text-left"
                                     data-toggle="collapse"
-                                    data-target="#${ChatAccordion.ID}-${section}"
+                                    data-target="#${ChatAccordion.ID}-${index}"
                                     aria-expanded="false" 
-                                    aria-controls="${ChatAccordion.ID}-${section}">
+                                    aria-controls="${ChatAccordion.ID}-${index}">
                                 <i class="arrow"></i>
-                                &nbsp;&nbsp;${this.sections[section].title}
+                                &nbsp;&nbsp;${section.title}
                             </button>
                         </h5>
                     </div>
-                    <div id="${ChatAccordion.ID}-${section}" 
+                    <div id="${ChatAccordion.ID}-${index}" 
                          class="collapse" 
-                         aria-labelledby="accordion-${ChatAccordion.ID}-${section}-button" 
+                         aria-labelledby="accordion-${ChatAccordion.ID}-${index}-button" 
                          data-parent="#accordion">
                         <div class="card-body">
-                            ${this.sections[section].content}
+                            ${section.text}
                         </div>
                     </div>
                 </div>`;
