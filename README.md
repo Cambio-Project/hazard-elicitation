@@ -18,7 +18,7 @@ The webserver will run at localhost on port 8000 by default.
 Make sure to set `DEBUG` in `source/hazard_elicitation/settings.py` to `False`.
 
 > cd source
-> python manage.py collectstatic
+> python manage.py collectstatic --noinput
 > daphne -b 0.0.0.0 -p 8000 hazard_elicitation.asgi:application
 
 This runs a production ready asynchronous webserver at localhost on port 8000.
