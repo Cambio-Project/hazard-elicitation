@@ -97,8 +97,8 @@ class DFWebsocket(AsyncWebsocketConsumer):
                 response.text = result.query_result.fulfillment_text or 'EMPTY TEXT'
                 response_data = [response.__repr__()]
 
-        except InvalidArgument:
-            error('DF WS intent handler produced invalid argument.')
+        except InvalidArgument as e:
+            error('DF WS intent handler produced invalid argument: ' + str(e))
 
         debug(response_data)
 
