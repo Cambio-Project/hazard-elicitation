@@ -1,35 +1,28 @@
 .light-theme
 {
+  --color-bg           : #EEEEEE;
   --tab-color          : #000000;
   --tab-color-bg       : #DDDDDD;
   --tab-color-hover-bg : #BBBBBB;
-  --hazard-color       : #222222;
-  --hazard-color-bg    : #FFDC00;
-  --help-color         : #EEEEEE;
-  --help-color-bg      : #3377FF;
-  --network-color      : #EEEEEE;
-  --network-color-bg   : #339933;
-  --code-color         : #EE3388;
-  --code-color-bg      : #CCCCCC;
+
   --tip-1-img          : url("../img/tip_1.png");
   --tip-2-img          : url("../img/tip_2.png");
 }
 
 .dark-theme
 {
+  --color-bg           : #333333;
   --tab-color          : #EEEEEE;
   --tab-color-bg       : #777777;
   --tab-color-hover-bg : #999999;
-  --hazard-color       : #222222;
-  --hazard-color-bg    : #FFDC00;
-  --help-color         : #EEEEEE;
-  --help-color-bg      : #3377DD;
-  --network-color      : #EEEEEE;
-  --network-color-bg   : #117711;
-  --code-color         : #DD3377;
-  --code-color-bg      : #444444;
+
   --tip-1-img          : url("../img/tip_1_dark.png");
   --tip-2-img          : url("../img/tip_2_dark.png");
+}
+
+.content
+{
+  background-color : var(--color-bg);
 }
 
 .nav-tabs
@@ -82,8 +75,8 @@
 
 .nav-link.hazard.active
 {
-  color            : var(--hazard-color);
-  background-color : var(--hazard-color-bg);
+  color            : var(--black);
+  background-color : var(--hazard-color);
 }
 
 .nav-item > a.nav-link.hazard::after
@@ -93,8 +86,8 @@
 
 .nav-link.help.active
 {
-  color            : var(--help-color);
-  background-color : var(--help-color-bg);
+  color            : var(--white);
+  background-color : var(--primary-color);
 }
 
 .nav-item > a.nav-link.help::after
@@ -104,13 +97,13 @@
 
 .nav-link.network.active
 {
-  color            : var(--network-color);
-  background-color : var(--network-color-bg);
+  color            : var(--white);
+  background-color : var(--other-color);
 }
 
 .nav-item > a.nav-link.network::after
 {
-  background-image : url("../img/network.png");
+  background-image : url("../img/settings.png");
 }
 
 .tab-content
@@ -125,12 +118,11 @@
   flex-grow : 1;
 }
 
-code
+.chapter
 {
-  color            : var(--code-color);
-  background-color : var(--code-color-bg);
-  border-radius    : 3px;
-  padding          : 2px 4px;
+  border-bottom: 2px solid var(--code-color-bg);
+  padding: 10px;
+  margin: 0;
 }
 
 .tip-wrapper

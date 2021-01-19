@@ -4,7 +4,6 @@
     --edge-color                       : #999999;
     --node-label-color                 : #000000;
     --edge-label-color                 : #000000;
-    --graph-color-bg                   : #EEEEEE;
     --context-menu-color-bg            : #F8F8FF;
     --context-menu-divider-color       : #999999;
     --context-menu-item-color          : #000000;
@@ -20,7 +19,6 @@
     --edge-color                       : #AAAAAA;
     --node-label-color                 : #DDDDDD;
     --edge-label-color                 : #DDDDDD;
-    --graph-color-bg                   : #333333;
     --context-menu-color-bg            : #225588;
     --context-menu-divider-color       : #AAAAAA;
     --context-menu-item-color          : #DDDDDD;
@@ -31,9 +29,7 @@
 }
 
 .graph-wrapper
-{
-    flex-grow : 1;
-}
+{ flex-grow : 1; }
 
 .graph
 {
@@ -42,13 +38,12 @@
     height           : 100%;
     font-family      : SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size        : 0.75rem;
-    background-color : var(--graph-color-bg);
+    color            : var(--secondary-text-color);
+    background-color : var(--secondary-text-color-bg);
 }
 
 .arrowhead
-{
-    fill : var(--arrowhead-color);
-}
+{ fill : var(--arrowhead-color); }
 
 .nodes
 {
@@ -57,9 +52,10 @@
 }
 
 .nodes circle
-{
-    transition   : r 300ms;
-}
+{ transition : r 300ms; }
+
+.nodes circle.hazard
+{ fill : var(--hazard-color); }
 
 .edges
 {
@@ -69,10 +65,10 @@
 }
 
 .edges path
-{
+{ transition : stroke-width 300ms; }
 
-    transition   : stroke-width 300ms;
-}
+.edges path.hazard
+{ stroke : var(--hazard-color); }
 
 .edge-labels
 {
