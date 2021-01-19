@@ -49,6 +49,14 @@ class DFWebSocket extends CustomWebSocket {
         }))
     }
 
+    event(data) {
+        chat.setPending();
+        this.socket.send(JSON.stringify({
+            'type': 'dialogflow_request',
+            'data': data
+        }))
+    }
+
     dialogflow_response(data) {
         chat.removePending();
         for (const [key, val] of data._entries()) {
@@ -97,7 +105,7 @@ class Chat {
     }
 
     scroll() {
-        this.chat.animate({scrollTop: this.chat.prop("scrollHeight")}, 500);
+        this.chat.animate({scrollTop: this.chat.prop("scrollHeight")}, 300);
     }
 
     add(what) {
@@ -120,10 +128,12 @@ class Chat {
     send(e) {
         if (e.keyCode === 13) {
             e.preventDefault();
-            Chat.CHAT.add(new ChatMessage(Chat.User, this.value));
-            Chat.CHAT.ws.send(this.value);
-            Chat.CHAT.scroll();
+
+            this.add(new ChatMessage(Chat.User, this.value));
+            this.scroll();
             this.value = "";
+
+            Chat.CHAT.ws.send(this.value);
         }
     }
 }
@@ -161,7 +171,7 @@ class ChatPendingMessage extends ChatElement {
 
     html() {
         return super.html().format(`
-            <div class="card shadow ${this.actor} pending-message">
+            <div class="card ${this.actor} pending-message">
               <div class="card-body">
                 <p class="card-text">...</p>              
               </div>
@@ -177,7 +187,7 @@ class ChatMessage extends ChatElement {
 
     html() {
         return super.html().format(`
-            <div class="card shadow ${this.actor}">
+            <div class="card ${this.actor}">
               <div class="card-body">
                 <p class="card-text">${this.text}</p>              
               </div>
@@ -197,12 +207,12 @@ class ChatCard extends ChatElement {
     html() {
         let image = this.image ? `<img class="card-img-top" src='${this.image}' alt=""/>` : "";
         let link  = this.link ? `
-            <a class="btn btn-dark text-white" href="${this.link.url}" target="_blank">
-              ${this.link.text}
+            <a href="${this.link.url}" target="_blank">
+              <button class="btn" type="button">${this.link.text}</button>
             </a>` : "";
 
         return super.html().format(`
-            <div class="card shadow">
+            <div class="card ${this.actor}">
               <div class="card-body">
                 <h5 class="card-title">${this.title}</h5>
                 ${image}
@@ -223,7 +233,7 @@ class ChatQuickReply extends ChatElement {
         let content = "";
         for (const [_, reply] of this.replies._entries()) {
             // TODO const action = reply.action;
-            content += `<button type="button" class="btn btn-secondary shadow quick-reply">${reply.text}</button>`;
+            content += `<button type="button" class="btn m-md-1 quick-reply">${reply.text}</button>`;
         }
 
         return super.html(true).format(content);
@@ -243,9 +253,8 @@ class ChatAccordion extends ChatElement {
         let content = "";
         for (const [index, section] of this.sections._entries()) {
             content += "" +
-                `<div class="card rounded-0">
-                    <div class="card-header rounded-0" 
-                         id="accordion-${ChatAccordion.ID}-${index}-button">
+                `<div class="card ${this.actor} no-shadow">
+                    <div class="card-header" id="accordion-${ChatAccordion.ID}-${index}-button">
                         <h5 class="mb-0">
                             <button class="btn btn-link w-100 text-left"
                                     data-toggle="collapse"
@@ -268,6 +277,6 @@ class ChatAccordion extends ChatElement {
                 </div>`;
         }
 
-        return super.html().format(`<div class="accordion w-100 shadow">${content}</div>`);
+        return super.html().format(`<div class="accordion w-100">${content}</div>`);
     }
 }

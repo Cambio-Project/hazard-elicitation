@@ -26,6 +26,7 @@ Object.defineProperty(Object.prototype, '_empty', {
 });
 
 function isString(what) { return typeof what === "string"; }
+
 function isObject(what) { return typeof what === "object"; }
 
 function time(date) {
@@ -83,7 +84,8 @@ function splitAreas() {
     Split(['#left', '#bot'], {
         sizes:      [75, 25],
         minSize:    [525, 375],
-        gutterSize: 5
+        gutterSize: 5,
+        cursor:     'col-resize'
     })
 
     Split(['#arch', '#content'], {
@@ -117,8 +119,8 @@ function addChatExamples() {
         {"text": "another option", "action": ""}
     ]));
     chat.add(new ChatCard({
-        "title":   "Some Fact",
-        "text": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
+        "title": "Some Fact",
+        "text":  "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
     }));
     chat.add(new ChatCard({
         "title": "More Cards",
@@ -129,18 +131,18 @@ function addChatExamples() {
         }
     }));
     chat.add(new ChatAccordion([{
-        "title":   "Some Fact",
-        "text": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
+        "title": "Some Fact",
+        "text":  "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat"
     }, {
-        "title":   "AnotherFact",
-        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
+        "title": "AnotherFact",
+        "text":  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
     }]));
     chat.scroll();
 }
 
 function addContentExamples() {
     content.addTab({
-        "title": "Help",
+        "title":   "Help",
         "content": HELP
     }, "help");
 

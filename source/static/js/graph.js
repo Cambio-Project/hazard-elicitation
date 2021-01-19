@@ -78,12 +78,12 @@ class Graph {
         for (const v in vs) {
             for (const n in vs[v].nodes) {
                 na.find("#" + vs[v].nodes[n])
-                  .attr("fill", "#FFDC00")
+                  .attr("class", "hazard")
             }
 
             for (const n in vs[v].edges) {
                 ea.find("#" + vs[v].edges[n])
-                  .attr("stroke", "#FFDC00")
+                  .attr("class", "hazard")
             }
         }
 
