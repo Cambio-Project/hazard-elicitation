@@ -11,5 +11,5 @@ RUN apt-get purge -y --auto-remove gcc python-dev
 RUN python manage.py migrate
 RUN python manage.py collectstatic --noinput
 
-EXPOSE 8080
-ENTRYPOINT ["daphne", "-b", "0.0.0.0", "-p", "8080", "hazard_elicitation.asgi:application"]
+EXPOSE 8000
+ENTRYPOINT ["daphne", "-b", "0.0.0.0", "-p", "8000", "hazard_elicitation.asgi:application"]
