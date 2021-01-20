@@ -81,7 +81,7 @@
 }
 
 .nav-item > a.nav-link.config::after
-{ filter: brightness(150%); background-image : url("../img/settings.png"); }
+{ background-image : url("../img/settings.png"); }
 
 /* Tab Content */
 
