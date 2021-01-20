@@ -7,6 +7,21 @@ generic_response = {
     'payload':  {},
 }
 
+empty = {
+    'intent':  '',
+    'type':    'empty',
+    'payload': {}
+}
+
+action = {
+    'intent':  '',
+    'type':    'action',
+    'payload': {
+        'action': 'some-action',
+        'values': []
+    }
+}
+
 text = {
     'intent':  '',
     'type':    'text',
@@ -33,7 +48,7 @@ quick_reply = {
     'intent':  '',
     'type':    'quick_reply',
     'payload': {
-        'entries': [
+        'values': [
             {
                 'text':   'Yes',
                 'action': ''
@@ -50,7 +65,7 @@ accordion = {
     'intent':  '',
     'type':    'accordion',
     'payload': {
-        'entries': [
+        'values': [
             {
                 'title': 'Spoiler!',
                 'text':  'The cake is a lie!'

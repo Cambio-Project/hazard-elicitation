@@ -1,11 +1,11 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from google.api_core.exceptions import InvalidArgument
 
+from dialogflow_backend.dialogflow import intent_handler
+from dialogflow_backend.dialogflow.intent_handler import *
 from dialogflow_backend.dialogflow.client import DialogFlowClient
 from dialogflow_backend.dialogflow.intents import INTENT_HANDLERS
-from dialogflow_backend.dialogflow.intent_handler import *
 from util.log import info, warning, error, debug
-from util.text.text import text
 
 
 class DFWebsocket(AsyncWebsocketConsumer):
@@ -39,13 +39,11 @@ class DFWebsocket(AsyncWebsocketConsumer):
         await getattr(self, msg_type)(data.get('data'))
 
     async def dialogflow_request(self, data: str):
-        response_data = {
-            'type':    'text',
-            'payload': 'Default Text: Something went wrong'
-        }
+        response_data = None
 
         try:
             result = DialogFlowClient.detect_intent(data)
+
             intent = result.query_result.intent.display_name
             action = result.query_result.action
             all_parameters_present = result.query_result.all_required_params_present
@@ -74,31 +72,22 @@ class DFWebsocket(AsyncWebsocketConsumer):
             ))
 
             if intent in INTENT_HANDLERS:
-                if intent == text(INTENT_FALLBACK_NAME):
-                    response_data = await fallback_handler()
-                elif intent == text(INTENT_FALLBACK_GIBBERISH_NAME):
-                    response_data = await fallback_gibberish_handler()
-                elif intent == text(INTENT_FALLBACK_INSULT_NAME):
-                    response_data = await fallback_insult_handler()
-                elif intent == text(INTENT_HELP_NAME):
-                    response_data = await help_handler()
-                elif intent == text(INTENT_WELCOME_NAME):
-                    response_data = await welcome_handler()
-                elif intent == text(INTENT_ELICITATION_QUESTION_NAME):
-                    response_data = await elicitation_question_handler()
-                elif intent == text(INTENT_FACT_NAME):
-                    response_data = await fact_handler()
-                elif intent == text(INTENT_JOKE_NAME):
-                    response_data = await joke_handler()
-
+                try:
+                    # Call intent handler
+                    response_data = await INTENT_HANDLERS[intent](result)
+                except InvalidArgument as e:
+                    error('Intent handler for "{}" produced invalid argument: {}'.format(intent, e))
             else:
-                response = TextMessage()
-                response.intent = ''
-                response.text = result.query_result.fulfillment_text or 'EMPTY TEXT'
-                response_data = [response.__repr__()]
+                warning('No intent handler found for "{}".'.format(intent))
 
-        except InvalidArgument as e:
-            error('DF WS intent handler produced invalid argument: ' + str(e))
+        except Exception as e:
+            error('Something went wrong during intent processing: {}'.format(e))
+
+        # Create default response.
+        if not response_data:
+            response = TextMessage()
+            response.text = 'Ops something wen wrong.'
+            response_data = [response.__repr__()]
 
         debug(response_data)
 
