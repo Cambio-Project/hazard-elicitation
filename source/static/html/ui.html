@@ -15,6 +15,7 @@
   <script type="text/javascript" src="../../static/js/content.js"></script>
   <script type="text/javascript" src="../../static/js/chat.js"></script>
   <script type="text/javascript" src="../../static/js/graph.js"></script>
+  <script type="text/javascript" src="../../static/js/commands.js"></script>
   <script type="text/javascript" src="../../static/js/sample_graph.js"></script>
 
   <!-- Third party CSS -->
@@ -104,6 +105,28 @@
                     Use the send button (
                     <button type="button" class="position-relative send-button">➤</button>
                     ) to send a message.
+                  </p>
+                </div>
+
+                <p class="bline p-2">
+                  <a class="btn-link" data-toggle="collapse" href="#help-expert" role="button" aria-expanded="false">
+                    <i class="arrow"></i>Expert
+                  </a>
+                </p>
+                <div class="collapse m-md-2" id="help-expert">
+                  <p class="d-inline">
+                    This chatbot can understand commands and configure settings on this page.
+                    Some commands are listed here:
+                  </p>
+                  <ul>
+                    <li><code>set-dark-theme &lt;boolean&gt;</code></li>
+                    <!--<li><code>set-zoom &lt;float&gt;</code></li>-->
+                    <li><code>set-sticky-nodes &lt;boolean&gt;</code></li>
+                    <li><code>set-nodes-visibility &lt;boolean&gt;</code></li>
+                    <li><code>set-edges-visibility &lt;boolean&gt;</code></li>
+                  </ul>
+                  <p>
+                    You also might want to try out the chat history with <code>&uarr;</code> or <code>&darr;</code>.
                   </p>
                 </div>
               </div>
