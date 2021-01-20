@@ -38,8 +38,8 @@
     height           : 100%;
     font-family      : SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size        : 0.75rem;
-    color            : var(--secondary-text-color);
-    background-color : var(--secondary-text-color-bg);
+    color            : var(--tertiary-text-color);
+    background-color : var(--tertiary-text-color-bg);
 }
 
 .arrowhead
@@ -124,9 +124,7 @@
 }
 
 .dropdown-submenu:hover > a.dropdown-item::after
-{
-    transform : rotate(45deg);
-}
+{ transform : rotate(45deg); }
 
 .dropdown-submenu > .dropdown-menu
 {
@@ -174,9 +172,7 @@
 }
 
 .dropdown-action[name="hazard"] > a.dropdown-item::after
-{
-    background-image : url("../img/hazard.png");
-}
+{ background-image : url("../img/hazard.png"); }
 
 /* Tooltip */
 

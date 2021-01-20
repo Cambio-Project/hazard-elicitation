@@ -1,34 +1,17 @@
 .light-theme
 {
-  --color-bg           : #EEEEEE;
-  --tab-color          : #000000;
-  --tab-color-bg       : #DDDDDD;
-  --tab-color-hover-bg : #BBBBBB;
-
-  --tip-1-img          : url("../img/tip_1.png");
-  --tip-2-img          : url("../img/tip_2.png");
+  --tip-1-img : url("../img/tip_1.png");
 }
 
 .dark-theme
 {
-  --color-bg           : #333333;
-  --tab-color          : #EEEEEE;
-  --tab-color-bg       : #777777;
-  --tab-color-hover-bg : #999999;
-
-  --tip-1-img          : url("../img/tip_1_dark.png");
-  --tip-2-img          : url("../img/tip_2_dark.png");
+  --tip-1-img : url("../img/tip_1_dark.png");
 }
 
 .content
-{
-  background-color : var(--color-bg);
-}
+{ background-color : var(--primary-text-color-bg); }
 
-.nav-tabs
-{
-  border-bottom : 1px solid var(--tab-color-bg);
-}
+/* Tab Header */
 
 .nav-tabs .nav-link
 {
@@ -38,22 +21,21 @@
   margin      : 0 1px;
 }
 
+.nav-link
+{
+  position         : relative;
+  color            : var(--secondary-text-color);
+  background-color : var(--secondary-text-color-bg);
+}
+
 .nav-link:hover
 {
-  color           : var(--tab-color);
-  text-decoration : underline;
+  color            : var(--tertiary-text-color);
+  background-color : var(--tertiary-text-color-bg);
 }
 
-.nav-link
-{
-  position : relative;
-}
-
-.nav-link
-{
-  color            : var(--tab-color);
-  background-color : var(--tab-color-bg);
-}
+.nav-link.active
+{ background-color : var(--primary-text-color-bg); }
 
 .nav-item > a.nav-link::after
 {
@@ -68,9 +50,10 @@
   display             : inline-block;
 }
 
-.nav-link.active
+.nav-item > a.nav-link:hover::after
 {
-  background-color : var(--tab-color-hover-bg);
+  transform  : rotate(360deg);
+  transition : 500ms ease;
 }
 
 .nav-link.hazard.active
@@ -80,9 +63,7 @@
 }
 
 .nav-item > a.nav-link.hazard::after
-{
-  background-image : url("../img/hazard.png");
-}
+{ background-image : url("../img/hazard.png"); }
 
 .nav-link.help.active
 {
@@ -91,20 +72,18 @@
 }
 
 .nav-item > a.nav-link.help::after
-{
-  background-image : url("../img/help.png");
-}
+{ background-image : url("../img/help.png"); }
 
-.nav-link.network.active
+.nav-link.config.active
 {
   color            : var(--white);
-  background-color : var(--other-color);
+  background-color : var(--config-color);
 }
 
-.nav-item > a.nav-link.network::after
-{
-  background-image : url("../img/settings.png");
-}
+.nav-item > a.nav-link.config::after
+{ filter: brightness(150%); background-image : url("../img/settings.png"); }
+
+/* Tab Content */
 
 .tab-content
 {
@@ -114,16 +93,7 @@
 }
 
 .tab-pane
-{
-  flex-grow : 1;
-}
-
-.chapter
-{
-  border-bottom: 2px solid var(--code-color-bg);
-  padding: 10px;
-  margin: 0;
-}
+{ flex-grow : 1; }
 
 .tip-wrapper
 {
@@ -153,9 +123,4 @@
 .tip-1
 {
   background-image : var(--tip-1-img);
-}
-
-.tip-2
-{
-  background-image : var(--tip-2-img);
 }
