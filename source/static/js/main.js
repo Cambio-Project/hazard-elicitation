@@ -125,6 +125,7 @@ function addChatExamples() {
     chat.add(new ChatCard({
         "title": "More Cards",
         "image": "https://i.ytimg.com/vi/WhIqfqPJ_kY/maxresdefault.jpg",
+        "text": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat",
         "link":  {
             "text": "See image in full size",
             "url":  "https://i.ytimg.com/vi/WhIqfqPJ_kY/maxresdefault.jpg"
@@ -142,21 +143,9 @@ function addChatExamples() {
 
 function addContentExamples() {
     content.addTab({
-        "title":   "Help",
-        "content": HELP
-    }, "help");
-
-    const configure_tab = content.addTab({
-        "title":   "Configure",
-        "content": SETTINGS
-    }, "network");
-
-    content.addTab({
         "title":   "secret",
         "content": "secret"
     }, "advanced");
-
-    content.show(configure_tab);
 }
 
 /**

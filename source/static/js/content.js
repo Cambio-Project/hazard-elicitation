@@ -18,7 +18,7 @@ class Content {
         }
     }
 
-    addTab(data, class_name="") {
+    addTab(data, class_name = "") {
         const id      = this.TAB_ID;
         const tab_id  = "tab-" + id;
         const title   = data.title || "_";
@@ -30,12 +30,10 @@ class Content {
                 .text(title)
                 .addClass("nav-link " + class_name)
                 .attr({
-                    "role":          "tab",
-                    "data-toggle":   "tab",
-                    "id":            `${tab_id}-title`,
-                    "href":          `#${tab_id}`,
-                    "aria-controls": tab_id,
-                    "aria-selected": "true",
+                    "role":        "tab",
+                    "data-toggle": "tab",
+                    "id":          `${tab_id}-title`,
+                    "href":        `#${tab_id}`
                 })
             );
 
@@ -43,9 +41,8 @@ class Content {
             .html(content)
             .addClass("tab-pane fade")
             .attr({
-                "role":            "tabpanel",
-                "id":              tab_id,
-                "aria-labelledby": `${tab_id}-title`,
+                "role": "tabpanel",
+                "id":   tab_id
             });
 
         this.tabbar.append(header);
@@ -73,10 +70,18 @@ class Content {
         }
 
         let properties = "";
-        for(const p in element.data) {
-            if(typeof element.data[p] !== "object")
-                properties += `<tr><th>${p}</th><td>${element.data[p]}</td></tr>`;
+        const addEntry = function (data, indent=0) {
+            for (const [key, val] of data._entries()) {
+                if (!isObject(val)) {
+                    const space = "&nbsp;".repeat(indent);
+                    properties += `<tr><th>${space}${key}</th><td>${val}</td></tr>`;
+                } else {
+                    properties += `<tr><th>${key}</th><td></td></tr>`;
+                    addEntry(val, indent + 2)
+                }
+            }
         }
+        addEntry(element.data);
 
         Content.CONTENT.addTab({
             "title":   "{}: {}".format(type, element.label),

@@ -205,7 +205,7 @@ class ChatCard extends ChatElement {
     }
 
     html() {
-        let image = this.image ? `<img class="card-img-top" src='${this.image}' alt=""/>` : "";
+        let image = this.image ? `<img class="card-img-top mb-3" src='${this.image}' alt=""/>` : "";
         let link  = this.link ? `
             <a href="${this.link.url}" target="_blank">
               <button class="btn" type="button">${this.link.text}</button>
@@ -267,7 +267,7 @@ class ChatAccordion extends ChatElement {
                         </h5>
                     </div>
                     <div id="${ChatAccordion.ID}-${index}" 
-                         class="collapse" 
+                         class="collapse card-body" 
                          aria-labelledby="accordion-${ChatAccordion.ID}-${index}-button" 
                          data-parent="#accordion">
                         <div class="card-body">
