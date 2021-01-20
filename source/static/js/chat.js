@@ -69,6 +69,11 @@ class DFWebSocket extends CustomWebSocket {
             }
 
             switch (type) {
+                case 'empty':
+                    break;
+                case 'action':
+                    chat.Commands.call(payload.action, payload.values)
+                    break;
                 case 'text':
                     chat.add(new ChatMessage(Chat.Bot, payload.text));
                     break;
@@ -76,16 +81,53 @@ class DFWebSocket extends CustomWebSocket {
                     chat.add(new ChatCard(payload));
                     break;
                 case 'quick_reply':
-                    chat.add(new ChatQuickReply(payload.entries));
+                    chat.add(new ChatQuickReply(payload.values));
                     break;
                 case 'accordion':
-                    chat.add(new ChatAccordion(payload.entries));
+                    chat.add(new ChatAccordion(payload.values));
                     break;
                 default:
                     debug("Unknown data type '" + type + "'.")
             }
         }
         chat.scroll();
+    }
+}
+
+class History {
+    constructor() {
+        this.inputs = [];
+        this.index  = 0;
+        this.max    = 10;
+    }
+
+    set(input) {
+        this.inputs.push(input);
+        if (this.inputs.length === this.max) {
+            this.inputs.shift();
+        }
+        this.index = this.inputs.length - 1;
+    }
+
+    get() {
+        if (this.inputs.length > 0) {
+            return this.inputs[this.index];
+        }
+        return "";
+    }
+
+    prev() {
+        this.index -= 1;
+        if (this.index === -1) {
+            this.index = Math.min(this.inputs.length - 1, this.max);
+        }
+    }
+
+    next() {
+        this.index += 1;
+        if (this.index === Math.min(this.inputs.length, this.max)) {
+            this.index = 0;
+        }
     }
 }
 
@@ -99,9 +141,19 @@ class Chat {
     constructor(chat_id, chat_input_id) {
         Chat.CHAT       = this;
         this.ws         = new DFWebSocket();
+        this.history    = new History();
+        this.commands   = new Commands();
         this.chat       = $(chat_id);
         this.chat_input = $(chat_input_id);
-        this.chat_input.on("keyup", this.send);
+        this.chat_input.on("keyup", Chat.send);
+    }
+
+    get History() {
+        return this.history;
+    }
+
+    get Commands() {
+        return this.commands;
     }
 
     scroll() {
@@ -125,15 +177,30 @@ class Chat {
         this.add(what);
     }
 
-    send(e) {
+    static send(e) {
+        const chat = Chat.CHAT;
+
         if (e.keyCode === 13) {
             e.preventDefault();
 
-            this.add(new ChatMessage(Chat.User, this.value));
-            this.scroll();
-            this.value = "";
+            const text = this.value.substr(0, this.value.length - 1);
 
-            Chat.CHAT.ws.send(this.value);
+            chat.History.set(text);
+            chat.add(new ChatMessage(Chat.User, text));
+            chat.scroll();
+
+            chat.ws.send(text);
+            this.value = "";
+        } else if (e.keyCode === 38) {
+            e.preventDefault();
+
+            chat.History.prev();
+            chat.chat_input.focus().val(chat.History.get());
+        } else if (e.keyCode === 40) {
+            e.preventDefault();
+
+            chat.History.next();
+            chat.chat_input.focus().val(chat.History.get());
         }
     }
 }

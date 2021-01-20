@@ -1,4 +1,4 @@
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Any
 
 
 class IDFResponse:
@@ -27,6 +27,38 @@ class IDFResponse:
     @payload.setter
     def payload(self, payload: Dict):
         self._data['payload'] = payload
+
+
+class EmptyResponse(IDFResponse):
+    def __init__(self, data: Dict = None):
+        super().__init__(data)
+        self._data['type'] = 'empty'
+
+
+class ActionResponse(IDFResponse):
+    def __init__(self, data: Dict = None):
+        super().__init__(data)
+        self._data['type'] = 'action'
+        self._data['payload']['values'] = []
+
+    def __iadd__(self, value):
+        self._data['payload']['values'] += value
+
+    @property
+    def action(self) -> str:
+        return self._data['payload']['action']
+
+    @action.setter
+    def action(self, action: str):
+        self._data['payload']['action'] = action
+
+    @property
+    def values(self) -> List[Any]:
+        return self._data['payload']['values']
+
+    @values.setter
+    def values(self, values: List[Any]):
+        self._data['payload']['values'] = values
 
 
 class TextMessage(IDFResponse):
@@ -88,21 +120,21 @@ class QuickReply(IDFResponse):
     def __init__(self, data: Dict = None):
         super().__init__(data)
         self._data['type'] = 'quick_reply'
-        self._data['payload']['entries'] = []
+        self._data['payload']['values'] = []
 
     def __iter__(self):
-        return self._data['payload'].get('entries', [])
+        return self._data['payload'].get('values', [])
 
     @property
     def replies(self) -> List[Dict[str, str]]:
-        return self._data['payload']['entries']
+        return self._data['payload']['values']
 
     @replies.setter
     def replies(self, replies: List[Dict[str, str]]):
-        self._data['payload']['entries'] = replies
+        self._data['payload']['values'] = replies
 
     def add_reply(self, text: str, action: str):
-        self._data['payload']['entries'].append({
+        self._data['payload']['values'].append({
             'text': text,
             'action': action
         })
@@ -112,21 +144,21 @@ class Accordion(IDFResponse):
     def __init__(self, data: Dict = None):
         super().__init__(data)
         self._data['type'] = 'accordion'
-        self._data['payload']['entries'] = []
+        self._data['payload']['values'] = []
 
     def __iter__(self):
-        return self._data['payload'].get('entries', [])
+        return self._data['payload'].get('values', [])
 
     @property
     def panes(self) -> List[Dict[str, str]]:
-        return self._data['payload']['entries']
+        return self._data['payload']['values']
 
     @panes.setter
     def panes(self, panes: List[Dict[str, str]]):
-        self._data['payload']['entries'] = panes
+        self._data['payload']['values'] = panes
 
     def add_pane(self, title: str, text: str):
-        self._data['payload']['entries'].append({
+        self._data['payload']['values'].append({
             'title': title,
             'text': text
         })
