@@ -169,6 +169,7 @@ function addContentExamples() {
 /**
  * Constants
  */
+const DEBUG = false;
 let graph   = null;
 let chat    = null;
 let content = null;

@@ -3,7 +3,8 @@ class CustomWebSocket {
 
     constructor(ws_name) {
         CustomWebSocket.WS = this;
-        this.socket        = new WebSocket("ws://" + window.location.host + "/" + ws_name);
+        const protocol     = window.location.protocol === "https:" ? "wss" : "ws";
+        this.socket        = new WebSocket("{}://{}/{}".format(protocol, window.location.host, ws_name));
 
         this.socket.onopen    = this.onOpen
         this.socket.onclose   = this.onClose
