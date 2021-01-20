@@ -5,6 +5,10 @@ String.prototype.format = function () {
     });
 };
 
+String.prototype.parseBool = function () {
+    return !this.toLowerCase().startsWith("f");
+}
+
 Object.defineProperty(Object.prototype, '_keys', {
     value:      function () { return Object.keys(this); },
     enumerable: false
@@ -28,6 +32,8 @@ Object.defineProperty(Object.prototype, '_empty', {
 function isString(what) { return typeof what === "string"; }
 
 function isObject(what) { return typeof what === "object"; }
+
+function isBool(what) { return typeof what === "boolean"; }
 
 function time(date) {
     return "{}-{}-{} {}:{}:{}".format(
@@ -64,13 +70,25 @@ function error(what) {
     console.error(...formattedStack("ERROR  ", ...arguments))
 }
 
+function setConfig(key, value) {
+    if (isBool(value))
+        localStorage.setItem(key, value ? "1" : "0");
+    else
+        localStorage.setItem(key, value);
+}
+
+function getConfig(key) {
+    return localStorage.getItem(key);
+}
+
 function setDarkTheme(value) {
-    localStorage.setItem("dark-theme", value ? "1" : "0");
-    document.documentElement.className = value ? "dark-theme" : "light-theme";
+    setConfig("dark-theme", value);
+    document.documentElement.className       = value ? "dark-theme" : "light-theme";
+    document.getElementById("theme").checked = value;
 }
 
 function loadTheme() {
-    let dark_mode                            = localStorage.getItem("dark-theme") !== "0";
+    let dark_mode                            = getConfig("dark-theme") !== "0";
     document.getElementById("theme").checked = dark_mode;
     setDarkTheme(dark_mode);
 }
@@ -125,7 +143,7 @@ function addChatExamples() {
     chat.add(new ChatCard({
         "title": "More Cards",
         "image": "https://i.ytimg.com/vi/WhIqfqPJ_kY/maxresdefault.jpg",
-        "text": "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat",
+        "text":  "velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat",
         "link":  {
             "text": "See image in full size",
             "url":  "https://i.ytimg.com/vi/WhIqfqPJ_kY/maxresdefault.jpg"

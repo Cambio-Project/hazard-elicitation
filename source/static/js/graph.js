@@ -277,42 +277,20 @@ class Graph {
     }
 
     static onZoom() {
-        Graph.Anchor.attr("transform", d3.event.transform);
-        d3.select("#zoom").property("value", d3.event.transform.k);
-        Graph.ContextMenu.hide();
+        if(d3.event) {
+            Graph.Anchor.attr("transform", d3.event.transform);
+            d3.select("#zoom").property("value", d3.event.transform.k);
+            Graph.ContextMenu.hide();
+        }
     }
 
     static onLinkClick(e, _, arr) {
         let n = d3.select(arr[e.index]);
-
-        // if (n.attr("hazard") === "true")
-        //     return;
-        //
-        // if (!n.attr("active") || n.attr("active") === "false") {
-        //     n.attr("active", "true");
-        //     n.style("stroke", "red");
-        // } else {
-        //     n.attr("active", "false");
-        //     n.style("stroke", e.group);
-        // }
     }
 
     static onNodeClick(e, _, arr) {
         if (e.defaultPrevented)
             return;
-
-        // let n = d3.select(arr[e.index]);
-        //
-        // if (n.attr("hazard") === "true")
-        //     return;
-        //
-        // if (!n.attr("active") || n.attr("active") === "false") {
-        //     n.attr("active", "true");
-        //     n.style("fill", "red");
-        // } else {
-        //     n.attr("active", "false");
-        //     n.style("fill", e.group);
-        // }
     }
 
     static onContextMenu(e) {
@@ -356,30 +334,37 @@ class Graph {
 
     static stickyNodes(sticky) {
         Graph.set("sticky", sticky);
+        $("#stickynodes").prop('checked', sticky);
     }
 
     static showNodes(show) {
         Graph.Nodes.style("visibility", show ? "visible" : "hidden");
+        $("#shownode").prop('checked', show);
     }
 
     static showEdges(show) {
         Graph.Edges.style("visibility", show ? "visible" : "hidden");
+        $("#showlink").prop('checked', show);
     }
 
     static showNodeLabels(show) {
         Graph.NodeLabels.style("visibility", show ? "visible" : "hidden");
+        $("#shownodelabel").prop('checked', show);
     }
 
     static showEdgeLabels(show) {
         Graph.EdgeLabels.style("visibility", show ? "visible" : "hidden");
+        $("#showlinklabel").prop('checked', show);
     }
 
     static useTooltip(use) {
         Graph.set("tooltip", use);
+        $("#usetooltip").prop('checked', use);
     }
 
     static zoom(zoom_value) {
         Graph.GRAPH.zoom_level.scaleTo(Graph.SVG, Math.round(zoom_value * 10) / 10)
+        Graph.onZoom();
     }
 
     static toggleSimulation() { }
