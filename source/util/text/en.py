@@ -12,12 +12,10 @@ TEXT = {
         'Sorry, what was that?',
         'I didn\'t get that. Can you try something different?'
     ],
-    INTENT_FALLBACK_GIBBERISH_NAME:   '0-fallback-gibberish',
     INTENT_FALLBACK_GIBBERISH_TEXT:   [
         'That doesn\'t really make sense.',
         'Please write something in proper english.'
     ],
-    INTENT_FALLBACK_INSULT_NAME:      '0-fallback-insult',
     INTENT_FALLBACK_INSULT_TEXT:      [
         'Hey that\'s not nice. Please stay professional!',
         'I am sorry if you feel that way, but let\'s stay focused.'
@@ -38,6 +36,9 @@ TEXT = {
     INTENT_ELICITATION_QUESTION_TEXT: [
         'Is the service {} essential for the service to run optimally?'
     ],
+    INTENT_CONFIG_NAME:               '2-Config',
+    INTENT_CONFIG_LIST_NAME:          '2-Config-List',
+    INTENT_MANAGE_NAME:               '2-Manage',
     INTENT_FACT_NAME:                 'x-fact',
     INTENT_JOKE_NAME:                 'x-joke'
 }
