@@ -2,7 +2,6 @@ FROM python:3.8-slim
 
 WORKDIR .
 COPY requirements.txt .
-COPY keys.json .
 COPY source/ .
 
 RUN apt-get update && apt-get install -y --no-install-recommends gcc python-dev
