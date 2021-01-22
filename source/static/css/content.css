@@ -1,11 +1,13 @@
 .light-theme
 {
-  --tip-1-img : url("../img/tip_1.png");
+  --settings-image : url("../img/settings.png");
+  --tip-1-img      : url("../img/tip_1.png");
 }
 
 .dark-theme
 {
-  --tip-1-img : url("../img/tip_1_dark.png");
+  --settings-image : url("../img/settings_dark.png");
+  --tip-1-img      : url("../img/tip_1_dark.png");
 }
 
 .content
@@ -81,7 +83,7 @@
 }
 
 .nav-item > a.nav-link.config::after
-{ background-image : url("../img/settings.png"); }
+{ background-image : var(--settings-image); }
 
 /* Tab Content */
 
