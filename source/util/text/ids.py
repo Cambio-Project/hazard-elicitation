@@ -9,21 +9,26 @@ def text_id():
 
 DEFAULT = text_id()
 
+# Default response text
+INTENT_PROCESSING_ERROR = text_id()
+
+# Default intents
 INTENT_FALLBACK_NAME = text_id()
 INTENT_FALLBACK_TEXT = text_id()
-INTENT_FALLBACK_GIBBERISH_TEXT = text_id()
-INTENT_FALLBACK_INSULT_TEXT = text_id()
 INTENT_HELP_NAME = text_id()
 INTENT_HELP_TEXT = text_id()
 INTENT_WELCOME_NAME = text_id()
 INTENT_WELCOME_TEXT = text_id()
 
+# Elicitation intents
 INTENT_ELICITATION_QUESTION_NAME = text_id()
 INTENT_ELICITATION_QUESTION_TEXT = text_id()
 
-INTENT_CONFIG_NAME = text_id()
-INTENT_CONFIG_LIST_NAME = text_id()
-INTENT_MANAGE_NAME = text_id()
+# Config intents
+INTENT_CONFIG_COMMAND_NAME = text_id()
+INTENT_CONFIG_COMMAND_LIST_NAME = text_id()
+INTENT_CONFIG_MANAGE_NAME = text_id()
 
+# Extra intents
 INTENT_FACT_NAME = text_id()
 INTENT_JOKE_NAME = text_id()
