@@ -1,4 +1,5 @@
 ## Setup Django
+
 1. Create a new Django secret key.
 2. Fill the Django secret key into the `keys.json` file.
 
@@ -11,6 +12,8 @@
    - choose `Restore from zip`
    - place the Hazard Dialogflow agent into the drag & drop area.
 5. Fill the Google Cloud project name into the `keys.json` file.
+6. Generate Google Cloud credentials ([here](https://cloud.google.com/docs/authentication/getting-started) is a detailed HOWTO).
+7. Put the credentials in the `credentials.json` file.
 
 ## Setup Cloud Foundry
 
