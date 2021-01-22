@@ -3,8 +3,8 @@
 ```python
 generic_response = {
     'intent':  '',
-    'type':  '',
-    'payload':  {},
+    'type':    '',
+    'payload': {},
 }
 
 empty = {
@@ -36,7 +36,7 @@ card = {
     'payload': {
         'title': 'Hi',
         'text':  'Hi there that is wonderful!',
-        'image':  'www.example.com/image',
+        'image': 'www.example.com/image',
         'link':  {
             'text': 'Yep',
             'url':  'www.example.com'
@@ -51,11 +51,13 @@ quick_reply = {
         'values': [
             {
                 'text':   'Yes',
-                'action': ''
+                'action': '',
+                'values': []
             },
             {
                 'text':   'No',
-                'action': ''
+                'action': '',
+                'values': []
             }
         ]
     }
