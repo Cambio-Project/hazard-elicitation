@@ -30,7 +30,7 @@ class Graph {
         this.createContainer();
         this.createEdges();
         this.createNodes();
-        this.createLinkLabels();
+        this.createEdgeLabels();
         this.createNodeLabels();
 
         this.simulation = d3
@@ -39,7 +39,7 @@ class Graph {
             .force("center", d3.forceCenter(width / 2, height / 2))
             .force("x", d3.forceX(width / 2).strength(0.1))
             .force("y", d3.forceY(height / 2).strength(0.1))
-            .force("link", d3.forceLink(this.graph_edges).id(function (l) { return l.id; }).distance(25).strength(1))
+            .force("link", d3.forceLink(this.graph_edges).id(function (e) { return e.id; }).distance(25).strength(1))
             .on("tick", Graph.onTick);
 
         this.zoom_level = d3
@@ -150,7 +150,7 @@ class Graph {
             .attr("marker-end", "url(#end)")
             .attr("d", "M 0 0 L 0 0")
             .on("contextmenu", Graph.onContextMenu)
-            .on("click", Graph.onLinkClick)
+            .on("click", Graph.onEdgeClick)
             .on("mouseover", Graph.onMouseover)
             .on("mousemove", Graph.onMousemove)
             .on("mouseout", Graph.onMouseout);
@@ -175,7 +175,7 @@ class Graph {
             .on("mouseout", Graph.onMouseout);
     }
 
-    createLinkLabels() {
+    createEdgeLabels() {
         this.edge_labels = this
             .anchor
             .append("g")
@@ -284,7 +284,7 @@ class Graph {
         }
     }
 
-    static onLinkClick(e, _, arr) {
+    static onEdgeClick(e, _, arr) {
         let n = d3.select(arr[e.index]);
     }
 
@@ -334,32 +334,32 @@ class Graph {
 
     static stickyNodes(sticky) {
         Graph.set("sticky", sticky);
-        $("#stickynodes").prop('checked', sticky);
+        $("#sticky-nodes").prop('checked', sticky);
     }
 
     static showNodes(show) {
         Graph.Nodes.style("visibility", show ? "visible" : "hidden");
-        $("#shownode").prop('checked', show);
+        $("#show-nodes").prop('checked', show);
     }
 
     static showEdges(show) {
         Graph.Edges.style("visibility", show ? "visible" : "hidden");
-        $("#showlink").prop('checked', show);
+        $("#show-edges").prop('checked', show);
     }
 
     static showNodeLabels(show) {
         Graph.NodeLabels.style("visibility", show ? "visible" : "hidden");
-        $("#shownodelabel").prop('checked', show);
+        $("#show-node-labels").prop('checked', show);
     }
 
     static showEdgeLabels(show) {
         Graph.EdgeLabels.style("visibility", show ? "visible" : "hidden");
-        $("#showlinklabel").prop('checked', show);
+        $("#show-edge-labels").prop('checked', show);
     }
 
     static useTooltip(use) {
         Graph.set("tooltip", use);
-        $("#usetooltip").prop('checked', use);
+        $("#use-tooltips").prop('checked', use);
     }
 
     static zoom(zoom_value) {
