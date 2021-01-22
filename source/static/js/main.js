@@ -190,4 +190,6 @@ function onLoad() {
     addContentExamples();
 
     loadTheme();
+
+    chat.ws.event("welcome");
 }
