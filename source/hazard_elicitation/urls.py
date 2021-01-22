@@ -8,5 +8,6 @@ urlpatterns = [
     path('archex/', include('architecture_extraction_backend.urls')),
     path('dialogflow_backend/', include('dialogflow_backend.urls')),
 
+    path('', views.ui),
     path('ui/', views.ui),
 ]
