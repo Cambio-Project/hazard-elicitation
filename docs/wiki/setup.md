@@ -33,13 +33,13 @@ Follow these steps to deploy a python app on Cloud Foundry:
     4. Run the deployment script or use the following CLI commands in a terminal window to deploy:
         - via deployment script:
             - define `IBM_CLOUD_USER`, `IBM_CLOUD_PW`, `IBM_CLOUD_GROUP`, `IBM_CLOUD_ORG`, and `IBM_CLOUD_SPACE` in your environment
-            - > ./deploy.sh
+            - `./deploy.sh`
         - via manual cli input:
-            1. > ibmcloud login -u `<your username>` -p `<your password>`
-            2. > ibmcloud target -r `<Cloud Foundry region>` -g `<Cloud Foundry group>` -o `<Cloud Foundry organisation>` -s `<Cloud Foundry space>`
-            3. > ibmcloud cf push
+            1. `ibmcloud login -u <your username> -p <your password>`
+            2. `ibmcloud target -r <Cloud Foundry region> -g <Cloud Foundry group> -o <Cloud Foundry organisation> -s <Cloud Foundry space>`
+            3. `ibmcloud cf push`
        - via docker:
-         - > ibmcloud cf push --docker-image styinx/hazard_elicitation_slim
+         - `ibmcloud cf push --docker-image styinx/hazard_elicitation_slim`
 
 If everything went successfully you should [see](https://cloud.ibm.com/cloudfoundry/public) your app running.
 
