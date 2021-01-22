@@ -1,6 +1,30 @@
 # Hazard Elicitation
 
+![Tests](https://github.com/Cambio-Project/architecture-playground/workflows/Tests/badge.svg)
+![Model Test](https://github.com/Cambio-Project/architecture-playground/workflows/Model%20Tests/badge.svg)
+![Deploy](https://github.com/Cambio-Project/architecture-playground/workflows/Deploy/badge.svg)
+
+[Live](https://cambio-project.github.io/hazard-elicitation/)
+
+## Description
+
+This project consists of 2 different applications:
+- Architecture Extraction:
+  - Can import and create a model from:
+    - traces from Jaeger and Zipkin
+    - a MiSim architecture
+  - Can create a generic architecture description of services and operation as a graph
+  - Can validate models and architecture
+  - ~~Can perform an automated hazard analysis~~
+  - Can export a visualization of the architecture and analysis
+- Hazard Elicitation:
+  - ~~Provides an import of the architecture visualization and analysis~~
+  - ~~Provides a chatbot to elicit hazards~~
+
 ## Setup
+
+Have a look [here](https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/wiki/setup.md) 
+on how to set up Django, DialogFlow, and Cloud Foundry.
 
 ## Run
 
