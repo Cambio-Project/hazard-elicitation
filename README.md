@@ -4,7 +4,7 @@
 ![Model Test](https://github.com/Cambio-Project/architecture-playground/workflows/Model%20Tests/badge.svg)
 ![Deploy](https://github.com/Cambio-Project/architecture-playground/workflows/Deploy/badge.svg)
 
-[Live](https://cambio-project.github.io/hazard-elicitation/)
+[Live](https://hazardelicitation.eu-gb.mybluemix.net/ui/)
 
 ## Description
 
