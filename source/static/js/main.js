@@ -128,7 +128,6 @@ function onLoad() {
     content = new Content("#content");
     addContentExamples();
 
-    Config.clear();
     Config.loadConfig();
 
     chat.ws.event("welcome");

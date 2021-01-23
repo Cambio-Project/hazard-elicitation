@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="light-theme">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,6 +15,8 @@
   <script type="text/javascript" src="../../static/js/content.js"></script>
   <script type="text/javascript" src="../../static/js/chat.js"></script>
   <script type="text/javascript" src="../../static/js/graph.js"></script>
+  <script type="text/javascript" src="../../static/js/util.js"></script>
+  <script type="text/javascript" src="../../static/js/config.js"></script>
   <script type="text/javascript" src="../../static/js/commands.js"></script>
   <script type="text/javascript" src="../../static/js/sample_graph.js"></script>
 
@@ -29,7 +31,7 @@
 
   <title>Hazard Elicitation</title>
 </head>
-<body onload="onLoad();">
+<body>
 
 <div class="main">
   <div class="split">
@@ -146,14 +148,14 @@
                     <!-- Zoom and Graph -->
                     <div class="control-entry rline">
                       <div class="row">
-                        <label class="col-sm-6 col-form-label" for="zoom">Zoom</label>
-                        <input class="col-sm-5" type="range" min="0.1" max="4" value="1" step="0.1" id="zoom"
-                               onchange="Graph.zoom(this.value);"/>
+                        <label class="col-sm-6 col-form-label" for="graph-zoom">Zoom</label>
+                        <input class="col-sm-5" type="range" min="0.4" max="4" value="1" step="0.1" id="graph-zoom"
+                               onchange="Config.updateControl(this);"/>
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-6 col-form-label" for="network-selection">Graph</label>
-                        <select class="col-sm-5 form-control" id="network-selection">
+                        <label class="col-sm-6 col-form-label" for="graph-selection">Graph</label>
+                        <select class="col-sm-5 form-control" id="graph-selection">
                           <option>Hotrod</option>
                           <option>Books</option>
                           <option>ABCDE</option>
@@ -164,16 +166,16 @@
                     <!-- Sticky nodes and Tooltip -->
                     <div class="control-entry rline">
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="stickynodes">Sticky nodes</label>
+                        <label class="col-sm-9 col-form-label" for="sticky-nodes">Sticky nodes</label>
                         <div class="p-1">
-                          <input type="checkbox" id="stickynodes" onchange="Graph.stickyNodes(this.checked);"/>
+                          <input type="checkbox" id="sticky-nodes" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="usetooltip">Tooltips</label>
+                        <label class="col-sm-9 col-form-label" for="use-tooltips">Tooltips</label>
                         <div class="p-1">
-                          <input type="checkbox" id="usetooltip" onchange="Graph.useTooltip(this.checked);"/>
+                          <input type="checkbox" id="use-tooltips" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
                     </div>
@@ -181,16 +183,16 @@
                     <!-- Show nodes and edges -->
                     <div class="control-entry rline">
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="shownode">Show nodes</label>
+                        <label class="col-sm-9 col-form-label" for="show-nodes">Show nodes</label>
                         <div class="p-1">
-                          <input type="checkbox" id="shownode" onchange="Graph.showNodes(this.checked);" checked/>
+                          <input type="checkbox" id="show-nodes" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="showlink">Show links</label>
+                        <label class="col-sm-9 col-form-label" for="show-edges">Show edges</label>
                         <div class="p-1">
-                          <input type="checkbox" id="showlink" onchange="Graph.showEdges(this.checked);" checked/>
+                          <input type="checkbox" id="show-edges" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
                     </div>
@@ -198,17 +200,16 @@
                     <!-- Show node and edge labels -->
                     <div class="control-entry">
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="shownodelabel">Show node labels</label>
+                        <label class="col-sm-9 col-form-label" for="show-node-labels">Show node labels</label>
                         <div class="p-1">
-                          <input type="checkbox" id="shownodelabel" onchange="Graph.showNodeLabels(this.checked);"
-                                 checked/>
+                          <input type="checkbox" id="show-node-labels" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="showlinklabel">Show link labels</label>
+                        <label class="col-sm-9 col-form-label" for="show-edge-labels">Show edge labels</label>
                         <div class="p-1">
-                          <input type="checkbox" id="showlinklabel" onchange="Graph.showEdgeLabels(this.checked);"/>
+                          <input type="checkbox" id="show-edge-labels" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
                     </div>
@@ -235,8 +236,8 @@
                 </div>
 
                 <div class="m-md-2">
-                  <p class="tool-settings"><label for="theme" class="switch">Dark Theme</label></p>
-                  <input type="checkbox" id="theme" onchange="setDarkTheme(this.checked);">
+                  <p class="tool-settings"><label for="dark-theme" class="switch">Dark Theme</label></p>
+                  <input type="checkbox" id="dark-theme" onchange="Config.updateControl(this);">
                 </div>
               </div>
             </div>

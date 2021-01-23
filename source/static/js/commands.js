@@ -1,12 +1,29 @@
 class Commands {
-    static COMMANDS = {
-        'set-dark-theme': setDarkTheme,
-        'set-sticky-nodes': Graph.stickyNodes,
-        'set-zoom': Graph.zoom,
-        'set-node-visibility': Graph.showNodes,
-        'set-edge-visibility': Graph.showEdges,
-        'set-node-label-visibility': Graph.showNodeLabels,
-        'set-edge-label-visibility': Graph.showEdgeLabels,
+    static CONFIG_COMMANDS = {
+        "set-dark-theme":            "dark-theme",
+        "set-sticky-nodes":          "sticky-nodes",
+        "set-zoom":                  "graph-zoom",
+        "set-node-visibility":       "show-nodes",
+        "set-edge-visibility":       "show-edges",
+        "set-node-label-visibility": "show-node-labels",
+        "set-edge-label-visibility": "show-edge-labels",
+    }
+
+    static MANAGE_COMMANDS = {
+        "select": Graph.selectElement
+    }
+
+    static castValues(values) {
+        let casted_values = [];
+        for (const el of values) {
+            if (el.isBool())
+                casted_values.push(el.parseBool());
+            else if (el.isNumber())
+                casted_values.push(el.parseNumber());
+            else
+                casted_values.push(el);
+        }
+        return casted_values;
     }
 
     constructor() {
@@ -16,34 +33,38 @@ class Commands {
     call(action, values) {
         if (action === "command") {
             if (values.length < 1) {
-                warn("At least one argument required.")
+                warn("At least one argument required (command).")
                 return;
             }
 
             const command = values[0];
-            const args    = values.slice(1);
+            let args;
 
-            if (!(command in Commands.COMMANDS)) {
+            if (values.length > 1)
+                args = Commands.castValues(values.slice(1));
+
+
+            if (command in Commands.CONFIG_COMMANDS)
+                this.configCommand(command, args);
+            else if (command in Commands.MANAGE_COMMANDS)
+                this.manageCommand(command, args);
+            else
                 warn("Unknown command '{}'".format(command))
-                return;
-            }
-
-            if (args.length < 2) {
-                warn("At least two argument required for command call.")
-            } else if (args.length === 2) {
-                const type  = args[0];
-                const value = args[1];
-
-                switch (type) {
-                    case "bool":
-                        Commands.COMMANDS[command](value.parseBool());
-                        break;
-                    default:
-                        warn("Unknown type " + type)
-                }
-            } else {
-                Commands.COMMANDS[command](...values.slice(1));
-            }
         }
+    }
+
+    configCommand(command, args) {
+        const el_id = Commands.CONFIG_COMMANDS[command];
+        // Use default value if no value was sent.
+        // This will use the default for every element in the argument list.
+        if(args)
+            args = args.map(el => el === "" ? Config.getDefault(el_id) : el);
+
+        Config.setElement(el_id, ...args);
+        Config.updateControl(document.getElementById(el_id));
+    }
+
+    manageCommand(command, args) {
+        Commands.MANAGE_COMMANDS[command](...args);
     }
 }
