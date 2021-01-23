@@ -38,10 +38,11 @@ TEXT = {
         'Is the service {} essential for the service to run optimally?'
     ],
 
-    # Config
-    INTENT_CONFIG_COMMAND_NAME:       'Config-Command',
-    INTENT_CONFIG_COMMAND_LIST_NAME:  'Config-Command-List',
-    INTENT_CONFIG_MANAGE_NAME:        'Config-Manage',
+    # Util
+    INTENT_COMMAND_CONFIG_NAME:       'Command-Config',
+    INTENT_COMMAND_CONFIG_LIST_NAME:  'Command-Config-List',
+    INTENT_COMMAND_MANAGE_NAME:       'Command-Manage',
+    INTENT_COMMAND_MANAGE_LIST_NAME:  'Command-Manage-List',
 
     # Extra
     INTENT_FACT_NAME:                 'Extra-Fact',

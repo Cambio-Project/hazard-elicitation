@@ -47,9 +47,12 @@ async def elicitation_question_handler(result) -> List[Dict]:
 
 async def config_handler(result) -> List[Dict]:
     response = ActionResponse()
-    response.intent = text(INTENT_CONFIG_COMMAND_NAME)
+    response.intent = text(INTENT_COMMAND_CONFIG_NAME)
     response.action = 'command'
-    response.values = [result.query_result.parameters['command'], 'bool', result.query_result.parameters['value']]
+    response.values = [
+        result.query_result.parameters['config-command'],
+        result.query_result.parameters['config-command-value']
+    ]
     return [response.__repr__()]
 
 
@@ -58,8 +61,20 @@ async def config_list_handler(result) -> List[Dict]:
     cmd_list = '<ul>{}</ul>'.format(''.join(map(code_list, COMMANDS.keys())))
 
     response = Accordion()
-    response.intent = text(INTENT_CONFIG_COMMAND_LIST_NAME)
+    response.intent = text(INTENT_COMMAND_CONFIG_LIST_NAME)
     response.add_pane('Commands', cmd_list)
+    return [response.__repr__()]
+
+
+async def manage_handler(result) -> List[Dict]:
+    response = ActionResponse()
+    response.intent = text(INTENT_COMMAND_CONFIG_NAME)
+    response.action = 'command'
+    response.values = [
+        result.query_result.parameters['manage-command'],
+        result.query_result.parameters['manage-command-property'],
+        result.query_result.parameters['manage-command-value']
+    ]
     return [response.__repr__()]
 
 
