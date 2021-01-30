@@ -42,22 +42,40 @@ class DFWebSocket extends CustomWebSocket {
         super("ws/df/");
     }
 
-    send(data) {
-        chat.setPending();
-        this.socket.send(JSON.stringify({
-            'type': 'dialogflow_request',
-            'data': data
-        }))
+    static isReady() {
+        return new Promise(resolve => {
+            function checkSocketState() {
+                if (DFWebSocket.WS.socket.readyState === DFWebSocket.WS.socket.OPEN) {
+                    resolve();
+                } else {
+                    window.setTimeout(checkSocketState, 100);
+                }
+            }
+            checkSocketState();
+        });
     }
 
-    event(data) {
+    async send(data) {
+        await DFWebSocket.isReady()
         chat.setPending();
         this.socket.send(JSON.stringify({
-            'type': 'dialogflow_request',
+            'type': 'dialogflow_text_input',
             'data': data
-        }))
+        }));
     }
 
+    async event(data) {
+        await DFWebSocket.isReady();
+        this.socket.send(JSON.stringify({
+            'type': 'dialogflow_event_input',
+            'data': data
+        }));
+    }
+
+    /**
+     * Receives a dialogflow response. The response type defines the processing.
+     * @param data: Object  Take a look at existing response types.
+     */
     dialogflow_response(data) {
         chat.removePending();
         for (const [key, val] of data._entries()) {
@@ -171,7 +189,9 @@ class Chat {
     }
 
     removePending() {
-        document.getElementsByClassName("pending-message")[0].parentElement.parentElement.remove();
+        for (const el of document.getElementsByClassName("pending-message")) {
+            el.parentElement.parentElement.remove();
+        }
     }
 
     append(what) {

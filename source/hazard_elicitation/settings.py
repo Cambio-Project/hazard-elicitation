@@ -1,4 +1,6 @@
 import os
+import platform
+
 from util.config import Config
 from util.path import path
 
@@ -10,6 +12,7 @@ DEBUG = False
 FORMATTED_LOGGING = True
 KEYS = Config(path(BASE_DIR, '..', 'keys.json'))
 LANGUAGE_CODE = 'en-us'
+PLATFORM = platform.system()
 ROOT_URLCONF = 'hazard_elicitation.urls'
 SECRET_KEY = KEYS.get('django_secret')
 SESSION_COOKIE_SECURE = True
@@ -18,6 +21,7 @@ STATICFILES_DIRS = [path(BASE_DIR, 'static')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_URL = '/static/'
 TIME_ZONE = 'UTC'
+TRACING = False and PLATFORM != 'Windows'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True

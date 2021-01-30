@@ -133,10 +133,11 @@ class QuickReply(IDFResponse):
     def replies(self, replies: List[Dict[str, str]]):
         self._data['payload']['values'] = replies
 
-    def add_reply(self, text: str, action: str):
+    def add_reply(self, text: str, action: str, values: List):
         self._data['payload']['values'].append({
             'text': text,
-            'action': action
+            'action': action,
+            'values': values
         })
 
 

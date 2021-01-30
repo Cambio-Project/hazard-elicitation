@@ -1,8 +1,11 @@
 class Graph {
-    static GRAPH = null;
+    static GRAPH        = null;
+    static CONTEXT_MENU = null;
+    static SIMULATION = null;
 
     constructor(svg, context_menu, graph) {
-        Graph.GRAPH = this;
+        Graph.GRAPH        = this;
+        Graph.CONTEXT_MENU = new ContextMenu(context_menu);
 
         this.properties = {
             sticky_nodes:    false,
@@ -10,11 +13,11 @@ class Graph {
             node_size:       5,
             edge_size:       2,
             edge_arrow_size: {w: 2, h: 6},
+            zoom_range:      {min: 0.4, max: 4},
             colors:          d3.scaleOrdinal(d3.schemeCategory10)
         }
 
-        this.context_menu = new ContextMenu(context_menu);
-
+        // HTML
         this.svg = d3.select(svg);
         this.svg.on("click", function () { Graph.ContextMenu.hide() });
 
@@ -27,24 +30,26 @@ class Graph {
         const width      = this.svg.node().getBoundingClientRect().width;
         const height     = this.svg.node().getBoundingClientRect().height;
 
-        this.createContainer();
+        this.createAnchor();
         this.createEdges();
         this.createNodes();
-        this.createLinkLabels();
+        this.createEdgeLabels();
         this.createNodeLabels();
 
-        this.simulation = d3
+        // Simulation
+        Graph.SIMULATION = d3
             .forceSimulation(this.graph_nodes)
             .force("charge", d3.forceManyBody().strength(-10000))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .force("x", d3.forceX(width / 2).strength(0.1))
             .force("y", d3.forceY(height / 2).strength(0.1))
-            .force("link", d3.forceLink(this.graph_edges).id(function (l) { return l.id; }).distance(25).strength(1))
+            .force("link", d3.forceLink(this.graph_edges).id(function (e) { return e.id; }).distance(25).strength(1))
             .on("tick", Graph.onTick);
 
+        // Events
         this.zoom_level = d3
             .zoom()
-            .scaleExtent([.1, 4])
+            .scaleExtent(this.get("zoom_range")._values())
             .on("zoom", Graph.onZoom);
         this.svg.call(this.zoom_level);
 
@@ -86,15 +91,15 @@ class Graph {
                   .attr("class", "hazard")
             }
         }
-
-        Graph.zoom(1.5);
     }
 
     static get SVG() { return Graph.GRAPH.svg; }
 
     static get Anchor() { return Graph.GRAPH.anchor; }
 
-    static get Simulation() { return Graph.GRAPH.simulation; }
+    static get Simulation() { return Graph.SIMULATION; }
+
+    static get Zoom() { return Graph.GRAPH.zoom_level; }
 
     static get Graph() { return Graph.GRAPH.graph; }
 
@@ -106,7 +111,7 @@ class Graph {
 
     static get EdgeLabels() { return Graph.GRAPH.edge_labels; }
 
-    static get ContextMenu() { return Graph.GRAPH.context_menu; }
+    static get ContextMenu() { return Graph.CONTEXT_MENU; }
 
     static get(property) { return Graph.GRAPH.get(property); }
 
@@ -118,7 +123,7 @@ class Graph {
 
     /* Init Graph */
 
-    createContainer() {
+    createAnchor() {
         const node_size  = this.get("node_size");
         const arrow_size = this.get("edge_arrow_size");
         this.anchor
@@ -150,7 +155,7 @@ class Graph {
             .attr("marker-end", "url(#end)")
             .attr("d", "M 0 0 L 0 0")
             .on("contextmenu", Graph.onContextMenu)
-            .on("click", Graph.onLinkClick)
+            .on("click", Graph.onEdgeClick)
             .on("mouseover", Graph.onMouseover)
             .on("mousemove", Graph.onMousemove)
             .on("mouseout", Graph.onMouseout);
@@ -175,7 +180,7 @@ class Graph {
             .on("mouseout", Graph.onMouseout);
     }
 
-    createLinkLabels() {
+    createEdgeLabels() {
         this.edge_labels = this
             .anchor
             .append("g")
@@ -215,17 +220,23 @@ class Graph {
         return {"x": svg_pos.x + x, "y": svg_pos.y + y}
     }
 
+    /*  */
+
+    static selectElement(type, name) {
+        console.log(type, name)
+    }
+
     /* Callbacks */
 
     static onTick() {
-        Graph.Edges.attr("d", function (l) {
+        Graph.Edges.attr("d", function (e) {
             const node_size = Graph.get("node_size");
-            const x1        = l.source.x,
-                  y1        = l.source.y,
-                  x2        = l.target.x,
-                  y2        = l.target.y;
+            const x1        = e.source.x,
+                  y1        = e.source.y,
+                  x2        = e.target.x,
+                  y2        = e.target.y;
 
-            if (l.source !== l.target) {
+            if (e.source !== e.target) {
                 const dx = x2 - x1,
                       dy = y2 - y1,
                       dr = Math.sqrt(dx * dx + dy * dy);
@@ -233,19 +244,19 @@ class Graph {
                 return "M {} {} A {} {} 0 0 1 {} {}".format(x1, y1, dr, dr, x2, y2); // curved line
                 // return "M {} {} L {} {}".format(x1, y1, x2, y2) // straight line
             }
-            const scale = l.label.length * 3; // TODO size of the curve
+            const scale = e.label.length * 3; // TODO size of the curve
             return "M {} {} C {} {} {} {} {} {}".format(x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, x2 + node_size / 2, y2 + node_size / 2);
         })
 
-        Graph.Edges.attr("d", function (l) {
+        Graph.Edges.attr("d", function (e) {
             const node_size  = Graph.get("node_size");
             const edge_size  = Graph.get("edge_size");
             const arrow_size = Graph.get("edge_arrow_size");
 
-            const x1 = l.source.x,
-                  y1 = l.source.y,
-                  x2 = l.target.x,
-                  y2 = l.target.y;
+            const x1 = e.source.x,
+                  y1 = e.source.y,
+                  x2 = e.target.x,
+                  y2 = e.target.y;
 
             const pl = this.getTotalLength(),
                   r  = node_size + arrow_size.h + edge_size * 2,
@@ -255,10 +266,10 @@ class Graph {
                   dy = m.y - y1,
                   dr = Math.sqrt(dx * dx + dy * dy);
 
-            if (l.source !== l.target) {
+            if (e.source !== e.target) {
                 return "M" + x1 + "," + y1 + "A" + dr + "," + dr + " 0 0,1 " + m.x + "," + m.y;
             } else {
-                const scale = l.label.length * 3; // TODO size of the curve
+                const scale = e.label.length * 3; // TODO size of the curve
                 return "M {} {} C {} {} {} {} {} {}".format(x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, m.x, m.y);
             }
         })
@@ -272,19 +283,21 @@ class Graph {
              .attr("y", function (n) { return n.y; });
 
         Graph.EdgeLabels
-             .attr("x", function (l) { return l.source.x + (l.target.x - l.source.x) * 0.5 + 10; })
-             .attr("y", function (l) { return l.source.y + (l.target.y - l.source.y) * 0.5 + 15; });
+             .attr("x", function (e) { return e.source.x + (e.target.x - e.source.x) * 0.5 + 10; })
+             .attr("y", function (e) { return e.source.y + (e.target.y - e.source.y) * 0.5 + 15; });
     }
 
     static onZoom() {
-        if(d3.event) {
-            Graph.Anchor.attr("transform", d3.event.transform);
-            d3.select("#zoom").property("value", d3.event.transform.k);
-            Graph.ContextMenu.hide();
-        }
+        if (d3.event.sourceEvent?.type === "wheel")
+            Config.setElement("graph-zoom", d3.event.transform.k);
+
+        Graph.Anchor.attr("transform", d3.event.transform);
+        Graph.ContextMenu.hide();
     }
 
-    static onLinkClick(e, _, arr) {
+    static zoom(val) { Graph.Zoom.scaleTo(Graph.SVG, val); }
+
+    static onEdgeClick(e, _, arr) {
         let n = d3.select(arr[e.index]);
     }
 
@@ -331,41 +344,6 @@ class Graph {
     }
 
     /* Control Callbacks*/
-
-    static stickyNodes(sticky) {
-        Graph.set("sticky", sticky);
-        $("#stickynodes").prop('checked', sticky);
-    }
-
-    static showNodes(show) {
-        Graph.Nodes.style("visibility", show ? "visible" : "hidden");
-        $("#shownode").prop('checked', show);
-    }
-
-    static showEdges(show) {
-        Graph.Edges.style("visibility", show ? "visible" : "hidden");
-        $("#showlink").prop('checked', show);
-    }
-
-    static showNodeLabels(show) {
-        Graph.NodeLabels.style("visibility", show ? "visible" : "hidden");
-        $("#shownodelabel").prop('checked', show);
-    }
-
-    static showEdgeLabels(show) {
-        Graph.EdgeLabels.style("visibility", show ? "visible" : "hidden");
-        $("#showlinklabel").prop('checked', show);
-    }
-
-    static useTooltip(use) {
-        Graph.set("tooltip", use);
-        $("#usetooltip").prop('checked', use);
-    }
-
-    static zoom(zoom_value) {
-        Graph.GRAPH.zoom_level.scaleTo(Graph.SVG, Math.round(zoom_value * 10) / 10)
-        Graph.onZoom();
-    }
 
     static toggleSimulation() { }
 
@@ -422,11 +400,5 @@ class ContextMenu {
         this.anchor.append(this.createItems(element.data));
     }
 
-    hide() {
-        this.context_menu
-            .css({
-                "visibility": "hidden",
-                "opacity":    "0"
-            });
-    }
+    hide() { this.context_menu.css({"visibility": "hidden", "opacity": "0"}); }
 }

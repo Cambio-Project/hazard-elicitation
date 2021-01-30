@@ -14,6 +14,18 @@ class DialogFlowClient:
     AUDIO_SAMPLE_RATE = 48000
 
     @staticmethod
+    def detect_event(event: str, session: str = uuid.uuid4()):
+        session_client = df.SessionsClient()
+        session = session_client.session_path(DialogFlowClient.PROJECT, session)
+
+        event_input = df.types.EventInput(name=event, language_code=DialogFlowClient.LANGUAGE)
+        query_input = df.types.QueryInput(event=event_input)
+
+        return session_client.detect_intent(
+            session=session,
+            query_input=query_input)
+
+    @staticmethod
     def detect_intent(text: str, session: str = uuid.uuid4()):
         session_client = df.SessionsClient()
         session = session_client.session_path(DialogFlowClient.PROJECT, session)

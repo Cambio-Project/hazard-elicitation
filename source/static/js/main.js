@@ -1,40 +1,3 @@
-String.prototype.format = function () {
-    let i = 0, args = arguments;
-    return this.replace(/{}/g, function () {
-        return typeof args[i] != 'undefined' ? args[i++] : '';
-    });
-};
-
-String.prototype.parseBool = function () {
-    return !this.toLowerCase().startsWith("f");
-}
-
-Object.defineProperty(Object.prototype, '_keys', {
-    value:      function () { return Object.keys(this); },
-    enumerable: false
-});
-
-Object.defineProperty(Object.prototype, '_values', {
-    value:      function () { return Object.keys(this).map(k => this[k]); },
-    enumerable: false
-});
-
-Object.defineProperty(Object.prototype, '_entries', {
-    value:      function () { return Object.entries(this); },
-    enumerable: false
-});
-
-Object.defineProperty(Object.prototype, '_empty', {
-    value:      function () { return Object.keys(this).length === 0; },
-    enumerable: false
-});
-
-function isString(what) { return typeof what === "string"; }
-
-function isObject(what) { return typeof what === "object"; }
-
-function isBool(what) { return typeof what === "boolean"; }
-
 function time(date) {
     return "{}-{}-{} {}:{}:{}".format(
         date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
@@ -70,33 +33,7 @@ function error(what) {
     console.error(...formattedStack("ERROR  ", ...arguments))
 }
 
-function setConfig(key, value) {
-    if (isBool(value))
-        localStorage.setItem(key, value ? "1" : "0");
-    else
-        localStorage.setItem(key, value);
-}
 
-function getConfig(key) {
-    return localStorage.getItem(key);
-}
-
-function setDarkTheme(value) {
-    setConfig("dark-theme", value);
-    document.documentElement.className       = value ? "dark-theme" : "light-theme";
-    document.getElementById("theme").checked = value;
-}
-
-function loadTheme() {
-    let dark_mode                            = getConfig("dark-theme") !== "0";
-    document.getElementById("theme").checked = dark_mode;
-    setDarkTheme(dark_mode);
-}
-
-function showAdvancedElements(show) {
-    const elements = $(".advanced");
-    show ? elements.css("display", "inline-block") : elements.css("display", "none");
-}
 
 function splitAreas() {
     Split(['#left', '#bot'], {
@@ -174,6 +111,9 @@ let graph   = null;
 let chat    = null;
 let content = null;
 
+window.onload = onLoad;
+window.onunload = onUnLoad;
+
 /**
  * Runs on page load.
  */
@@ -181,7 +121,6 @@ function onLoad() {
     splitAreas();
 
     graph = new Graph("#graph", "#context-menu", sample_graph);
-    Graph.showEdgeLabels(this.checked);
 
     chat = new Chat("#chat", "#user-input");
     addChatExamples()
@@ -189,5 +128,14 @@ function onLoad() {
     content = new Content("#content");
     addContentExamples();
 
-    loadTheme();
+    Config.loadConfig();
+
+    chat.ws.event("welcome");
+}
+
+/**
+ * Runs when page is left.
+ */
+function onUnLoad() {
+    Config.storeConfig();
 }
