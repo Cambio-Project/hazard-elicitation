@@ -5,6 +5,7 @@ from dialogflow_backend.dialogflow.intent_handler import *
 from dialogflow_backend.dialogflow.client import DialogFlowClient
 from dialogflow_backend.dialogflow.intents import INTENT_HANDLERS
 from util.log import info, warning, error, debug
+from util.tracing import add_trace
 
 
 class DFWebsocket(AsyncWebsocketConsumer):
@@ -68,6 +69,7 @@ class DFWebsocket(AsyncWebsocketConsumer):
 
         await getattr(self, msg_type)(data.get('data'))
 
+    @add_trace(True)
     async def response_handler(self, result):
         """
         Gets a detected intent and calls the intent handler of the corresponding intent.
@@ -100,6 +102,7 @@ class DFWebsocket(AsyncWebsocketConsumer):
             'data': response_data
         }))
 
+    @add_trace(True)
     async def dialogflow_text_input(self, data: str):
         """
         Processes text input from a user and detects an intent.
@@ -111,6 +114,7 @@ class DFWebsocket(AsyncWebsocketConsumer):
         except Exception as e:
             error('Something went wrong during text input processing: {}'.format(e))
 
+    @add_trace(True)
     async def dialogflow_event_input(self, data: str):
         """
         Processes an event and triggers a response based on the detected intent.
