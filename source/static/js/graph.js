@@ -1,7 +1,7 @@
 class Graph {
     static GRAPH        = null;
     static CONTEXT_MENU = null;
-    static SIMULATION = null;
+    static SIMULATION   = null;
 
     constructor(svg, context_menu, graph) {
         Graph.GRAPH        = this;
@@ -82,12 +82,12 @@ class Graph {
         const vs = graph.hazards._values();
         for (const v in vs) {
             for (const n in vs[v].nodes) {
-                na.find("#" + vs[v].nodes[n])
+                na.find("[nid='{}']".format(vs[v].nodes[n]))
                   .attr("class", "hazard")
             }
 
-            for (const n in vs[v].edges) {
-                ea.find("#" + vs[v].edges[n])
+            for (const e in vs[v].edges) {
+                ea.find("[eid='{}']".format(vs[v].edges[e]))
                   .attr("class", "hazard")
             }
         }
@@ -151,7 +151,7 @@ class Graph {
             .data(this.graph_edges)
             .enter()
             .append("path")
-            .attr("id", function (e) { return e.id; })
+            .attr("eid", function (e) { return e.id; })
             .attr("marker-end", "url(#end)")
             .attr("d", "M 0 0 L 0 0")
             .on("contextmenu", Graph.onContextMenu)
@@ -170,9 +170,9 @@ class Graph {
             .data(this.graph_nodes)
             .enter()
             .append("circle")
+            .attr("nid", function (n) { return n.id; })
             .attr("r", this.get("node_size"))
-            .attr("id", function (n) { return n.id; })
-            .attr("fill", function (n) { if (n.hazard) return "red"; else return Graph.get("colors")(n.group); })
+            .attr("fill", function (n) { return Graph.get("colors")(n.group); })
             .on("contextmenu", Graph.onContextMenu)
             .on("click", Graph.onNodeClick)
             .on("mouseover", Graph.onMouseover)
@@ -223,7 +223,27 @@ class Graph {
     /*  */
 
     static selectElement(type, name) {
-        console.log(type, name)
+        const is_edge = type === "edge";
+        const search = is_edge ? Graph.Graph.edges : Graph.Graph.nodes;
+        let el       = null;
+        for (const i in search) {
+            if (search[i].label === name) {
+                el = search[i];
+                break;
+            }
+        }
+        if (el !== null) {
+            if(!is_edge) {
+                const nodes = $(".nodes");
+                nodes.find('circle[active="true"]').attr("active", false);
+                nodes.find(`circle[nid="${el.id}"]`).attr("active", true);
+            } else {
+                const edges = $(".edges");
+                info(edges.find(`path[eid="${el.id}"]`))
+                edges.find('path[active="true"]').attr("active", false);
+                edges.find(`path[eid="${el.id}"]`).attr("active", true);
+            }
+        }
     }
 
     /* Callbacks */

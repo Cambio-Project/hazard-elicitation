@@ -34,7 +34,6 @@ function error(what) {
 }
 
 
-
 function splitAreas() {
     Split(['#left', '#bot'], {
         sizes:      [75, 25],
@@ -106,12 +105,12 @@ function addContentExamples() {
 /**
  * Constants
  */
-const DEBUG = false;
+const DEBUG = true;
 let graph   = null;
 let chat    = null;
 let content = null;
 
-window.onload = onLoad;
+window.onload   = onLoad;
 window.onunload = onUnLoad;
 
 /**
@@ -120,13 +119,14 @@ window.onunload = onUnLoad;
 function onLoad() {
     splitAreas();
 
-    graph = new Graph("#graph", "#context-menu", sample_graph);
-
-    chat = new Chat("#chat", "#user-input");
-    addChatExamples()
-
+    graph   = new Graph("#graph", "#context-menu", sample_graph);
+    chat    = new Chat("#chat", "#user-input");
     content = new Content("#content");
-    addContentExamples();
+
+    if(DEBUG) {
+        addChatExamples()
+        addContentExamples();
+    }
 
     Config.loadConfig();
 

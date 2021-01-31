@@ -64,9 +64,11 @@ class Content {
         if (type === "node") {
             element = Graph.Graph.nodes[id];
             type    = "Service";
+            $(".nodes").find(`circle[nid="${id}"]`).addClass("hazard");
         } else {
             element = Graph.Graph.edges[id];
             type    = "Operation";
+            $(".edges").find(`path[eid="${id}"]`).addClass("hazard");
         }
 
         let properties = "";

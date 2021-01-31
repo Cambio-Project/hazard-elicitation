@@ -57,6 +57,9 @@
 .nodes circle.hazard
 { fill : var(--hazard-color); }
 
+.nodes circle[active="true"]
+{ fill: red; }
+
 .edges
 {
     fill         : transparent;
@@ -69,6 +72,9 @@
 
 .edges path.hazard
 { stroke : var(--hazard-color); }
+
+.edges path[active="true"]
+{ stroke: red; }
 
 .edge-labels
 {
