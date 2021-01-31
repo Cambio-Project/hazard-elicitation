@@ -1,12 +1,27 @@
 import os
-from hazard_elicitation.settings import LANGUAGE_CODE, KEYS
+
+from hazard_elicitation.settings import LANGUAGE_CODE, KEYS, TRACING
 from util.text.languages import LanguageConfig
 from util.log import *
 
+if TRACING:
+    from util.tracing import Tracer
+
 
 def setup():
-    LanguageConfig.LANGUAGE = LANGUAGE_CODE
+    # Language settings
     info('"{}" set as default language.'.format(LanguageConfig.LANGUAGE))
+    LanguageConfig.LANGUAGE = LANGUAGE_CODE
+
+    # Tracing
+    if TRACING:
+        info('Initialize Tracing.'.format(LanguageConfig.LANGUAGE))
+        Tracer.setup("hazard")
+
+
+def teardown():
+    if TRACING:
+        Tracer.tracer().close()
 
 
 def main():
@@ -20,11 +35,18 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
 
+    info('Setup')
     setup()
+
     if not KEYS.get('django_secret'):
         error('Check your "keys.json" file.')
+    if not os.getenv('GOOGLE_APPLICATION_CREDENTIALS'):
+        error('Check your "credentials.json" file.')
 
     execute_from_command_line(sys.argv)
+
+    info('Teardown')
+    teardown()
 
 
 if __name__ == '__main__':
