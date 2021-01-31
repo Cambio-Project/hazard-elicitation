@@ -51,6 +51,7 @@ class DFWebSocket extends CustomWebSocket {
                     window.setTimeout(checkSocketState, 100);
                 }
             }
+
             checkSocketState();
         });
     }
@@ -342,25 +343,22 @@ class ChatAccordion extends ChatElement {
         for (const [index, section] of this.sections._entries()) {
             content += "" +
                 `<div class="card ${this.actor} no-shadow">
-                    <div class="card-header" id="accordion-${ChatAccordion.ID}-${index}-button">
+                    <div class="card-header" id="accordion-${ChatAccordion.ID}-${index}-header">
                         <h5 class="mb-0">
                             <button class="btn btn-link w-100 text-left"
                                     data-toggle="collapse"
-                                    data-target="#${ChatAccordion.ID}-${index}"
-                                    aria-expanded="false" 
-                                    aria-controls="${ChatAccordion.ID}-${index}">
-                                <i class="arrow"></i>
-                                &nbsp;&nbsp;${section.title}
+                                    aria-expanded="false"
+                                    data-target="#accordion-${ChatAccordion.ID}-${index}-body" 
+                                    aria-controls="accordion-${ChatAccordion.ID}-${index}-body">
+                                <i class="arrow"></i>&nbsp;&nbsp;${section.title}
                             </button>
                         </h5>
                     </div>
-                    <div id="${ChatAccordion.ID}-${index}" 
-                         class="collapse card-body" 
-                         aria-labelledby="accordion-${ChatAccordion.ID}-${index}-button" 
-                         data-parent="#accordion">
-                        <div class="card-body">
-                            ${section.text}
-                        </div>
+                    <div class="collapse card-body"
+                         id="accordion-${ChatAccordion.ID}-${index}-body" 
+                         aria-labelledby="accordion-${ChatAccordion.ID}-${index}-header" 
+                         data-parent="#accordion-${ChatAccordion.ID}-${index}-header">
+                        <div class="card-body">${section.text}</div>
                     </div>
                 </div>`;
         }

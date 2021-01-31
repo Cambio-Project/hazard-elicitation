@@ -5,10 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Third party JS -->
-  <script type="text/javascript" src="../../static/js/third_party/jquery.js"></script>
-  <script type="text/javascript" src="../../static/js/third_party/bootstrap.js"></script>
-  <script type="text/javascript" src="../../static/js/third_party/split.js"></script>
-  <script type="text/javascript" src="../../static/js/third_party/d3.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+          integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"
+          integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg=="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.2/split.min.js"
+          integrity="sha512-to2k78YjoNUq8+hnJS8AwFg/nrLRFLdYYalb18SlcsFRXavCOTfBF3lNyplKkLJeB8YjKVTb1FPHGSy9sXfSdg=="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"
+          integrity="sha512-FHsFVKQ/T1KWJDGSbrUhTJyS1ph3eRrxI228ND0EGaEp6v4a/vGwPWd3Dtd/+9cI7ccofZvl/wulICEurHN1pg=="
+          crossorigin="anonymous"></script>
+
+  <!--
+    <script type="text/javascript" src="../../static/js/third_party/jquery.js"></script>
+    <script type="text/javascript" src="../../static/js/third_party/bootstrap.js"></script>
+    <script type="text/javascript" src="../../static/js/third_party/split.js"></script>
+    <script type="text/javascript" src="../../static/js/third_party/d3.js"></script>
+  -->
 
   <!-- Custom JS -->
   <script type="text/javascript" src="../../static/js/main.js"></script>
@@ -247,7 +263,7 @@
 
       <!-- Chat -->
       <div id="bot">
-        <div id="chat" class="chat"></div>
+        <div id="chat" class="chat flex-column justify-content-end"></div>
         <div id="chat-input">
           <div class="chat-area">
             <textarea class="w-100 h-100 input-area" id="user-input"
