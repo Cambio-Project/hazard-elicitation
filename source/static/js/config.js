@@ -107,13 +107,13 @@ class Config {
 
     static stickyNodes(sticky) { Graph.set("sticky", sticky); }
 
-    static showNodes(show) { Graph.Nodes.style("visibility", show ? "visible" : "hidden"); }
+    static showNodes(show) { Graph.this.nodes.style("visibility", show ? "visible" : "hidden"); }
 
-    static showEdges(show) { Graph.Edges.style("visibility", show ? "visible" : "hidden"); }
+    static showEdges(show) { Graph.this.edges.style("visibility", show ? "visible" : "hidden"); }
 
-    static showNodeLabels(show) { Graph.NodeLabels.style("visibility", show ? "visible" : "hidden"); }
+    static showNodeLabels(show) { Graph.this.node_labels.style("visibility", show ? "visible" : "hidden"); }
 
-    static showEdgeLabels(show) { Graph.EdgeLabels.style("visibility", show ? "visible" : "hidden"); }
+    static showEdgeLabels(show) { Graph.this.edge_labels.style("visibility", show ? "visible" : "hidden"); }
 
     static useTooltip(use) { Graph.set("tooltip", use);}
 

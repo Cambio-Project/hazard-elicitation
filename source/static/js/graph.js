@@ -1,7 +1,6 @@
 class Graph {
     static GRAPH        = null;
     static CONTEXT_MENU = null;
-    static SIMULATION   = null;
 
     constructor(svg, context_menu, graph) {
         Graph.GRAPH        = this;
@@ -37,7 +36,7 @@ class Graph {
         this.createNodeLabels();
 
         // Simulation
-        Graph.SIMULATION = d3
+        this.simulation = d3
             .forceSimulation(this.graph_nodes)
             .force("charge", d3.forceManyBody().strength(-10000))
             .force("center", d3.forceCenter(width / 2, height / 2))
@@ -58,7 +57,7 @@ class Graph {
               .on("start", function (n) {
                   d3.event.sourceEvent.stopPropagation();
                   if (!d3.event.active)
-                      Graph.Simulation.alphaTarget(0.5).restart();
+                      Graph.this.simulation.alphaTarget(0.5).restart();
                   n.fx = n.x;
                   n.fy = n.y;
               })
@@ -70,52 +69,34 @@ class Graph {
               .on("end", function (n) {
                   if (!Graph.get("sticky")) {
                       if (!d3.event.active)
-                          Graph.Simulation.alphaTarget(0);
+                          Graph.this.simulation.alphaTarget(0);
                       n.fx = null;
                       n.fy = null;
                   }
               })
         );
 
+        // Hazards
         const na = $(".nodes");
         const ea = $(".edges");
-        const vs = graph.hazards._values();
-        for (const v in vs) {
-            for (const n in vs[v].nodes) {
-                na.find("[nid='{}']".format(vs[v].nodes[n]))
-                  .attr("class", "hazard")
+        for (const hazard of graph.hazards._values()) {
+            for (const nid of hazard.nodes) {
+                na.find("[nid='{}']".format(nid)).attr("class", "hazard")
             }
 
-            for (const e in vs[v].edges) {
-                ea.find("[eid='{}']".format(vs[v].edges[e]))
-                  .attr("class", "hazard")
+            for (const eid of hazard.edges) {
+                ea.find("[eid='{}']".format(eid)).attr("class", "hazard")
             }
         }
     }
 
-    static get SVG() { return Graph.GRAPH.svg; }
-
-    static get Anchor() { return Graph.GRAPH.anchor; }
-
-    static get Simulation() { return Graph.SIMULATION; }
-
-    static get Zoom() { return Graph.GRAPH.zoom_level; }
-
-    static get Graph() { return Graph.GRAPH.graph; }
-
-    static get Nodes() { return Graph.GRAPH.nodes; }
-
-    static get NodeLabels() { return Graph.GRAPH.node_labels; }
-
-    static get Edges() { return Graph.GRAPH.edges; }
-
-    static get EdgeLabels() { return Graph.GRAPH.edge_labels; }
+    static get this() { return Graph.GRAPH; }
 
     static get ContextMenu() { return Graph.CONTEXT_MENU; }
 
-    static get(property) { return Graph.GRAPH.get(property); }
+    static get(property) { return Graph.this.get(property); }
 
-    static set(property, value) { Graph.GRAPH.set(property, value); }
+    static set(property, value) { Graph.this.set(property, value); }
 
     get(property) { return this.properties[property]; }
 
@@ -206,11 +187,11 @@ class Graph {
 
     static transformCoordinates(ctx, x_offset = 0, y_offset = 0) {
         // Position
-        const svg_pos   = Graph.SVG.node().getBoundingClientRect();
+        const svg_pos   = Graph.this.SVG.node().getBoundingClientRect();
         const mouse_pos = d3.mouse(ctx);
 
         // Transformation
-        const transform     = d3.zoomTransform(Graph.Anchor.node());
+        const transform     = d3.zoomTransform(Graph.this.anchor.node());
         const zoom_factor   = transform.k;
         const scroll_offset = transform.invert(mouse_pos);
 
@@ -224,22 +205,15 @@ class Graph {
 
     static selectElement(type, name) {
         const is_edge = type === "edge";
-        const search = is_edge ? Graph.Graph.edges : Graph.Graph.nodes;
-        let el       = null;
-        for (const i in search) {
-            if (search[i].label === name) {
-                el = search[i];
-                break;
-            }
-        }
+        const search  = is_edge ? Graph.this.edges._values() : Graph.this.nodes._values();
+        let el        = search.find(e => e.label === name);
         if (el !== null) {
-            if(!is_edge) {
+            if (!is_edge) {
                 const nodes = $(".nodes");
                 nodes.find('circle[active="true"]').attr("active", false);
                 nodes.find(`circle[nid="${el.id}"]`).attr("active", true);
             } else {
                 const edges = $(".edges");
-                info(edges.find(`path[eid="${el.id}"]`))
                 edges.find('path[active="true"]').attr("active", false);
                 edges.find(`path[eid="${el.id}"]`).attr("active", true);
             }
@@ -249,7 +223,7 @@ class Graph {
     /* Callbacks */
 
     static onTick() {
-        Graph.Edges.attr("d", function (e) {
+        Graph.this.edges.attr("d", function (e) {
             const node_size = Graph.get("node_size");
             const x1        = e.source.x,
                   y1        = e.source.y,
@@ -268,15 +242,13 @@ class Graph {
             return "M {} {} C {} {} {} {} {} {}".format(x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, x2 + node_size / 2, y2 + node_size / 2);
         })
 
-        Graph.Edges.attr("d", function (e) {
+        Graph.this.edges.attr("d", function (e) {
             const node_size  = Graph.get("node_size");
             const edge_size  = Graph.get("edge_size");
             const arrow_size = Graph.get("edge_arrow_size");
 
             const x1 = e.source.x,
-                  y1 = e.source.y,
-                  x2 = e.target.x,
-                  y2 = e.target.y;
+                  y1 = e.source.y;
 
             const pl = this.getTotalLength(),
                   r  = node_size + arrow_size.h + edge_size * 2,
@@ -294,15 +266,15 @@ class Graph {
             }
         })
 
-        Graph.Nodes
+        Graph.this.nodes
              .attr("cx", function (n) { return n.x; })
              .attr("cy", function (n) { return n.y; });
 
-        Graph.NodeLabels
+        Graph.this.node_labels
              .attr("x", function (n) { return n.x + 10; })
              .attr("y", function (n) { return n.y; });
 
-        Graph.EdgeLabels
+        Graph.this.edge_labels
              .attr("x", function (e) { return e.source.x + (e.target.x - e.source.x) * 0.5 + 10; })
              .attr("y", function (e) { return e.source.y + (e.target.y - e.source.y) * 0.5 + 15; });
     }
@@ -311,20 +283,15 @@ class Graph {
         if (d3.event.sourceEvent?.type === "wheel")
             Config.setElement("graph-zoom", d3.event.transform.k);
 
-        Graph.Anchor.attr("transform", d3.event.transform);
+        Graph.this.anchor.attr("transform", d3.event.transform);
         Graph.ContextMenu.hide();
     }
 
-    static zoom(val) { Graph.Zoom.scaleTo(Graph.SVG, val); }
+    static zoom(val) { Graph.this.zoom_level.scaleTo(Graph.this.svg, val); }
 
-    static onEdgeClick(e, _, arr) {
-        let n = d3.select(arr[e.index]);
-    }
+    static onEdgeClick(e, _, arr) { }
 
-    static onNodeClick(e, _, arr) {
-        if (e.defaultPrevented)
-            return;
-    }
+    static onNodeClick(e, _, arr) { }
 
     static onContextMenu(e) {
         const coords = Graph.transformCoordinates(this, 20, 10)
@@ -365,13 +332,15 @@ class Graph {
 
     /* Control Callbacks*/
 
+    static stopSimulation() { Graph.this.simulation.stop(); }
+
     static toggleSimulation() { }
 
-    static pauseSimulation() { Graph.Simulation.alphaTarget(0); }
+    static pauseSimulation() { Graph.this.simulation.alphaTarget(0); }
 
-    static resumeSimulation() { Graph.Simulation.alphaTarget(0.5); }
+    static resumeSimulation() { Graph.this.simulation.alphaTarget(0.5); }
 
-    static restartSimulation() { Graph.Simulation.alphaTarget(0.1).restart(); }
+    static restartSimulation() { Graph.this.simulation.alphaTarget(0.1).restart(); }
 }
 
 class ContextMenu {
