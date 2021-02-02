@@ -12,17 +12,11 @@ class CustomWebSocket {
         this.socket.onmessage = this.onMessage
     }
 
-    onOpen(e) {
-        debug('Open Websocket ', e)
-    }
+    onOpen(e) { debug('Open Websocket ', e) }
 
-    onClose(e) {
-        debug('Close Websocket ', e)
-    }
+    onClose(e) { debug('Close Websocket ', e) }
 
-    onError(e) {
-        debug('Error Websocket ', e)
-    }
+    onError(e) { debug('Error Websocket ', e) }
 
     onMessage(e) {
         debug('On Message ', e)
@@ -38,9 +32,7 @@ class CustomWebSocket {
 }
 
 class DFWebSocket extends CustomWebSocket {
-    constructor() {
-        super("ws/df/");
-    }
+    constructor() { super("ws/df/"); }
 
     static isReady() {
         return new Promise(resolve => {
@@ -57,20 +49,22 @@ class DFWebSocket extends CustomWebSocket {
     }
 
     async send(data) {
-        await DFWebSocket.isReady()
-        chat.setPending();
-        this.socket.send(JSON.stringify({
-            'type': 'dialogflow_text_input',
-            'data': data
-        }));
+        await DFWebSocket.isReady().then(function () {
+            chat.setPending();
+            this.socket.send(JSON.stringify({
+                'type': 'dialogflow_text_input',
+                'data': data
+            }));
+        });
     }
 
     async event(data) {
-        await DFWebSocket.isReady();
-        this.socket.send(JSON.stringify({
-            'type': 'dialogflow_event_input',
-            'data': data
-        }));
+        await DFWebSocket.isReady().then(function () {
+            this.socket.send(JSON.stringify({
+                'type': 'dialogflow_event_input',
+                'data': data
+            }));
+        });
     }
 
     /**
@@ -84,15 +78,11 @@ class DFWebSocket extends CustomWebSocket {
             const type   = val.type;
             let payload  = val.payload;
 
-            if (intent === "1-elicitation-question" && isString(payload)) {
-                payload = payload.format("FRONTEND");
-            }
-
             switch (type) {
                 case 'empty':
                     break;
                 case 'action':
-                    chat.Commands.call(payload.action, payload.values)
+                    chat.commands.call(payload.action, payload.values)
                     break;
                 case 'text':
                     chat.add(new ChatMessage(Chat.Bot, payload.text));
@@ -168,13 +158,7 @@ class Chat {
         this.chat_input.on("keyup", Chat.send);
     }
 
-    get History() {
-        return this.history;
-    }
-
-    get Commands() {
-        return this.commands;
-    }
+    static get this() { return Chat.CHAT; }
 
     scroll() {
         this.chat.animate({scrollTop: this.chat.prop("scrollHeight")}, 300);
@@ -199,15 +183,19 @@ class Chat {
         this.add(what);
     }
 
+    static addUserMessage(message) {
+        Chat.this.add(new ChatMessage(Chat.User, message));
+    }
+
     static send(e) {
-        const chat = Chat.CHAT;
+        const chat = Chat.this;
 
         if (e.keyCode === 13) {
             e.preventDefault();
 
             const text = this.value.substr(0, this.value.length - 1);
 
-            chat.History.set(text);
+            chat.history.set(text);
             chat.add(new ChatMessage(Chat.User, text));
             chat.scroll();
 
@@ -216,13 +204,13 @@ class Chat {
         } else if (e.keyCode === 38) {
             e.preventDefault();
 
-            chat.History.prev();
-            chat.chat_input.focus().val(chat.History.get());
+            chat.history.prev();
+            chat.chat_input.focus().val(chat.history.get());
         } else if (e.keyCode === 40) {
             e.preventDefault();
 
-            chat.History.next();
-            chat.chat_input.focus().val(chat.History.get());
+            chat.history.next();
+            chat.chat_input.focus().val(chat.history.get());
         }
     }
 }
@@ -321,8 +309,10 @@ class ChatQuickReply extends ChatElement {
     html() {
         let content = "";
         for (const [_, reply] of this.replies._entries()) {
-            // TODO const action = reply.action;
-            content += `<button type="button" class="btn m-md-1 quick-reply">${reply.text}</button>`;
+            const args = JSON.stringify([].concat(reply.action || []).concat(reply.values || []));
+            //chat.commands.call("command", args);
+            content += `<button type="button" class="btn m-md-1 quick-reply" 
+                                onclick='chat.commands.call("command", ${args})'>${reply.text}</button>`;
         }
 
         return super.html(true).format(content);

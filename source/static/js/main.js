@@ -68,9 +68,9 @@ function addChatExamples() {
     chat.add(new ChatMessage(Chat.User, "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ."));
     chat.add(new ChatMessage(Chat.Bot, "Here you have some options ..."));
     chat.add(new ChatQuickReply([
-        {"text": "finish", "action": ""},
-        {"text": "continue", "action": ""},
-        {"text": "another option", "action": ""}
+        {"text": "finish", "action": "reply", values: ["finish"]},
+        {"text": "continue", "action": "reply", values: ["continue"]},
+        {"text": "another option", "action": "reply", values: ["another option"]}
     ]));
     chat.add(new ChatCard({
         "title": "Some Fact",
@@ -123,7 +123,7 @@ function onLoad() {
     chat    = new Chat("#chat", "#user-input");
     content = new Content("#content");
 
-    if(DEBUG) {
+    if (DEBUG) {
         addChatExamples()
         addContentExamples();
     }

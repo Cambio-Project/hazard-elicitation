@@ -205,8 +205,9 @@ class Graph {
 
     static selectElement(type, name) {
         const is_edge = type === "edge";
-        const search  = is_edge ? Graph.this.edges._values() : Graph.this.nodes._values();
+        const search  = is_edge ? Graph.this.graph.edges._values() : Graph.this.graph.nodes._values();
         let el        = search.find(e => e.label === name);
+
         if (el !== null) {
             if (!is_edge) {
                 const nodes = $(".nodes");
