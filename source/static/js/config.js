@@ -6,6 +6,7 @@ class Config {
         "dark-theme":       {default: false, callback: Config.setDarkTheme},
         "graph-selection":  {default: "", callback: null},
         "sticky-nodes":     {default: false, callback: Config.stickyNodes},
+        "curvy-edges":      {default: false, callback: Config.curvyEdges},
         "use-tooltips":     {default: false, callback: Config.useTooltip},
         "show-nodes":       {default: true, callback: Config.showNodes},
         "show-edges":       {default: true, callback: Config.showEdges},
@@ -106,6 +107,8 @@ class Config {
     static showAdvancedElements(show) { $(".advanced").css("display", show ? "inline-block" : "none"); }
 
     static stickyNodes(sticky) { Graph.set("sticky", sticky); }
+
+    static curvyEdges(curvy) { Graph.set("curved_edges", curvy); }
 
     static showNodes(show) { Graph.this.nodes.style("visibility", show ? "visible" : "hidden"); }
 

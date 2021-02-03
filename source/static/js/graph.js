@@ -27,6 +27,7 @@ class Graph {
         this.anchor.on("click", function () { Graph.ContextMenu.hide() });
 
         this.graph       = graph;
+        this.edge_count  = {};
         this.graph_nodes = graph.nodes._values();
         this.graph_edges = graph.edges._values();
         const width      = this.svg.node().getBoundingClientRect().width;
@@ -59,8 +60,12 @@ class Graph {
             d3.drag()
               .on("start", function (n) {
                   d3.event.sourceEvent.stopPropagation();
+                  if (Graph.get("sticky"))
+                      Graph.stopSimulation();
+
                   if (!d3.event.active)
                       Graph.this.simulation.alphaTarget(0.5).restart();
+
                   n.fx = n.x;
                   n.fy = n.y;
               })
@@ -70,25 +75,38 @@ class Graph {
                   Graph.ContextMenu.hide();
               })
               .on("end", function (n) {
-                  if (!Graph.get("sticky")) {
-                      if (!d3.event.active)
-                          Graph.this.simulation.alphaTarget(0);
+                  if (Graph.get("sticky"))
+                      Graph.stopSimulation();
+                  else if (!d3.event.active) {
+                      Graph.this.simulation.alphaTarget(0);
+
                       n.fx = null;
                       n.fy = null;
                   }
               })
         );
 
+        // Edge count
+        for (const edge of graph.edges._values()) {
+            if (edge.source === edge.target) {
+                if (edge.source.id in this.edge_count) {
+                    this.edge_count[edge.source.id] += 1;
+                } else {
+                    this.edge_count[edge.source.id] = 1;
+                }
+            }
+        }
+
         // Hazards
         const na = $(".nodes");
         const ea = $(".edges");
         for (const hazard of graph.hazards._values()) {
             for (const nid of hazard.nodes) {
-                na.find("[nid='{}']".format(nid)).attr("class", "hazard")
+                na.find('[id="n{}"]'.format(nid)).attr("class", "hazard")
             }
 
             for (const eid of hazard.edges) {
-                ea.find("[eid='{}']".format(eid)).attr("class", "hazard")
+                ea.find('[id="e{}"]'.format(eid)).attr("class", "hazard")
             }
         }
     }
@@ -135,7 +153,7 @@ class Graph {
             .data(this.graph_edges)
             .enter()
             .append("path")
-            .attr("eid", function (e) { return e.id; })
+            .attr("id", function (e) { return "e" + e.id; })
             .attr("marker-end", "url(#end)")
             .attr("d", "M 0 0 L 0 0")
             .on("contextmenu", Graph.onContextMenu)
@@ -154,7 +172,7 @@ class Graph {
             .data(this.graph_nodes)
             .enter()
             .append("circle")
-            .attr("nid", function (n) { return n.id; })
+            .attr("id", function (n) { return "n" + n.id; })
             .attr("r", this.get("node_size"))
             .attr("fill", function (n) { return Graph.get("colors")(n.group); })
             .on("contextmenu", Graph.onContextMenu)
@@ -173,7 +191,17 @@ class Graph {
             .data(this.graph_edges)
             .enter()
             .append("text")
-            .text(function (e) { return e.label; });
+            .attr("id", function (e) { return "el" + e.id; })
+            .text(function (e) { return e.source === e.target ? e.label : ""; })
+            .on("click", Graph.onEdgeLabelClick);
+
+        this.edge_labels
+            .filter(function (e) {return e.source !== e.target})
+            .attr("dy", -5)
+            .append("textPath")
+            .text(function (e) { return e.label; })
+            .attr("href", function (e) { return "#e" + e.id; })
+            .attr("startOffset", "50%");
     }
 
     createNodeLabels() {
@@ -185,7 +213,9 @@ class Graph {
             .data(this.graph_nodes)
             .enter()
             .append("text")
-            .text(function (n) { return n.label; });
+            .attr("id", function (e) { return "nl" + e.id; })
+            .text(function (n) { return n.label; })
+            .on("click", Graph.onNodeLabelClick);
     }
 
     static transformCoordinates(ctx, x_offset = 0, y_offset = 0) {
@@ -206,20 +236,29 @@ class Graph {
 
     /*  */
 
-    static selectElement(type, name) {
+    static selectElement(type, name, id) {
         const is_edge = type === "edge";
         const search  = is_edge ? Graph.this.graph.edges._values() : Graph.this.graph.nodes._values();
-        let el        = search.find(e => e.label === name);
+        let el;
+        if (id !== "") el = search.find(e => e.id === id);
+        else el = search.find(e => e.label === name);
+
+        // Unselect active elements
+        $(".graph").find('[active="true"]').attr("active", false);
 
         if (el !== null) {
             if (!is_edge) {
                 const nodes = $(".nodes");
-                nodes.find('circle[active="true"]').attr("active", false);
-                nodes.find(`circle[nid="${el.id}"]`).attr("active", true);
+                nodes.find(`circle[id="n${el.id}"]`).attr("active", true);
+
+                const node_labels = $(".node-labels");
+                node_labels.find(`text[id="nl${el.id}"]`).attr("active", true);
             } else {
                 const edges = $(".edges");
-                edges.find('path[active="true"]').attr("active", false);
-                edges.find(`path[eid="${el.id}"]`).attr("active", true);
+                edges.find(`path[id="e${el.id}"]`).attr("active", true);
+
+                const edge_labels = $(".edge-labels");
+                edge_labels.find(`text[id="el${el.id}"]`).attr("active", true);
             }
         }
     }
@@ -227,78 +266,76 @@ class Graph {
     /* Callbacks */
 
     static onTick() {
-        const r                 = Graph.get("node_size")
-        const edge_size         = Graph.get("edge_size");
-        const arrow_size        = Graph.get("edge_arrow_size");
-        const curved_edges      = Graph.get("curved_edges");
-        const node_label_offset = Graph.get("node_label_offset");
-        const edge_label_offset = Graph.get("edge_label_offset");
+        // Nodes and node labels
+        Graph.this.nodes.each(function (n) {
+            const node_label_offset = Graph.get("node_label_offset");
 
-        Graph.this.edges.attr("d", function (e) {
-            const x1 = e.source.x,
-                  y1 = e.source.y,
-                  x2 = e.target.x,
-                  y2 = e.target.y;
+            d3.select(`circle[id="n${n.id}"]`)
+              .attr("cx", n.x)
+              .attr("cy", n.y);
 
-            if (e.source !== e.target) {
-                // Normal edge
+            d3.select(`text[id="nl${n.id}"]`)
+              .attr("x", n.x + node_label_offset.x)
+              .attr("y", n.y + node_label_offset.y);
+        });
 
-                if (curved_edges) {
-                    const dx   = x2 - x1,
-                          dy   = y2 - y1,
-                          dist = Math.sqrt(dx * dx + dy * dy);
-                    return "M {} {} A {} {} 0 0 1 {} {}".format(x1, y1, dist, dist, x2, y2);
-                } else {
-                    return "M {} {} L {} {}".format(x1, y1, x2, y2);
-                }
-            } else {
-                // Self edge
+        let edge_counter = Object.assign({}, Graph.this.edge_count);
 
-                const scale = e.label.length * 3; // TODO size of the curve
-                return "M {} {} C {} {} {} {} {} {}".format(
-                    x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, x2 + r / 2, y2 + r / 2);
+        // Edges and edge labels
+        Graph.this.edges.each(function (e) {
+            const r            = Graph.get("node_size");
+            const node_hull    = r + Graph.get("edge_arrow_size").h + Graph.get("edge_size") * 2;
+            const curved_edges = Graph.get("curved_edges");
+
+            const edge  = d3.select(`path[id="e${e.id}"]`);
+            const label = d3.select(`text[id="el${e.id}"]`);
+            const x1    = e.source.x,
+                  y1    = e.source.y,
+                  x2    = e.target.x,
+                  y2    = e.target.y,
+                  dx    = x2 - x1,
+                  dy    = y2 - y1,
+                  d     = Math.sqrt(dx * dx + dy * dy),
+                  flip  = x2 > x1;
+
+            // Precalculate edge path
+            if (e.source.id !== e.target.id) // Normal edge
+                if (curved_edges)
+                    edge.attr("d", "M {} {} A {} {} 0 0 1 {} {}".format(x1, y1, d, d, x2, y2));
+                else
+                    edge.attr("d", "M {} {} L {} {}".format(x1, y1, x2, y2));
+
+            else // Self edge
+                edge.attr("d", "M {} {} C {} {} {} {} {} {}".format(x1, y1, x1, y1, x1, y1, x2, y2));
+
+            // Calculate new position
+            if (e.source.id !== e.target.id) { // Normal edge
+
+                // Subtract node size and arrow size
+                const point_len = this.getTotalLength(),
+                      target    = this.getPointAtLength(point_len - node_hull);
+
+                // Text flip does not work for chrome >:(
+                // label.select("textPath").attr("side", flip ? "left" : "right");
+
+                if (curved_edges)
+                    edge.attr("d", "M {} {} A {} {} 0 0 {} {} {}".format(x1, y1, d, d, "1", target.x, target.y));
+                else
+                    edge.attr("d", "M {} {} L {} {}".format(x1, y1, target.x, target.y));
+
+            } else { // Self edge
+                const node_label_offset = Graph.get("node_label_offset");
+                const line_height       = 10;
+                const index             = edge_counter[e.source.id]--;
+                const scale             = (2 + index) * 15;
+
+                label.attr("x", x1 + node_label_offset.x - index * 3)
+                     .attr("y", y1 + node_label_offset.y + index * line_height + 5);
+
+                edge.attr("d", "M {} {} C {} {} {} {} {} {}".format(
+                    x1, y1, x1 - scale, y1, x1, y1 + scale, x1, y1 + node_hull));
             }
-        })
-
-        Graph.this.edges.attr("d", function (e) {
-            const x1 = e.source.x,
-                  y1 = e.source.y;
-
-            const point_len = this.getTotalLength(),
-                  node_hull = r + arrow_size.h + edge_size * 2,
-                  mid_point = this.getPointAtLength(point_len - node_hull);
-
-            if (e.source !== e.target) {
-                // Normal edge
-
-                if (curved_edges) {
-                    const dx   = mid_point.x - x1,
-                          dy   = mid_point.y - y1,
-                          dist = Math.sqrt(dx * dx + dy * dy);
-                    return "M {} {} A {} {} 0 0 1 {} {}".format(x1, y1, dist, dist, mid_point.x, mid_point.y);
-                } else {
-                    return "M {} {} L {} {}".format(x1, y1, mid_point.x, mid_point.y);
-                }
-            } else {
-                // Self edge
-
-                const scale = e.label.length * 3; // TODO size of the curve
-                return "M {} {} C {} {} {} {} {} {}".format(
-                    x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, mid_point.x, mid_point.y);
-            }
-        })
-
-        Graph.this.nodes
-             .attr("cx", function (n) { return n.x; })
-             .attr("cy", function (n) { return n.y; });
-
-        Graph.this.node_labels
-             .attr("x", function (n) { return n.x + node_label_offset.x; })
-             .attr("y", function (n) { return n.y + node_label_offset.y; });
-
-        Graph.this.edge_labels
-             .attr("x", function (e) { return e.source.x + (e.target.x - e.source.x) * 0.5 + edge_label_offset.x; })
-             .attr("y", function (e) { return e.source.y + (e.target.y - e.source.y) * 0.5 + edge_label_offset.y; });
+        });
     }
 
     static onZoom() {
@@ -311,9 +348,13 @@ class Graph {
 
     static zoom(val) { Graph.this.zoom_level.scaleTo(Graph.this.svg, val); }
 
-    static onEdgeClick(e, _, arr) { }
+    static onEdgeClick(e) { Graph.selectElement("edge", "", e.id); }
 
-    static onNodeClick(e, _, arr) { }
+    static onNodeClick(n) { Graph.selectElement("node", "", n.id); }
+
+    static onEdgeLabelClick(e) { Graph.selectElement("edge", "", e.id); }
+
+    static onNodeLabelClick(n) { Graph.selectElement("node", "", n.id); }
 
     static onContextMenu(e) {
         const coords = Graph.transformCoordinates(this, 20, 10)
