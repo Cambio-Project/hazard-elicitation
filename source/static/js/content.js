@@ -12,6 +12,10 @@ class Content {
         this.tabs   = {};
     }
 
+    static get this() {
+        return Content.CONTENT;
+    }
+
     show(tab_id) {
         if (tab_id in this.tabs) {
             $('a[href="#' + this.tabs[tab_id][1][0].id + '"]').tab('show');
@@ -62,11 +66,11 @@ class Content {
     static addHazard(id, type) {
         let element;
         if (type === "node") {
-            element = Graph.Graph.nodes[id];
+            element = Graph.this.graph.nodes[id];
             type    = "Service";
             $(".nodes").find(`circle[nid="${id}"]`).addClass("hazard");
         } else {
-            element = Graph.Graph.edges[id];
+            element = Graph.this.graph.edges[id];
             type    = "Operation";
             $(".edges").find(`path[eid="${id}"]`).addClass("hazard");
         }
@@ -85,7 +89,7 @@ class Content {
         }
         addEntry(element.data);
 
-        Content.CONTENT.addTab({
+        Content.this.addTab({
             "title":   "{}: {}".format(type, element.label),
             "content": `
               <table>

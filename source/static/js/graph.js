@@ -7,13 +7,16 @@ class Graph {
         Graph.CONTEXT_MENU = new ContextMenu(context_menu);
 
         this.properties = {
-            sticky_nodes:    false,
-            tooltip:         false,
-            node_size:       5,
-            edge_size:       2,
-            edge_arrow_size: {w: 2, h: 6},
-            zoom_range:      {min: 0.4, max: 4},
-            colors:          d3.scaleOrdinal(d3.schemeCategory10)
+            sticky_nodes:      false,
+            tooltip:           false,
+            node_size:         5,
+            edge_size:         2,
+            node_label_offset: {x: 10, y: 0},
+            edge_label_offset: {x: 10, y: 15},
+            curved_edges:      true,
+            edge_arrow_size:   {w: 2, h: 6},
+            zoom_range:        {min: 0.4, max: 4},
+            colors:            d3.scaleOrdinal(d3.schemeCategory10)
         }
 
         // HTML
@@ -187,7 +190,7 @@ class Graph {
 
     static transformCoordinates(ctx, x_offset = 0, y_offset = 0) {
         // Position
-        const svg_pos   = Graph.this.SVG.node().getBoundingClientRect();
+        const svg_pos   = Graph.this.svg.node().getBoundingClientRect();
         const mouse_pos = d3.mouse(ctx);
 
         // Transformation
@@ -224,46 +227,64 @@ class Graph {
     /* Callbacks */
 
     static onTick() {
+        const r                 = Graph.get("node_size")
+        const edge_size         = Graph.get("edge_size");
+        const arrow_size        = Graph.get("edge_arrow_size");
+        const curved_edges      = Graph.get("curved_edges");
+        const node_label_offset = Graph.get("node_label_offset");
+        const edge_label_offset = Graph.get("edge_label_offset");
+
         Graph.this.edges.attr("d", function (e) {
-            const node_size = Graph.get("node_size");
-            const x1        = e.source.x,
-                  y1        = e.source.y,
-                  x2        = e.target.x,
-                  y2        = e.target.y;
+            const x1 = e.source.x,
+                  y1 = e.source.y,
+                  x2 = e.target.x,
+                  y2 = e.target.y;
 
             if (e.source !== e.target) {
-                const dx = x2 - x1,
-                      dy = y2 - y1,
-                      dr = Math.sqrt(dx * dx + dy * dy);
+                // Normal edge
 
-                return "M {} {} A {} {} 0 0 1 {} {}".format(x1, y1, dr, dr, x2, y2); // curved line
-                // return "M {} {} L {} {}".format(x1, y1, x2, y2) // straight line
+                if (curved_edges) {
+                    const dx   = x2 - x1,
+                          dy   = y2 - y1,
+                          dist = Math.sqrt(dx * dx + dy * dy);
+                    return "M {} {} A {} {} 0 0 1 {} {}".format(x1, y1, dist, dist, x2, y2);
+                } else {
+                    return "M {} {} L {} {}".format(x1, y1, x2, y2);
+                }
+            } else {
+                // Self edge
+
+                const scale = e.label.length * 3; // TODO size of the curve
+                return "M {} {} C {} {} {} {} {} {}".format(
+                    x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, x2 + r / 2, y2 + r / 2);
             }
-            const scale = e.label.length * 3; // TODO size of the curve
-            return "M {} {} C {} {} {} {} {} {}".format(x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, x2 + node_size / 2, y2 + node_size / 2);
         })
 
         Graph.this.edges.attr("d", function (e) {
-            const node_size  = Graph.get("node_size");
-            const edge_size  = Graph.get("edge_size");
-            const arrow_size = Graph.get("edge_arrow_size");
-
             const x1 = e.source.x,
                   y1 = e.source.y;
 
-            const pl = this.getTotalLength(),
-                  r  = node_size + arrow_size.h + edge_size * 2,
-                  m  = this.getPointAtLength(pl - r);
-
-            const dx = m.x - x1,
-                  dy = m.y - y1,
-                  dr = Math.sqrt(dx * dx + dy * dy);
+            const point_len = this.getTotalLength(),
+                  node_hull = r + arrow_size.h + edge_size * 2,
+                  mid_point = this.getPointAtLength(point_len - node_hull);
 
             if (e.source !== e.target) {
-                return "M" + x1 + "," + y1 + "A" + dr + "," + dr + " 0 0,1 " + m.x + "," + m.y;
+                // Normal edge
+
+                if (curved_edges) {
+                    const dx   = mid_point.x - x1,
+                          dy   = mid_point.y - y1,
+                          dist = Math.sqrt(dx * dx + dy * dy);
+                    return "M {} {} A {} {} 0 0 1 {} {}".format(x1, y1, dist, dist, mid_point.x, mid_point.y);
+                } else {
+                    return "M {} {} L {} {}".format(x1, y1, mid_point.x, mid_point.y);
+                }
             } else {
+                // Self edge
+
                 const scale = e.label.length * 3; // TODO size of the curve
-                return "M {} {} C {} {} {} {} {} {}".format(x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, m.x, m.y);
+                return "M {} {} C {} {} {} {} {} {}".format(
+                    x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, mid_point.x, mid_point.y);
             }
         })
 
@@ -272,12 +293,12 @@ class Graph {
              .attr("cy", function (n) { return n.y; });
 
         Graph.this.node_labels
-             .attr("x", function (n) { return n.x + 10; })
-             .attr("y", function (n) { return n.y; });
+             .attr("x", function (n) { return n.x + node_label_offset.x; })
+             .attr("y", function (n) { return n.y + node_label_offset.y; });
 
         Graph.this.edge_labels
-             .attr("x", function (e) { return e.source.x + (e.target.x - e.source.x) * 0.5 + 10; })
-             .attr("y", function (e) { return e.source.y + (e.target.y - e.source.y) * 0.5 + 15; });
+             .attr("x", function (e) { return e.source.x + (e.target.x - e.source.x) * 0.5 + edge_label_offset.x; })
+             .attr("y", function (e) { return e.source.y + (e.target.y - e.source.y) * 0.5 + edge_label_offset.y; });
     }
 
     static onZoom() {
@@ -381,12 +402,12 @@ class ContextMenu {
 
         this.anchor.html("");
         this.anchor.append(`<li><a class="dropdown-item"><b>${element.label}</b></a></li>`);
-        this.anchor.append("<div class='dropdown-divider'></div>");
+        this.anchor.append('<div class="dropdown-divider"></div>');
         this.anchor.append(
             `<li class="dropdown-action" name="hazard">
-              <a class="dropdown-item" onclick="Content.addHazard('${element.id}', '${type}');">Mark as Hazard</a>
+              <a class="dropdown-item" onclick='Content.addHazard("${element.id}", "${type}");'>Mark as Hazard</a>
             </li>`);
-        this.anchor.append("<div class='dropdown-divider'></div>");
+        this.anchor.append('<div class="dropdown-divider"></div>');
         this.anchor.append(this.createItems(element.data));
     }
 
