@@ -158,7 +158,7 @@
                 </p>
 
 
-                <div class="collapse show" id="config-graph">
+                <div class="collapse show bline" id="config-graph">
                   <div class="d-inline-block w-100">
 
                     <!-- Zoom and Graph -->
@@ -176,23 +176,6 @@
                           <option>Books</option>
                           <option>ABCDE</option>
                         </select>
-                      </div>
-                    </div>
-
-                    <!-- Sticky nodes and Tooltip -->
-                    <div class="control-entry rline">
-                      <div class="row">
-                        <label class="col-sm-9 col-form-label" for="sticky-nodes">Sticky nodes</label>
-                        <div class="p-1">
-                          <input type="checkbox" id="sticky-nodes" onchange="Config.updateControl(this);"/>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <label class="col-sm-9 col-form-label" for="use-tooltips">Tooltips</label>
-                        <div class="p-1">
-                          <input type="checkbox" id="use-tooltips" onchange="Config.updateControl(this);"/>
-                        </div>
                       </div>
                     </div>
 
@@ -214,7 +197,7 @@
                     </div>
 
                     <!-- Show node and edge labels -->
-                    <div class="control-entry">
+                    <div class="control-entry rline">
                       <div class="row">
                         <label class="col-sm-9 col-form-label" for="show-node-labels">Show node labels</label>
                         <div class="p-1">
@@ -230,31 +213,67 @@
                       </div>
                     </div>
 
+                    <!-- Sticky nodes and curvy edges -->
+                    <div class="control-entry rline">
+                      <div class="row">
+                        <label class="col-sm-9 col-form-label" for="sticky-nodes">Sticky nodes</label>
+                        <div class="p-1">
+                          <input type="checkbox" id="sticky-nodes" onchange="Config.updateControl(this);"/>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <label class="col-sm-9 col-form-label" for="curvy-edges">Curvy edges</label>
+                        <div class="p-1">
+                          <input type="checkbox" id="curvy-edges" onchange="Config.updateControl(this);"/>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tooltip -->
+                    <div class="control-entry rline">
+                      <div class="row">
+                        <label class="col-sm-9 col-form-label" for="use-tooltips">Tooltips</label>
+                        <div class="p-1">
+                          <input type="checkbox" id="use-tooltips" onchange="Config.updateControl(this);"/>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <label class="col-sm-9 col-form-label"></label>
+                        <div class="p-1">
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Simulation -->
+                    <div class="control-entry rline text-center">
+                      <div class="row">
+                        <p class="col-sm-12 col-form-label">Graph Simulation</p>
+                      </div>
+
+                      <div class="row d-inline-block">
+                          <button class="btn" type="button" onclick="Graph.pauseSimulation();">Play</button>
+                          <button class="btn" type="button" onclick="Graph.pauseSimulation();">Pause</button>
+                          <button class="btn" type="button" onclick="Graph.resumeSimulation();">Resume</button>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
-                <p class="bline p-2">
-                  <a class="btn-link" data-toggle="collapse" href="#config-sim" role="button" aria-expanded="false">
-                    <i class="arrow"></i>Configure Simulation
-                  </a>
-                </p>
-                <div class="collapse m-md-2" id="config-sim">
-                  <div class="d-inline-block m-md-2">
-                    <button class="btn" type="button" onclick="Graph.pauseSimulation();">Play</button>
-                  </div>
 
-                  <div class="d-inline-block m-md-2">
-                    <button class="btn" type="button" onclick="Graph.pauseSimulation();">Pause</button>
-                  </div>
+                <!-- Dark mode -->
+                <div class="control-entry w-100 ">
+                  <div class="row">
+                    <label class="col-sm-5 col-form-label" for="dark-theme">Dark Theme</label>
+                    <div class="p-1">
+                      <input type="checkbox" id="dark-theme" onchange="Config.updateControl(this);">
+                    </div>
 
-                  <div class="d-inline-block m-md-2">
-                    <button class="btn" type="button" onclick="Graph.resumeSimulation();">Resume</button>
                   </div>
                 </div>
 
-                <div class="m-md-2">
-                  <p class="tool-settings"><label for="dark-theme" class="switch">Dark Theme</label></p>
-                  <input type="checkbox" id="dark-theme" onchange="Config.updateControl(this);">
-                </div>
               </div>
             </div>
           </div>
