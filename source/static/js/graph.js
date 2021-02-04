@@ -12,7 +12,8 @@ class Graph {
             node_size:         5,
             edge_size:         2,
             node_label_offset: {x: 10, y: 0},
-            edge_label_offset: {x: 10, y: 15},
+            edge_label_offset: {x: 10, y: 15, dy: -5},
+            edge_label_font:   {size: 10, dx: 3, dy: 5},
             curved_edges:      true,
             edge_arrow_size:   {w: 2, h: 6},
             zoom_range:        {min: 0.4, max: 4},
@@ -197,7 +198,7 @@ class Graph {
 
         this.edge_labels
             .filter(function (e) {return e.source !== e.target})
-            .attr("dy", -5)
+            .attr("dy", this.properties.edge_label_offset.dy)
             .append("textPath")
             .text(function (e) { return e.label; })
             .attr("href", function (e) { return "#e" + e.id; })
@@ -266,10 +267,15 @@ class Graph {
     /* Callbacks */
 
     static onTick() {
+        let edge_counter        = Object.assign({}, Graph.this.edge_count);
+        const r                 = Graph.get("node_size"),
+              curved_edges      = Graph.get("curved_edges"),
+              edge_label_font   = Graph.get("edge_label_font"),
+              node_label_offset = Graph.get("node_label_offset"),
+              node_hull         = r + Graph.get("edge_arrow_size").h + Graph.get("edge_size") * 2;
+
         // Nodes and node labels
         Graph.this.nodes.each(function (n) {
-            const node_label_offset = Graph.get("node_label_offset");
-
             d3.select(`circle[id="n${n.id}"]`)
               .attr("cx", n.x)
               .attr("cy", n.y);
@@ -279,14 +285,8 @@ class Graph {
               .attr("y", n.y + node_label_offset.y);
         });
 
-        let edge_counter = Object.assign({}, Graph.this.edge_count);
-
         // Edges and edge labels
         Graph.this.edges.each(function (e) {
-            const r            = Graph.get("node_size");
-            const node_hull    = r + Graph.get("edge_arrow_size").h + Graph.get("edge_size") * 2;
-            const curved_edges = Graph.get("curved_edges");
-
             const edge  = d3.select(`path[id="e${e.id}"]`);
             const label = d3.select(`text[id="el${e.id}"]`);
             const x1    = e.source.x,
@@ -324,13 +324,11 @@ class Graph {
                     edge.attr("d", "M {} {} L {} {}".format(x1, y1, target.x, target.y));
 
             } else { // Self edge
-                const node_label_offset = Graph.get("node_label_offset");
-                const line_height       = 10;
-                const index             = edge_counter[e.source.id]--;
-                const scale             = (2 + index) * 15;
+                const index = edge_counter[e.source.id]--;
+                const scale = (2 + index) * 15;
 
-                label.attr("x", x1 + node_label_offset.x - index * 3)
-                     .attr("y", y1 + node_label_offset.y + index * line_height + 5);
+                label.attr("x", x1 + node_label_offset.x - index * edge_label_font.dx)
+                     .attr("y", y1 + node_label_offset.y + index * edge_label_font.size + edge_label_font.dy);
 
                 edge.attr("d", "M {} {} C {} {} {} {} {} {}".format(
                     x1, y1, x1 - scale, y1, x1, y1 + scale, x1, y1 + node_hull));
