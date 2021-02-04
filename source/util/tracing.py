@@ -1,7 +1,6 @@
 import functools
 
 from hazard_elicitation.settings import TRACING
-from util.log import timestamp
 
 if TRACING:
     from jaeger_client import Config
@@ -28,7 +27,9 @@ def add_trace(is_parent: bool):
                 return response
             else:
                 return await func(*args, **kwargs)
+
         return wrapper
+
     return wrap
 
 
@@ -53,20 +54,24 @@ class Tracer:
     #     Tracer.TRACER = config.initialize_tracer()
 
     @staticmethod
-    def setup(service_name: str):
+    def setup(service_name: str, use_jaeger: bool = True):
         """
         OpenTelemetry tracer with Jaeger or Zipkin exporter.
         @param service_name:    Name of the service.
+        @param use_jaeger:      Use jaeger if True, otherwise Zipkin
         """
-        exporter = jaeger.JaegerSpanExporter(
-            service_name=service_name,
-            agent_host_name='localhost',
-            agent_port=16686)
 
-        # exporter = zipkin.ZipkinSpanExporter(
-        #     service_name=service_name,
-        #     endpoint='http://localhost:9411/api/v2/spans'
-        # )
+        if jaeger:
+            exporter = jaeger.JaegerSpanExporter(
+                service_name=service_name,
+                agent_host_name='localhost',
+                agent_port=16686)
+
+        else:
+            exporter = zipkin.ZipkinSpanExporter(
+                service_name=service_name,
+                endpoint='http://localhost:9411/api/v2/spans'
+            )
 
         trace.set_tracer_provider(TracerProvider())
         trace.get_tracer_provider().add_span_processor(BatchExportSpanProcessor(exporter))
@@ -85,9 +90,9 @@ class Tracer:
     def span(name: str, is_parent: bool = False):
         parent = Tracer.get_parent()
         if parent:
-            span = Tracer.TRACER.start_span(name + '-' + str(timestamp()), child_of=Tracer.get_parent())
+            span = Tracer.TRACER.start_span(name, child_of=Tracer.get_parent())
         else:
-            span = Tracer.TRACER.start_span(name + '-' + str(timestamp()))
+            span = Tracer.TRACER.start_span(name)
         if is_parent:
             Tracer.set_parent(span)
         return span
