@@ -48,21 +48,23 @@ class DFWebSocket extends CustomWebSocket {
         });
     }
 
-    async send(data) {
+    async send(data, contexts) {
         await DFWebSocket.isReady().then(function () {
             chat.setPending();
-            this.socket.send(JSON.stringify({
-                'type': 'dialogflow_text_input',
-                'data': data
+            DFWebSocket.WS.socket.send(JSON.stringify({
+                'type':     'dialogflow_text_input',
+                'data':     data,
+                'contexts': contexts || []
             }));
         });
     }
 
-    async event(data) {
+    async event(data, contexts) {
         await DFWebSocket.isReady().then(function () {
-            this.socket.send(JSON.stringify({
-                'type': 'dialogflow_event_input',
-                'data': data
+            DFWebSocket.WS.socket.send(JSON.stringify({
+                'type':     'dialogflow_event_input',
+                'data':     data,
+                'contexts': contexts || []
             }));
         });
     }

@@ -130,7 +130,7 @@ function onLoad() {
 
     Config.loadConfig();
 
-    chat.ws.event("welcome");
+    chat.ws.event("welcome", [{name: 'test', lifespan: 10, parameters: {test: 'asd'}}]);
 }
 
 /**
