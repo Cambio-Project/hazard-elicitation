@@ -194,7 +194,10 @@ class Graph {
             .append("text")
             .attr("id", function (e) { return "el" + e.id; })
             .text(function (e) { return e.source === e.target ? e.label : ""; })
-            .on("click", Graph.onEdgeLabelClick);
+            .on("click", Graph.onEdgeLabelClick)
+            .on("mouseover", Graph.onMouseover)
+            .on("mousemove", Graph.onMousemove)
+            .on("mouseout", Graph.onMouseout);
 
         this.edge_labels
             .filter(function (e) {return e.source !== e.target})
