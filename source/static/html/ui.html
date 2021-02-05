@@ -164,7 +164,9 @@
                     <!-- Zoom and Graph -->
                     <div class="control-entry rline">
                       <div class="row">
-                        <label class="col-sm-6 col-form-label" for="graph-zoom">Zoom</label>
+                        <label class="col-sm-6 col-form-label" for="graph-zoom">
+                          Zoom <img alt="" src="../../static/img/zoom.png"/>
+                        </label>
                         <input class="col-sm-5" type="range" min="0.4" max="4" value="1" step="0.1" id="graph-zoom"
                                onchange="Config.updateControl(this);"/>
                       </div>
@@ -182,14 +184,25 @@
                     <!-- Show nodes and edges -->
                     <div class="control-entry rline">
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="show-nodes">Show nodes</label>
+                        <label class="col-sm-9 col-form-label" for="show-nodes">
+                          Show nodes
+                          <svg class="d-inline-block" height="1rem" width="1rem">
+                            <circle r="0.5rem" cx="0.5rem" cy="0.5rem" fill="#05A"></circle>
+                          </svg>
+                        </label>
                         <div class="p-1">
                           <input type="checkbox" id="show-nodes" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="show-edges">Show edges</label>
+                        <label class="col-sm-9 col-form-label" for="show-edges">
+                          Show edges
+                          <svg class="d-inline-block" height="1rem" width="1rem">
+                            <path marker-end="url(#end)"
+                                  d="M 2 15 L 8 7" stroke="#CCCCCC" stroke-width="2"></path>
+                          </svg>
+                        </label>
                         <div class="p-1">
                           <input type="checkbox" id="show-edges" onchange="Config.updateControl(this);"/>
                         </div>
@@ -199,14 +212,18 @@
                     <!-- Show node and edge labels -->
                     <div class="control-entry rline">
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="show-node-labels">Show node labels</label>
+                        <label class="col-sm-9 col-form-label" for="show-node-labels">
+                          Show node labels <img alt="" src="../../static/img/text.png"/>
+                        </label>
                         <div class="p-1">
                           <input type="checkbox" id="show-node-labels" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="show-edge-labels">Show edge labels</label>
+                        <label class="col-sm-9 col-form-label" for="show-edge-labels">
+                          Show edge labels <img alt="" src="../../static/img/text.png"/>
+                        </label>
                         <div class="p-1">
                           <input type="checkbox" id="show-edge-labels" onchange="Config.updateControl(this);"/>
                         </div>
@@ -216,14 +233,22 @@
                     <!-- Sticky nodes and curvy edges -->
                     <div class="control-entry rline">
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="sticky-nodes">Sticky nodes</label>
+                        <label class="col-sm-9 col-form-label" for="sticky-nodes">
+                          Sticky nodes <img alt="" src="../../static/img/pin.png"/>
+                        </label>
                         <div class="p-1">
                           <input type="checkbox" id="sticky-nodes" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="curvy-edges">Curvy edges</label>
+                        <label class="col-sm-9 col-form-label" for="curvy-edges">
+                          Curvy edges
+                          <svg class="d-inline-block" height="1rem" width="1rem">
+                            <path marker-end="url(#end)"
+                                  d="M 2 15 A 5 11 0 0 1 10 8" fill="transparent" stroke="#CCCCCC" stroke-width="2"></path>
+                          </svg>
+                        </label>
                         <div class="p-1">
                           <input type="checkbox" id="curvy-edges" onchange="Config.updateControl(this);"/>
                         </div>
@@ -233,7 +258,9 @@
                     <!-- Tooltip -->
                     <div class="control-entry rline">
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="use-tooltips">Tooltips</label>
+                        <label class="col-sm-9 col-form-label" for="use-tooltips">
+                          Tooltips <img alt="" src="../../static/img/tooltip.png"/>
+                        </label>
                         <div class="p-1">
                           <input type="checkbox" id="use-tooltips" onchange="Config.updateControl(this);"/>
                         </div>
@@ -266,7 +293,9 @@
                 <!-- Dark mode -->
                 <div class="control-entry w-100 ">
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" for="dark-theme">Dark Theme</label>
+                    <label class="col-sm-5 col-form-label" for="dark-theme">
+                      Dark Theme <span class="dark-mode-icon d-inline-block"></span>
+                    </label>
                     <div class="p-1">
                       <input type="checkbox" id="dark-theme" onchange="Config.updateControl(this);">
                     </div>
