@@ -48,6 +48,11 @@ Object.defineProperty(Object.prototype, '_empty', {
     enumerable: false
 });
 
+Object.defineProperty(Object.prototype, '_copy', {
+    value:      function () { return Object.assign({}, this); },
+    enumerable: false
+});
+
 function isString(what) { return typeof what === "string"; }
 
 function isObject(what) { return typeof what === "object"; }

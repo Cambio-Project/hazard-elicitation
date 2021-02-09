@@ -1,13 +1,15 @@
 .light-theme
 {
-  --settings-image : url("../img/settings.png");
-  --tip-1-img      : url("../img/tip_1.png");
+  --dark-mode-image : url("../img/sun.png");
+  --settings-image  : url("../img/settings.png");
+  --tip-1-img       : url("../img/tip_1.png");
 }
 
 .dark-theme
 {
-  --settings-image : url("../img/settings_dark.png");
-  --tip-1-img      : url("../img/tip_1_dark.png");
+  --dark-mode-image : url("../img/moon.png");
+  --settings-image  : url("../img/settings_dark.png");
+  --tip-1-img       : url("../img/tip_1_dark.png");
 }
 
 .content
@@ -123,6 +125,16 @@
 }
 
 .tip-1
+{ background-image : var(--tip-1-img); }
+
+.dark-mode-icon
 {
-  background-image : var(--tip-1-img);
+  background-position : 0 0;
+  background-size     : 1.0rem 1.0rem;
+  height              : 1.0rem;
+  width               : 1.0rem;
+  background-image    : var(--dark-mode-image);
+  background-repeat   : no-repeat;
+  transition          : 150ms;
+  filter              : drop-shadow(0 0 10px var(--shadow-color));
 }

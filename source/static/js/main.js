@@ -34,7 +34,6 @@ function error(what) {
 }
 
 
-
 function splitAreas() {
     Split(['#left', '#bot'], {
         sizes:      [75, 25],
@@ -69,9 +68,9 @@ function addChatExamples() {
     chat.add(new ChatMessage(Chat.User, "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ."));
     chat.add(new ChatMessage(Chat.Bot, "Here you have some options ..."));
     chat.add(new ChatQuickReply([
-        {"text": "finish", "action": ""},
-        {"text": "continue", "action": ""},
-        {"text": "another option", "action": ""}
+        {"text": "finish", "action": "reply", values: ["finish"]},
+        {"text": "continue", "action": "reply", values: ["continue"]},
+        {"text": "another option", "action": "reply", values: ["another option"]}
     ]));
     chat.add(new ChatCard({
         "title": "Some Fact",
@@ -106,12 +105,12 @@ function addContentExamples() {
 /**
  * Constants
  */
-const DEBUG = false;
+const DEBUG = true;
 let graph   = null;
 let chat    = null;
 let content = null;
 
-window.onload = onLoad;
+window.onload   = onLoad;
 window.onunload = onUnLoad;
 
 /**
@@ -120,17 +119,18 @@ window.onunload = onUnLoad;
 function onLoad() {
     splitAreas();
 
-    graph = new Graph("#graph", "#context-menu", sample_graph);
-
-    chat = new Chat("#chat", "#user-input");
-    addChatExamples()
-
+    graph   = new Graph("#graph", "#context-menu", sample_graph);
+    chat    = new Chat("#chat", "#user-input");
     content = new Content("#content");
-    addContentExamples();
+
+    if (DEBUG) {
+        addChatExamples()
+        addContentExamples();
+    }
 
     Config.loadConfig();
 
-    chat.ws.event("welcome");
+    chat.ws.event("welcome", [{name: 'test', lifespan: 10, parameters: {test: 'asd'}}]);
 }
 
 /**

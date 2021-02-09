@@ -1,20 +1,23 @@
 class Graph {
     static GRAPH        = null;
     static CONTEXT_MENU = null;
-    static SIMULATION = null;
 
     constructor(svg, context_menu, graph) {
         Graph.GRAPH        = this;
         Graph.CONTEXT_MENU = new ContextMenu(context_menu);
 
         this.properties = {
-            sticky_nodes:    false,
-            tooltip:         false,
-            node_size:       5,
-            edge_size:       2,
-            edge_arrow_size: {w: 2, h: 6},
-            zoom_range:      {min: 0.4, max: 4},
-            colors:          d3.scaleOrdinal(d3.schemeCategory10)
+            sticky_nodes:      false,
+            tooltip:           false,
+            node_size:         5,
+            edge_size:         2,
+            node_label_offset: {x: 10, y: 0},
+            edge_label_offset: {x: 10, y: 15, dy: -5},
+            edge_label_font:   {size: 10, dx: 3, dy: 5},
+            curved_edges:      true,
+            edge_arrow_size:   {w: 2, h: 6},
+            zoom_range:        {min: 0.4, max: 4},
+            colors:            d3.scaleOrdinal(d3.schemeCategory10)
         }
 
         // HTML
@@ -25,6 +28,7 @@ class Graph {
         this.anchor.on("click", function () { Graph.ContextMenu.hide() });
 
         this.graph       = graph;
+        this.edge_count  = {};
         this.graph_nodes = graph.nodes._values();
         this.graph_edges = graph.edges._values();
         const width      = this.svg.node().getBoundingClientRect().width;
@@ -37,7 +41,7 @@ class Graph {
         this.createNodeLabels();
 
         // Simulation
-        Graph.SIMULATION = d3
+        this.simulation = d3
             .forceSimulation(this.graph_nodes)
             .force("charge", d3.forceManyBody().strength(-10000))
             .force("center", d3.forceCenter(width / 2, height / 2))
@@ -57,8 +61,12 @@ class Graph {
             d3.drag()
               .on("start", function (n) {
                   d3.event.sourceEvent.stopPropagation();
+                  if (Graph.get("sticky"))
+                      Graph.stopSimulation();
+
                   if (!d3.event.active)
-                      Graph.Simulation.alphaTarget(0.5).restart();
+                      Graph.this.simulation.alphaTarget(0.5).restart();
+
                   n.fx = n.x;
                   n.fy = n.y;
               })
@@ -68,54 +76,49 @@ class Graph {
                   Graph.ContextMenu.hide();
               })
               .on("end", function (n) {
-                  if (!Graph.get("sticky")) {
-                      if (!d3.event.active)
-                          Graph.Simulation.alphaTarget(0);
+                  if (Graph.get("sticky"))
+                      Graph.stopSimulation();
+                  else if (!d3.event.active) {
+                      Graph.this.simulation.alphaTarget(0);
+
                       n.fx = null;
                       n.fy = null;
                   }
               })
         );
 
+        // Edge count
+        for (const edge of graph.edges._values()) {
+            if (edge.source === edge.target) {
+                if (edge.source.id in this.edge_count) {
+                    this.edge_count[edge.source.id] += 1;
+                } else {
+                    this.edge_count[edge.source.id] = 1;
+                }
+            }
+        }
+
+        // Hazards
         const na = $(".nodes");
         const ea = $(".edges");
-        const vs = graph.hazards._values();
-        for (const v in vs) {
-            for (const n in vs[v].nodes) {
-                na.find("#" + vs[v].nodes[n])
-                  .attr("class", "hazard")
+        for (const hazard of graph.hazards._values()) {
+            for (const nid of hazard.nodes) {
+                na.find('[id="n{}"]'.format(nid)).attr("class", "hazard")
             }
 
-            for (const n in vs[v].edges) {
-                ea.find("#" + vs[v].edges[n])
-                  .attr("class", "hazard")
+            for (const eid of hazard.edges) {
+                ea.find('[id="e{}"]'.format(eid)).attr("class", "hazard")
             }
         }
     }
 
-    static get SVG() { return Graph.GRAPH.svg; }
-
-    static get Anchor() { return Graph.GRAPH.anchor; }
-
-    static get Simulation() { return Graph.SIMULATION; }
-
-    static get Zoom() { return Graph.GRAPH.zoom_level; }
-
-    static get Graph() { return Graph.GRAPH.graph; }
-
-    static get Nodes() { return Graph.GRAPH.nodes; }
-
-    static get NodeLabels() { return Graph.GRAPH.node_labels; }
-
-    static get Edges() { return Graph.GRAPH.edges; }
-
-    static get EdgeLabels() { return Graph.GRAPH.edge_labels; }
+    static get this() { return Graph.GRAPH; }
 
     static get ContextMenu() { return Graph.CONTEXT_MENU; }
 
-    static get(property) { return Graph.GRAPH.get(property); }
+    static get(property) { return Graph.this.get(property); }
 
-    static set(property, value) { Graph.GRAPH.set(property, value); }
+    static set(property, value) { Graph.this.set(property, value); }
 
     get(property) { return this.properties[property]; }
 
@@ -151,7 +154,7 @@ class Graph {
             .data(this.graph_edges)
             .enter()
             .append("path")
-            .attr("id", function (e) { return e.id; })
+            .attr("id", function (e) { return "e" + e.id; })
             .attr("marker-end", "url(#end)")
             .attr("d", "M 0 0 L 0 0")
             .on("contextmenu", Graph.onContextMenu)
@@ -170,9 +173,9 @@ class Graph {
             .data(this.graph_nodes)
             .enter()
             .append("circle")
+            .attr("id", function (n) { return "n" + n.id; })
             .attr("r", this.get("node_size"))
-            .attr("id", function (n) { return n.id; })
-            .attr("fill", function (n) { if (n.hazard) return "red"; else return Graph.get("colors")(n.group); })
+            .attr("fill", function (n) { return Graph.get("colors")(n.group); })
             .on("contextmenu", Graph.onContextMenu)
             .on("click", Graph.onNodeClick)
             .on("mouseover", Graph.onMouseover)
@@ -189,7 +192,20 @@ class Graph {
             .data(this.graph_edges)
             .enter()
             .append("text")
-            .text(function (e) { return e.label; });
+            .attr("id", function (e) { return "el" + e.id; })
+            .text(function (e) { return e.source === e.target ? e.label : ""; })
+            .on("click", Graph.onEdgeLabelClick)
+            .on("mouseover", Graph.onMouseover)
+            .on("mousemove", Graph.onMousemove)
+            .on("mouseout", Graph.onMouseout);
+
+        this.edge_labels
+            .filter(function (e) {return e.source !== e.target})
+            .attr("dy", this.properties.edge_label_offset.dy)
+            .append("textPath")
+            .text(function (e) { return e.label; })
+            .attr("href", function (e) { return "#e" + e.id; })
+            .attr("startOffset", "50%");
     }
 
     createNodeLabels() {
@@ -201,16 +217,18 @@ class Graph {
             .data(this.graph_nodes)
             .enter()
             .append("text")
-            .text(function (n) { return n.label; });
+            .attr("id", function (e) { return "nl" + e.id; })
+            .text(function (n) { return n.label; })
+            .on("click", Graph.onNodeLabelClick);
     }
 
     static transformCoordinates(ctx, x_offset = 0, y_offset = 0) {
         // Position
-        const svg_pos   = Graph.SVG.node().getBoundingClientRect();
+        const svg_pos   = Graph.this.svg.node().getBoundingClientRect();
         const mouse_pos = d3.mouse(ctx);
 
         // Transformation
-        const transform     = d3.zoomTransform(Graph.Anchor.node());
+        const transform     = d3.zoomTransform(Graph.this.anchor.node());
         const zoom_factor   = transform.k;
         const scroll_offset = transform.invert(mouse_pos);
 
@@ -222,89 +240,122 @@ class Graph {
 
     /*  */
 
-    static selectElement(type, name) {
-        console.log(type, name)
+    static selectElement(type, name, id) {
+        const is_edge = type === "edge";
+        const search  = is_edge ? Graph.this.graph.edges._values() : Graph.this.graph.nodes._values();
+        let el;
+        if (id !== "") el = search.find(e => e.id === id);
+        else el = search.find(e => e.label === name);
+
+        // Unselect active elements
+        $(".graph").find('[active="true"]').attr("active", false);
+
+        if (el !== null) {
+            if (!is_edge) {
+                const nodes = $(".nodes");
+                nodes.find(`circle[id="n${el.id}"]`).attr("active", true);
+
+                const node_labels = $(".node-labels");
+                node_labels.find(`text[id="nl${el.id}"]`).attr("active", true);
+            } else {
+                const edges = $(".edges");
+                edges.find(`path[id="e${el.id}"]`).attr("active", true);
+
+                const edge_labels = $(".edge-labels");
+                edge_labels.find(`text[id="el${el.id}"]`).attr("active", true);
+            }
+        }
     }
 
     /* Callbacks */
 
     static onTick() {
-        Graph.Edges.attr("d", function (e) {
-            const node_size = Graph.get("node_size");
-            const x1        = e.source.x,
-                  y1        = e.source.y,
-                  x2        = e.target.x,
-                  y2        = e.target.y;
+        let edge_counter        = Object.assign({}, Graph.this.edge_count);
+        const r                 = Graph.get("node_size"),
+              curved_edges      = Graph.get("curved_edges"),
+              edge_label_font   = Graph.get("edge_label_font"),
+              node_label_offset = Graph.get("node_label_offset"),
+              node_hull         = r + Graph.get("edge_arrow_size").h + Graph.get("edge_size") * 2;
 
-            if (e.source !== e.target) {
-                const dx = x2 - x1,
-                      dy = y2 - y1,
-                      dr = Math.sqrt(dx * dx + dy * dy);
+        // Nodes and node labels
+        Graph.this.nodes.each(function (n) {
+            d3.select(`circle[id="n${n.id}"]`)
+              .attr("cx", n.x)
+              .attr("cy", n.y);
 
-                return "M {} {} A {} {} 0 0 1 {} {}".format(x1, y1, dr, dr, x2, y2); // curved line
-                // return "M {} {} L {} {}".format(x1, y1, x2, y2) // straight line
+            d3.select(`text[id="nl${n.id}"]`)
+              .attr("x", n.x + node_label_offset.x)
+              .attr("y", n.y + node_label_offset.y);
+        });
+
+        // Edges and edge labels
+        Graph.this.edges.each(function (e) {
+            const edge  = d3.select(`path[id="e${e.id}"]`);
+            const label = d3.select(`text[id="el${e.id}"]`);
+            const x1    = e.source.x,
+                  y1    = e.source.y,
+                  x2    = e.target.x,
+                  y2    = e.target.y,
+                  dx    = x2 - x1,
+                  dy    = y2 - y1,
+                  d     = Math.sqrt(dx * dx + dy * dy),
+                  flip  = x2 > x1;
+
+            // Precalculate edge path
+            if (e.source.id !== e.target.id) // Normal edge
+                if (curved_edges)
+                    edge.attr("d", "M {} {} A {} {} 0 0 1 {} {}".format(x1, y1, d, d, x2, y2));
+                else
+                    edge.attr("d", "M {} {} L {} {}".format(x1, y1, x2, y2));
+
+            else // Self edge
+                edge.attr("d", "M {} {} C {} {} {} {} {} {}".format(x1, y1, x1, y1, x1, y1, x2, y2));
+
+            // Calculate new position
+            if (e.source.id !== e.target.id) { // Normal edge
+
+                // Subtract node size and arrow size
+                const point_len = this.getTotalLength(),
+                      target    = this.getPointAtLength(point_len - node_hull);
+
+                // Text flip does not work for chrome >:(
+                // label.select("textPath").attr("side", flip ? "left" : "right");
+
+                if (curved_edges)
+                    edge.attr("d", "M {} {} A {} {} 0 0 {} {} {}".format(x1, y1, d, d, "1", target.x, target.y));
+                else
+                    edge.attr("d", "M {} {} L {} {}".format(x1, y1, target.x, target.y));
+
+            } else { // Self edge
+                const index = edge_counter[e.source.id]--;
+                const scale = (2 + index) * 15;
+
+                label.attr("x", x1 + node_label_offset.x - index * edge_label_font.dx)
+                     .attr("y", y1 + node_label_offset.y + index * edge_label_font.size + edge_label_font.dy);
+
+                edge.attr("d", "M {} {} C {} {} {} {} {} {}".format(
+                    x1, y1, x1 - scale, y1, x1, y1 + scale, x1, y1 + node_hull));
             }
-            const scale = e.label.length * 3; // TODO size of the curve
-            return "M {} {} C {} {} {} {} {} {}".format(x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, x2 + node_size / 2, y2 + node_size / 2);
-        })
-
-        Graph.Edges.attr("d", function (e) {
-            const node_size  = Graph.get("node_size");
-            const edge_size  = Graph.get("edge_size");
-            const arrow_size = Graph.get("edge_arrow_size");
-
-            const x1 = e.source.x,
-                  y1 = e.source.y,
-                  x2 = e.target.x,
-                  y2 = e.target.y;
-
-            const pl = this.getTotalLength(),
-                  r  = node_size + arrow_size.h + edge_size * 2,
-                  m  = this.getPointAtLength(pl - r);
-
-            const dx = m.x - x1,
-                  dy = m.y - y1,
-                  dr = Math.sqrt(dx * dx + dy * dy);
-
-            if (e.source !== e.target) {
-                return "M" + x1 + "," + y1 + "A" + dr + "," + dr + " 0 0,1 " + m.x + "," + m.y;
-            } else {
-                const scale = e.label.length * 3; // TODO size of the curve
-                return "M {} {} C {} {} {} {} {} {}".format(x1, y1, x1 - scale, y1 - scale, x1 - scale, y1 + scale, m.x, m.y);
-            }
-        })
-
-        Graph.Nodes
-             .attr("cx", function (n) { return n.x; })
-             .attr("cy", function (n) { return n.y; });
-
-        Graph.NodeLabels
-             .attr("x", function (n) { return n.x + 10; })
-             .attr("y", function (n) { return n.y; });
-
-        Graph.EdgeLabels
-             .attr("x", function (e) { return e.source.x + (e.target.x - e.source.x) * 0.5 + 10; })
-             .attr("y", function (e) { return e.source.y + (e.target.y - e.source.y) * 0.5 + 15; });
+        });
     }
 
     static onZoom() {
         if (d3.event.sourceEvent?.type === "wheel")
             Config.setElement("graph-zoom", d3.event.transform.k);
 
-        Graph.Anchor.attr("transform", d3.event.transform);
+        Graph.this.anchor.attr("transform", d3.event.transform);
         Graph.ContextMenu.hide();
     }
 
-    static zoom(val) { Graph.Zoom.scaleTo(Graph.SVG, val); }
+    static zoom(val) { Graph.this.zoom_level.scaleTo(Graph.this.svg, val); }
 
-    static onEdgeClick(e, _, arr) {
-        let n = d3.select(arr[e.index]);
-    }
+    static onEdgeClick(e) { Graph.selectElement("edge", "", e.id); }
 
-    static onNodeClick(e, _, arr) {
-        if (e.defaultPrevented)
-            return;
-    }
+    static onNodeClick(n) { Graph.selectElement("node", "", n.id); }
+
+    static onEdgeLabelClick(e) { Graph.selectElement("edge", "", e.id); }
+
+    static onNodeLabelClick(n) { Graph.selectElement("node", "", n.id); }
 
     static onContextMenu(e) {
         const coords = Graph.transformCoordinates(this, 20, 10)
@@ -345,13 +396,15 @@ class Graph {
 
     /* Control Callbacks*/
 
+    static stopSimulation() { Graph.this.simulation.stop(); }
+
     static toggleSimulation() { }
 
-    static pauseSimulation() { Graph.Simulation.alphaTarget(0); }
+    static pauseSimulation() { Graph.this.simulation.alphaTarget(0); }
 
-    static resumeSimulation() { Graph.Simulation.alphaTarget(0.5); }
+    static resumeSimulation() { Graph.this.simulation.alphaTarget(0.5); }
 
-    static restartSimulation() { Graph.Simulation.alphaTarget(0.1).restart(); }
+    static restartSimulation() { Graph.this.simulation.alphaTarget(0.1).restart(); }
 }
 
 class ContextMenu {
@@ -391,12 +444,12 @@ class ContextMenu {
 
         this.anchor.html("");
         this.anchor.append(`<li><a class="dropdown-item"><b>${element.label}</b></a></li>`);
-        this.anchor.append("<div class='dropdown-divider'></div>");
+        this.anchor.append('<div class="dropdown-divider"></div>');
         this.anchor.append(
             `<li class="dropdown-action" name="hazard">
-              <a class="dropdown-item" onclick="Content.addHazard('${element.id}', '${type}');">Mark as Hazard</a>
+              <a class="dropdown-item" onclick='Content.addHazard("${element.id}", "${type}");'>Mark as Hazard</a>
             </li>`);
-        this.anchor.append("<div class='dropdown-divider'></div>");
+        this.anchor.append('<div class="dropdown-divider"></div>');
         this.anchor.append(this.createItems(element.data));
     }
 

@@ -5,10 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Third party JS -->
-  <script type="text/javascript" src="../../static/js/third_party/jquery.js"></script>
-  <script type="text/javascript" src="../../static/js/third_party/bootstrap.js"></script>
-  <script type="text/javascript" src="../../static/js/third_party/split.js"></script>
-  <script type="text/javascript" src="../../static/js/third_party/d3.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+          integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"
+          integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg=="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.2/split.min.js"
+          integrity="sha512-to2k78YjoNUq8+hnJS8AwFg/nrLRFLdYYalb18SlcsFRXavCOTfBF3lNyplKkLJeB8YjKVTb1FPHGSy9sXfSdg=="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"
+          integrity="sha512-FHsFVKQ/T1KWJDGSbrUhTJyS1ph3eRrxI228ND0EGaEp6v4a/vGwPWd3Dtd/+9cI7ccofZvl/wulICEurHN1pg=="
+          crossorigin="anonymous"></script>
+
+  <!--
+    <script type="text/javascript" src="../../static/js/third_party/jquery.js"></script>
+    <script type="text/javascript" src="../../static/js/third_party/bootstrap.js"></script>
+    <script type="text/javascript" src="../../static/js/third_party/split.js"></script>
+    <script type="text/javascript" src="../../static/js/third_party/d3.js"></script>
+  -->
 
   <!-- Custom JS -->
   <script type="text/javascript" src="../../static/js/main.js"></script>
@@ -136,19 +152,21 @@
               <!-- Config -->
               <div class="tab-pane fade active show" role="tabpanel" id="tab-config">
                 <p class="bline p-2">
-                  <a class="btn-link" data-toggle="collapse" href="#config-graph" role="button" aria-expanded="false">
+                  <a class="btn-link" data-toggle="collapse" href="#config-graph" role="button" aria-expanded="true">
                     <i class="arrow"></i>Configure Graph
                   </a>
                 </p>
 
 
-                <div class="collapse" id="config-graph">
+                <div class="collapse show bline" id="config-graph">
                   <div class="d-inline-block w-100">
 
                     <!-- Zoom and Graph -->
                     <div class="control-entry rline">
                       <div class="row">
-                        <label class="col-sm-6 col-form-label" for="graph-zoom">Zoom</label>
+                        <label class="col-sm-6 col-form-label" for="graph-zoom">
+                          Zoom <img alt="" src="../../static/img/zoom.png"/>
+                        </label>
                         <input class="col-sm-5" type="range" min="0.4" max="4" value="1" step="0.1" id="graph-zoom"
                                onchange="Config.updateControl(this);"/>
                       </div>
@@ -163,34 +181,28 @@
                       </div>
                     </div>
 
-                    <!-- Sticky nodes and Tooltip -->
-                    <div class="control-entry rline">
-                      <div class="row">
-                        <label class="col-sm-9 col-form-label" for="sticky-nodes">Sticky nodes</label>
-                        <div class="p-1">
-                          <input type="checkbox" id="sticky-nodes" onchange="Config.updateControl(this);"/>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <label class="col-sm-9 col-form-label" for="use-tooltips">Tooltips</label>
-                        <div class="p-1">
-                          <input type="checkbox" id="use-tooltips" onchange="Config.updateControl(this);"/>
-                        </div>
-                      </div>
-                    </div>
-
                     <!-- Show nodes and edges -->
                     <div class="control-entry rline">
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="show-nodes">Show nodes</label>
+                        <label class="col-sm-9 col-form-label" for="show-nodes">
+                          Show nodes
+                          <svg class="d-inline-block" height="1rem" width="1rem">
+                            <circle r="0.5rem" cx="0.5rem" cy="0.5rem" fill="#05A"></circle>
+                          </svg>
+                        </label>
                         <div class="p-1">
                           <input type="checkbox" id="show-nodes" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="show-edges">Show edges</label>
+                        <label class="col-sm-9 col-form-label" for="show-edges">
+                          Show edges
+                          <svg class="d-inline-block" height="1rem" width="1rem">
+                            <path marker-end="url(#end)"
+                                  d="M 2 15 L 8 7" stroke="#CCCCCC" stroke-width="2"></path>
+                          </svg>
+                        </label>
                         <div class="p-1">
                           <input type="checkbox" id="show-edges" onchange="Config.updateControl(this);"/>
                         </div>
@@ -198,47 +210,99 @@
                     </div>
 
                     <!-- Show node and edge labels -->
-                    <div class="control-entry">
+                    <div class="control-entry rline">
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="show-node-labels">Show node labels</label>
+                        <label class="col-sm-9 col-form-label" for="show-node-labels">
+                          Show node labels <img alt="" src="../../static/img/text.png"/>
+                        </label>
                         <div class="p-1">
                           <input type="checkbox" id="show-node-labels" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-9 col-form-label" for="show-edge-labels">Show edge labels</label>
+                        <label class="col-sm-9 col-form-label" for="show-edge-labels">
+                          Show edge labels <img alt="" src="../../static/img/text.png"/>
+                        </label>
                         <div class="p-1">
                           <input type="checkbox" id="show-edge-labels" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
                     </div>
 
+                    <!-- Sticky nodes and curvy edges -->
+                    <div class="control-entry rline">
+                      <div class="row">
+                        <label class="col-sm-9 col-form-label" for="sticky-nodes">
+                          Sticky nodes <img alt="" src="../../static/img/pin.png"/>
+                        </label>
+                        <div class="p-1">
+                          <input type="checkbox" id="sticky-nodes" onchange="Config.updateControl(this);"/>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <label class="col-sm-9 col-form-label" for="curvy-edges">
+                          Curvy edges
+                          <svg class="d-inline-block" height="1rem" width="1rem">
+                            <path marker-end="url(#end)"
+                                  d="M 2 15 A 5 11 0 0 1 10 8" fill="transparent" stroke="#CCCCCC" stroke-width="2"></path>
+                          </svg>
+                        </label>
+                        <div class="p-1">
+                          <input type="checkbox" id="curvy-edges" onchange="Config.updateControl(this);"/>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tooltip -->
+                    <div class="control-entry rline">
+                      <div class="row">
+                        <label class="col-sm-9 col-form-label" for="use-tooltips">
+                          Tooltips <img alt="" src="../../static/img/tooltip.png"/>
+                        </label>
+                        <div class="p-1">
+                          <input type="checkbox" id="use-tooltips" onchange="Config.updateControl(this);"/>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <label class="col-sm-9 col-form-label"></label>
+                        <div class="p-1">
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Simulation -->
+                    <div class="control-entry rline text-center">
+                      <div class="row">
+                        <p class="col-sm-12 col-form-label">Graph Simulation</p>
+                      </div>
+
+                      <div class="row d-inline-block">
+                          <button class="btn" type="button" onclick="Graph.pauseSimulation();">Play</button>
+                          <button class="btn" type="button" onclick="Graph.pauseSimulation();">Pause</button>
+                          <button class="btn" type="button" onclick="Graph.resumeSimulation();">Resume</button>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
-                <p class="bline p-2">
-                  <a class="btn-link" data-toggle="collapse" href="#config-sim" role="button" aria-expanded="false">
-                    <i class="arrow"></i>Configure Simulation
-                  </a>
-                </p>
-                <div class="collapse m-md-2" id="config-sim">
-                  <div class="d-inline-block m-md-2">
-                    <button class="btn" type="button" onclick="Graph.pauseSimulation();">Play</button>
-                  </div>
 
-                  <div class="d-inline-block m-md-2">
-                    <button class="btn" type="button" onclick="Graph.pauseSimulation();">Pause</button>
-                  </div>
+                <!-- Dark mode -->
+                <div class="control-entry w-100 ">
+                  <div class="row">
+                    <label class="col-sm-5 col-form-label" for="dark-theme">
+                      Dark Theme <span class="dark-mode-icon d-inline-block"></span>
+                    </label>
+                    <div class="p-1">
+                      <input type="checkbox" id="dark-theme" onchange="Config.updateControl(this);">
+                    </div>
 
-                  <div class="d-inline-block m-md-2">
-                    <button class="btn" type="button" onclick="Graph.resumeSimulation();">Resume</button>
                   </div>
                 </div>
 
-                <div class="m-md-2">
-                  <p class="tool-settings"><label for="dark-theme" class="switch">Dark Theme</label></p>
-                  <input type="checkbox" id="dark-theme" onchange="Config.updateControl(this);">
-                </div>
               </div>
             </div>
           </div>
@@ -247,7 +311,7 @@
 
       <!-- Chat -->
       <div id="bot">
-        <div id="chat" class="chat"></div>
+        <div id="chat" class="chat flex-column justify-content-end"></div>
         <div id="chat-input">
           <div class="chat-area">
             <textarea class="w-100 h-100 input-area" id="user-input"

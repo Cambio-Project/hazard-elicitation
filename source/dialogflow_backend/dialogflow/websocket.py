@@ -20,10 +20,10 @@ class DFWebsocket(AsyncWebsocketConsumer):
         sentiment_score = result.query_result.sentiment_analysis_result.query_text_sentiment.score
         sentiment_magnitude = result.query_result.sentiment_analysis_result.query_text_sentiment.magnitude
 
-        debug(str('Intent processing result:\n'
+        msg = str('Intent processing result:\n'
                   '- Name: {}\n'
                   '- Confidence: {}\n'
-                  '- Contexts; {}\n'
+                  '- Contexts: {}\n'
                   '- Action: {}\n'
                   '- All parameters present: {}\n'
                   '- Parameters: {}\n'
@@ -36,7 +36,9 @@ class DFWebsocket(AsyncWebsocketConsumer):
             parameters,
             sentiment_score,
             sentiment_magnitude,
-        ))
+        )
+
+        info(msg)
 
     async def connect(self):
         await self.channel_layer.group_add('dialogflow', self.channel_name)
@@ -67,7 +69,7 @@ class DFWebsocket(AsyncWebsocketConsumer):
             warning('No handler for message type "{}"'.format(msg_type))
             return
 
-        await getattr(self, msg_type)(data.get('data'))
+        await getattr(self, msg_type)(data.get('data'), data.get('contexts'))
 
     @add_trace(True)
     async def response_handler(self, result):
@@ -103,24 +105,26 @@ class DFWebsocket(AsyncWebsocketConsumer):
         }))
 
     @add_trace(True)
-    async def dialogflow_text_input(self, data: str):
+    async def dialogflow_text_input(self, data: str, contexts: list):
         """
         Processes text input from a user and detects an intent.
         A response is triggered based on the detected intent name.
-        @param data: str
+        @param data: str    The text input send from an application.
+        @param contexts:    List of contexts.
         """
         try:
-            await self.response_handler(DialogFlowClient.detect_intent(data))
+            await self.response_handler(DialogFlowClient.detect_intent(data, contexts))
         except Exception as e:
             error('Something went wrong during text input processing: {}'.format(e))
 
     @add_trace(True)
-    async def dialogflow_event_input(self, data: str):
+    async def dialogflow_event_input(self, data: str, contexts: list):
         """
         Processes an event and triggers a response based on the detected intent.
         @param data: str    The event input send from an application.
+        @param contexts:    List of contexts.
         """
         try:
-            await self.response_handler(DialogFlowClient.detect_event(data))
+            await self.response_handler(DialogFlowClient.detect_event(data, contexts))
         except Exception as e:
             error('Something went wrong during event input processing: {}'.format(e))
