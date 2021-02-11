@@ -24,6 +24,7 @@ async def create_response(result):
         except InvalidArgument as e:
             error('Intent handler for "{}" produced invalid argument: {}'.format(intent, e))
     elif result.query_result.action:
+        # Smalltalk intent is handled by dialogflow.
         response = TextMessage()
         response.text = result.query_result.fulfillment_text
         response_data = [response.__repr__()]
