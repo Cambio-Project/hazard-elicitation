@@ -43,6 +43,8 @@ Make sure to set `DEBUG` in `source/hazard_elicitation/settings.py` to `False`.
 
 ```
 cd source
+python manage.py makemigrations
+python manage.py migrate --run-syncdb
 python manage.py collectstatic --noinput
 daphne -b 0.0.0.0 -p 8000 hazard_elicitation.asgi:application
 ```
