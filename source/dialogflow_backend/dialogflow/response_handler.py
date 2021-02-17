@@ -15,8 +15,6 @@ async def create_response(result):
     response_data = None
     intent = result.query_result.intent.display_name
 
-    print(result.query_result)
-
     if intent in INTENT_HANDLERS:
         try:
             # Call intent handler by intent name.

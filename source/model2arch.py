@@ -3,10 +3,10 @@ import argparse
 
 from architecture_extraction_backend.controllers.exporter import Exporter
 from architecture_extraction_backend.controllers.validator import Validator
-from architecture_extraction_backend.models.architecture import Architecture
-from architecture_extraction_backend.models.jaeger_trace import JaegerTrace
-from architecture_extraction_backend.models.misim_model import MiSimModel
-from architecture_extraction_backend.models.zipkin_trace import ZipkinTrace
+from architecture_extraction_backend.arch_models.architecture import Architecture
+from architecture_extraction_backend.arch_models.jaeger_trace import JaegerTrace
+from architecture_extraction_backend.arch_models.misim_model import MiSimModel
+from architecture_extraction_backend.arch_models.zipkin_trace import ZipkinTrace
 from util.parse import bool_from_string
 
 
