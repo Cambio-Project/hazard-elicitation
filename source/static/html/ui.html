@@ -172,11 +172,9 @@
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-6 col-form-label" for="graph-selection">Graph</label>
-                        <select class="col-sm-5 form-control" id="graph-selection">
-                          <option>Hotrod</option>
-                          <option>Books</option>
-                          <option>ABCDE</option>
+                        <label class="col-sm-6 col-form-label" for="graph-selection">Trace/Model</label>
+                        <select class="col-sm-5 form-control" id="graph-selection"
+                                onchange="Config.updateControl(this);">
                         </select>
                       </div>
                     </div>

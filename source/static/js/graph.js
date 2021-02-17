@@ -22,6 +22,8 @@ class Graph {
 
         // HTML
         this.svg = d3.select(svg);
+        this.svg.html("");
+        this.svg.selectAll("*").remove();;
         this.svg.on("click", function () { Graph.ContextMenu.hide() });
 
         this.anchor = this.svg.append("g");
@@ -247,23 +249,24 @@ class Graph {
         if (id !== "") el = search.find(e => e.id === id);
         else el = search.find(e => e.label === name);
 
-        // Unselect active elements
-        $(".graph").find('[active="true"]').attr("active", false);
-
         if (el !== null) {
+            // Select element and label that were selected.
+            let element, label;
             if (!is_edge) {
-                const nodes = $(".nodes");
-                nodes.find(`circle[id="n${el.id}"]`).attr("active", true);
-
-                const node_labels = $(".node-labels");
-                node_labels.find(`text[id="nl${el.id}"]`).attr("active", true);
+                element = $(".nodes").find(`circle[id="n${el.id}"]`);
+                label = $(".node-labels").find(`text[id="nl${el.id}"]`);
             } else {
-                const edges = $(".edges");
-                edges.find(`path[id="e${el.id}"]`).attr("active", true);
-
-                const edge_labels = $(".edge-labels");
-                edge_labels.find(`text[id="el${el.id}"]`).attr("active", true);
+                element = $(".edges").find(`path[id="e${el.id}"]`);
+                label = $(".edge-labels").find(`text[id="el${el.id}"]`);
             }
+
+            // Remember state.
+            const active = element.attr("active") === "false" || element.attr("active") === undefined;
+            // Unselect active elements
+            $(".graph").find('[active="true"]').attr("active", false);
+            // Mark the new state.
+            element.attr("active", active);
+            label.attr("active", active);
         }
     }
 
