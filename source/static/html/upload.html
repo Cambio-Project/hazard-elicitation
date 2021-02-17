@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" class="light-theme">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- Third party JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+          integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"
+          integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg=="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.6/min/dropzone.min.js"
+          integrity="sha512-KgeSi6qqjyihUcmxFn9Cwf8dehAB8FFZyl+2ijFEPyWu4ZM8ZOQ80c2so59rIdkkgsVsuTnlffjfgkiwDThewQ=="
+          crossorigin="anonymous"></script>
+
+  <!-- Third party CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- Custom CSS -->
+  <link type="text/css" rel="stylesheet" href="../../static/css/main.css">
+
+  <title>Upload Model</title>
+  <script>
+      $(document).ready(function () {
+          const dropzone = new Dropzone("#upload", {
+              url:         "../archex/upload/",
+              maxFilesize: 1
+          });
+
+          dropzone.on("addedfile", function (file) { if (file.type !== "application/json") this.removeFile(file); });
+          dropzone.on("success", function (file, response) {
+              $('#success-dialog').modal('show');
+              setTimeout(function () {
+                  window.location = "..";
+              }, 3000);
+          });
+          dropzone.on("error", function (file, response) {
+              this.removeFile(file);
+              $('#response-error').text(response);
+              $('#failure-dialog').modal('show');
+          });
+      });
+  </script>
+</head>
+<body>
+
+<div class="modal" tabindex="-1" role="dialog" id="success-dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p>Upload was successful, you will be redirected.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="failure-dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p>
+          Something went wrong, please try again.<br>Only JSON files from Jaeger, Zipkin, or MiSim are allowed.
+          <br>
+          <b>Response</b>:<code id="response-error"></code>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main d-flex m-auto w-50">
+  <div class="upload d-flex flex-column align-items-center m-auto h-50 p-5" id="upload">
+    <div class="row align-items-center h-100">
+      <div class="w-100 mx-auto">
+        <div class="text-center">
+          <h2>Drop a file here</h2>
+          <p>or</p>
+        </div>
+        <div class="position-relative">
+          <input type="file" class="custom-file-input" id="file" required>
+          <label class="custom-file-label" for="file">Browse file to upload...</label>
+        </div>
+        <small>The content of this file will be stored. Do not include sensitive data!</small>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
