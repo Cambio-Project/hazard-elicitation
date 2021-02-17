@@ -2,13 +2,13 @@ import json
 
 from typing import IO, Union, Dict, Any
 
-from architecture_extraction_backend.models.model import IModel, UnknownOperation, WrongFormatException
-from architecture_extraction_backend.models.operation import Operation
-from architecture_extraction_backend.models.service import Service
+from architecture_extraction_backend.arch_models.model import IModel, UnknownOperation, WrongFormatException
+from architecture_extraction_backend.arch_models.operation import Operation
+from architecture_extraction_backend.arch_models.service import Service
 
 
 class MiSimModel(IModel):
-    def __init__(self, source: Union[str, IO] = None):
+    def __init__(self, source: Union[str, IO, dict] = None):
         super().__init__(self.__class__.__name__, source)
 
     # Private
@@ -62,9 +62,11 @@ class MiSimModel(IModel):
 
     # Public
 
-    def read(self, source: Union[str, IO]) -> bool:
+    def read(self, source: Union[str, IO, dict]) -> bool:
         if isinstance(source, str):
             return self._parse(json.load(open(source, 'r')))
         elif isinstance(source, IO):
             return self._parse(json.load(source))
+        elif isinstance(source, dict):
+            return self._parse(source)
         return False

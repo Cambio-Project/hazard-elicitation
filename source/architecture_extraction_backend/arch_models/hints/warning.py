@@ -1,4 +1,4 @@
-from architecture_extraction_backend.models.hints.hint import Hint
+from architecture_extraction_backend.arch_models.hints.hint import Hint
 
 
 class Warning(Hint):

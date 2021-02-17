@@ -1,8 +1,8 @@
 from typing import Union, Dict, Tuple, List, Any
 from typing.io import IO
 
-from architecture_extraction_backend.models.operation import Operation
-from architecture_extraction_backend.models.service import Service
+from architecture_extraction_backend.arch_models.operation import Operation
+from architecture_extraction_backend.arch_models.service import Service
 from util.log import tb
 
 

@@ -1,16 +1,16 @@
 import json
 
-from architecture_extraction_backend.models.model import IModel
+from architecture_extraction_backend.arch_models.model import IModel
 from typing import Union, Any, Dict, List
 
 from typing.io import IO
 
-from architecture_extraction_backend.models.operation import Operation
-from architecture_extraction_backend.models.service import Service
+from architecture_extraction_backend.arch_models.operation import Operation
+from architecture_extraction_backend.arch_models.service import Service
 
 
 class ZipkinTrace(IModel):
-    def __init__(self, source: Union[str, IO] = None):
+    def __init__(self, source: Union[str, IO, list] = None):
         super().__init__(self.__class__.__name__, source)
 
     def _parse(self, model: List[Dict[str, Any]]) -> bool:
@@ -55,8 +55,8 @@ class ZipkinTrace(IModel):
 
             operation_name = span['name']
             operation_duration = span['duration']
-            operation_tags = span['tags']
-            operation_annotation = span['annotations']
+            operation_tags = span.get('tags', {})
+            operation_annotation = span.get('annotations', {})
 
             operation = Operation(operation_name)
             operation.duration = operation_duration
@@ -85,9 +85,11 @@ class ZipkinTrace(IModel):
 
         return True
 
-    def read(self, source: Union[str, IO] = None) -> bool:
+    def read(self, source: Union[str, IO, list] = None) -> bool:
         if isinstance(source, str):
             return self._parse(json.load(open(source, 'r')))
         elif isinstance(source, IO):
             return self._parse(json.load(source))
+        elif isinstance(source, list):
+            return self._parse(source)
         return False

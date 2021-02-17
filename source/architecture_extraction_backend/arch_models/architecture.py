@@ -2,7 +2,7 @@ import json
 from typing import Tuple, List
 
 from architecture_extraction_backend.graph.graph import Graph, Node, Edge
-from architecture_extraction_backend.models.model import IModel, UnknownOperation
+from architecture_extraction_backend.arch_models.model import IModel, UnknownOperation
 
 
 class CyclicServiceOperations(BaseException):
