@@ -12,9 +12,15 @@ class CustomWebSocket {
         this.socket.onmessage = this.onMessage
     }
 
-    onOpen(e) { debug('Open Websocket ', e) }
+    onOpen(e) {
+        chat.chat_input.attr("placeholder", "Type something and press enter...");
+        chat.chat_input.removeAttr("disabled");
+    }
 
-    onClose(e) { debug('Close Websocket ', e) }
+    onClose(e) {
+        chat.chat_input.attr("placeholder", "Connection lost...");
+        chat.chat_input.attr("disabled", "disabled");
+    }
 
     onError(e) { debug('Error Websocket ', e) }
 
