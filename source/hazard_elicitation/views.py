@@ -7,3 +7,8 @@ from util.tracing import add_trace
 @add_trace(True)
 async def ui(request: HttpRequest) -> HttpResponse:
     return render(request, 'html/ui.html')
+
+
+@add_trace(True)
+async def upload(request: HttpRequest) -> HttpResponse:
+    return render(request, 'html/upload.html')
