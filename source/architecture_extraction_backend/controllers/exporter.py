@@ -1,4 +1,4 @@
-from architecture_extraction_backend.models.architecture import Architecture
+from architecture_extraction_backend.arch_models.architecture import Architecture
 
 
 class Exporter:
