@@ -172,10 +172,11 @@
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-6 col-form-label" for="graph-selection">Trace/Model</label>
+                        <label class="col-sm-5 col-form-label" for="graph-selection">Trace/Model</label>
                         <select class="col-sm-5 form-control" id="graph-selection"
                                 onchange="Config.updateControl(this);">
                         </select>
+                        <a href="/upload"><div class="icon upload-icon"></div></a>
                       </div>
                     </div>
 
@@ -292,8 +293,8 @@
                 <!-- Dark mode -->
                 <div class="control-entry w-100 ">
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" for="dark-theme">
-                      Dark Theme <span class="dark-mode-icon d-inline-block"></span>
+                    <label class="col-sm-6 col-form-label" for="dark-theme">
+                      Dark Theme <span class="icon dark-mode-icon"></span>
                     </label>
                     <div class="p-1">
                       <input type="checkbox" id="dark-theme" onchange="Config.updateControl(this);">

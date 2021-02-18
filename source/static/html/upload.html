@@ -14,6 +14,10 @@
           integrity="sha512-KgeSi6qqjyihUcmxFn9Cwf8dehAB8FFZyl+2ijFEPyWu4ZM8ZOQ80c2so59rIdkkgsVsuTnlffjfgkiwDThewQ=="
           crossorigin="anonymous"></script>
 
+  <!-- Custom JS -->
+  <script type="text/javascript" src="../../static/js/util.js"></script>
+  <script type="text/javascript" src="../../static/js/config.js"></script>
+
   <!-- Third party CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -24,12 +28,19 @@
   <title>Upload Model</title>
   <script>
       $(document).ready(function () {
+          Config.loadConfig();
+
           const dropzone = new Dropzone("#upload", {
               url:         "../archex/upload/",
-              maxFilesize: 1
+              maxFilesize: 1,
+              acceptedFiles: ".json"
           });
 
-          dropzone.on("addedfile", function (file) { if (file.type !== "application/json") this.removeFile(file); });
+          dropzone.on("addedfile", function (file) {
+              if (file.type !== "application/json") {
+                  this.removeFile(file);
+              }
+          });
           dropzone.on("success", function (file, response) {
               $('#success-dialog').modal('show');
               setTimeout(function () {
@@ -45,6 +56,8 @@
   </script>
 </head>
 <body>
+
+<input type="checkbox" id="dark-theme" onchange="Config.updateControl(this);" style="display: none;">
 
 <div class="modal" tabindex="-1" role="dialog" id="success-dialog">
   <div class="modal-dialog" role="document">
@@ -63,7 +76,7 @@
         <p>
           Something went wrong, please try again.<br>Only JSON files from Jaeger, Zipkin, or MiSim are allowed.
           <br>
-          <b>Response</b>:<code id="response-error"></code>
+          <b>Response</b>: <code id="response-error"></code>
         </p>
       </div>
       <div class="modal-footer">
@@ -75,15 +88,12 @@
 
 <div class="main d-flex m-auto w-50">
   <div class="upload d-flex flex-column align-items-center m-auto h-50 p-5" id="upload">
-    <div class="row align-items-center h-100">
+    <div class="row align-items-center m-auto">
       <div class="w-100 mx-auto">
         <div class="text-center">
           <h2>Drop a file here</h2>
-          <p>or</p>
-        </div>
-        <div class="position-relative">
-          <input type="file" class="custom-file-input" id="file" required>
-          <label class="custom-file-label" for="file">Browse file to upload...</label>
+          <h4>or</h4>
+          <h2>Click on this area.</h2>
         </div>
         <small>The content of this file will be stored. Do not include sensitive data!</small>
       </div>

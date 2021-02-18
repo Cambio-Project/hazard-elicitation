@@ -22,17 +22,17 @@ class CustomWebSocket {
         chat.chat_input.attr("disabled", "disabled");
     }
 
-    onError(e) { debug('Error Websocket ', e) }
+    onError(e) { console.debug('Error Websocket ', e) }
 
     onMessage(e) {
-        debug('On Message ', e)
+        console.debug('On Message ', e)
 
         const message = JSON.parse(e.data);
 
         if (message.type in CustomWebSocket.WS) {
             CustomWebSocket.WS[message.type](message.data);
         } else {
-            warn("No handler function for '" + message.type + "'.")
+            console.warn("No handler function for '" + message.type + "'.")
         }
     }
 }
@@ -105,7 +105,7 @@ class DFWebSocket extends CustomWebSocket {
                     chat.add(new ChatAccordion(payload.values));
                     break;
                 default:
-                    debug("Unknown data type '" + type + "'.")
+                    console.debug("Unknown data type '" + type + "'.")
             }
         }
         chat.scroll();
