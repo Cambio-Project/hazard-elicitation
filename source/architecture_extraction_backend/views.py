@@ -1,4 +1,5 @@
 import json
+import zipfile
 
 from django.http import HttpResponse
 
@@ -49,3 +50,23 @@ def upload(request):
     except BaseException as e:
         error(e)
         return HttpResponse('Processing error', status=500)
+
+
+def export_arch(request):
+    try:
+        response = HttpResponse(content_type='application/zip')
+        archive = zipfile.ZipFile(response, 'w')
+
+        for obj in ArchitectureModel.objects.all():
+            archive.writestr(obj.name, obj.content)
+
+        response['Content-Disposition'] = 'attachment; filename={}'.format('export.zip')
+        return response
+
+    except BaseException as e:
+        error(e)
+        return HttpResponse('Processing error', status=500)
+
+
+def import_arch(request):
+    return HttpResponse('', status=200)
