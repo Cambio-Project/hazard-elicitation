@@ -23,7 +23,7 @@ class Graph {
         // HTML
         this.svg = d3.select(svg);
         this.svg.html("");
-        this.svg.selectAll("*").remove();;
+        this.svg.selectAll("*").remove();
         this.svg.on("click", function () { Graph.ContextMenu.hide() });
 
         this.anchor = this.svg.append("g");
@@ -106,10 +106,12 @@ class Graph {
         for (const hazard of graph.hazards._values()) {
             for (const nid of hazard.nodes) {
                 na.find('[id="n{}"]'.format(nid)).attr("class", "hazard")
+                Content.addHazard(nid, "node");
             }
 
             for (const eid of hazard.edges) {
                 ea.find('[id="e{}"]'.format(eid)).attr("class", "hazard")
+                Content.addHazard(eid, "edge");
             }
         }
     }
@@ -254,10 +256,10 @@ class Graph {
             let element, label;
             if (!is_edge) {
                 element = $(".nodes").find(`circle[id="n${el.id}"]`);
-                label = $(".node-labels").find(`text[id="nl${el.id}"]`);
+                label   = $(".node-labels").find(`text[id="nl${el.id}"]`);
             } else {
                 element = $(".edges").find(`path[id="e${el.id}"]`);
-                label = $(".edge-labels").find(`text[id="el${el.id}"]`);
+                label   = $(".edge-labels").find(`text[id="el${el.id}"]`);
             }
 
             // Remember state.

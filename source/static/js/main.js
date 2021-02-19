@@ -97,9 +97,9 @@ window.onunload = onUnLoad;
 function onLoad() {
     splitAreas();
 
-    graph   = new Graph("#graph", "#context-menu", sample_graph);
-    chat    = new Chat("#chat", "#user-input");
     content = new Content("#content");
+    graph   = new Graph("#graph", "#context-menu", {nodes: {}, edges: {}, hazards: {}});
+    chat    = new Chat("#chat", "#user-input");
 
     if (DEBUG) {
         addChatExamples()
