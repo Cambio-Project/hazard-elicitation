@@ -1,4 +1,5 @@
 import json
+import re
 from typing import Tuple, List
 
 from architecture_extraction_backend.graph.graph import Graph, Node, Edge
@@ -18,6 +19,7 @@ class Architecture:
     def __init__(self, model: IModel):
         self._model = model
         self._graph = Graph()
+        self._hazards = []
 
         self._build_graph()
 
@@ -89,12 +91,22 @@ class Architecture:
                 'source': e.source.id,
                 'target': e.target.id,
                 'data':   {
-                    'duration': operation.duration,
+                    'duration': operation.durations,
                     'logs':     operation.logs,
                     'tags':     operation.tags
                 }
             }
 
+        for hazard in self._hazards:
+            result['hazards'][hazard.id] = {
+                'id': hazard.id,
+                'type': ''
+            }
+
         if pretty:
             return json.dumps(result, indent=2)
         return json.dumps(result)
+
+    @staticmethod
+    def normalize_operation_name(name: str):
+        return re.sub(r'^.*(get|put|post)\s*', '', name, flags=re.IGNORECASE) or 'GET /'

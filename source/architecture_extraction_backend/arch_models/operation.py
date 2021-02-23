@@ -11,7 +11,7 @@ class Operation:
         self._service = None
         
         # Runtime 
-        self._duration = 0
+        self._durations = {}
         self._tags = {}
         self._logs = {}
 
@@ -50,27 +50,23 @@ class Operation:
         return self._dependencies
     
     @property
-    def duration(self) -> int:
-        return self._duration
-    
-    @duration.setter
-    def duration(self, duration: int):
-        self._duration = duration
+    def durations(self) -> Dict:
+        return self._durations
         
     @property
-    def logs(self) -> Dict[int, Dict[str, str]]:
+    def logs(self) -> Dict[str, Dict]:
         return self._logs
 
     @logs.setter
-    def logs(self, logs: Dict[int, Dict[str, str]]):
+    def logs(self, logs: Dict[str, Dict]):
         self._logs = logs
 
     @property
-    def tags(self) -> Dict[str, str]:
+    def tags(self) -> Dict[str, Dict]:
         return self._tags
 
     @tags.setter
-    def tags(self, tags: Dict[str, str]):
+    def tags(self, tags: Dict[str, Dict]):
         self._tags = tags
 
     def print(self):

@@ -48,19 +48,24 @@ class JaegerTrace(IModel):
                 if pid not in process_ids:
                     return False
 
-                span_ids[span['spanID']] = span
+                span_id = span['spanID']
+                span_ids[span_id] = span
                 operation_name = span['operationName']
                 operation_duration = span['duration']
                 operation_tags = span['tags']
                 operation_logs = span['logs']
 
-                operation = Operation(operation_name)
-                operation.duration = operation_duration
-                operation.tags = {tag['key']: tag['value'] for tag in operation_tags}
-                operation.logs = JaegerTrace._parse_logs(operation_logs)
-
                 service_name = process_ids[pid]
-                self._services[service_name].add_operation(operation)
+
+                if operation_name in self._services[service_name].operations:
+                    operation = self._services[service_name].operations[operation_name]
+                else:
+                    operation = Operation(operation_name)
+                    self._services[service_name].add_operation(operation)
+
+                operation.durations[span_id] = operation_duration
+                operation.tags[span_id] = {tag['key']: tag['value'] for tag in operation_tags}
+                operation.logs[span_id] = JaegerTrace._parse_logs(operation_logs)
 
             # Add dependencies
             for span in trace['spans']:

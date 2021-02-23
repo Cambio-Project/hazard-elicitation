@@ -46,9 +46,9 @@ class ZipkinTrace(IModel):
         for span in model:
             local = span['localEndpoint'] if 'localEndpoint' in span else {}
             if local['ipv4'] in service_ips:
-                service = service_ips[local['ipv4']]
+                service_name = service_ips[local['ipv4']]
             elif 'serviceName' in local and local['serviceName'] in self._services:
-                service = local['serviceName']
+                service_name = local['serviceName']
             # Unknown service
             else:
                 return False
@@ -58,11 +58,16 @@ class ZipkinTrace(IModel):
             operation_tags = span.get('tags', {})
             operation_annotation = span.get('annotations', {})
 
-            operation = Operation(operation_name)
-            operation.duration = operation_duration
-            operation.tags = operation_tags
-            operation.logs = {a['timestamp']: {'log': a['value']} for a in operation_annotation}
-            self._services[service].add_operation(operation)
+            if operation_name in self.services[service_name].operations:
+                operation = self.services[service_name].operations[operation_name]
+            else:
+                operation = Operation(operation_name)
+                self._services[service_name].add_operation(operation)
+
+            span_id = span['id']
+            operation.durations[span_id] = operation_duration
+            operation.tags[span_id] = operation_tags
+            operation.logs[span_id] = {a['timestamp']: {'log': a['value']} for a in operation_annotation}
 
         # Add dependencies
         for span in model:
