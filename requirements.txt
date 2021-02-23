@@ -1,5 +1,7 @@
 requests==2.25.1
-django==3.1.4
+pandas==1.2.2
+
+django==3.1.6
 djangorestframework==3.12.2
 daphne==3.0.1
 asgiref==3.2.10
