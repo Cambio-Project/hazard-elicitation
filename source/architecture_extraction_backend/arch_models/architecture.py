@@ -97,7 +97,7 @@ class Architecture:
                 }
             }
 
-        for hazard in self._hazards:
+        for hazard in self._model.hazards:
             result['hazards'][hazard.id] = {
                 'id': hazard.id,
                 'type': ''

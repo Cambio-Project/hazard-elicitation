@@ -1,6 +1,8 @@
 from typing import Union, Dict, Tuple, List, Any
 from typing.io import IO
+import pandas as pd
 
+from architecture_extraction_backend.arch_models.hints.hazard import Hazard, WorkloadDeviation
 from architecture_extraction_backend.arch_models.operation import Operation
 from architecture_extraction_backend.arch_models.service import Service
 from util.log import tb
@@ -50,6 +52,7 @@ class IModel:
         self._model_type = model_type
         self._services = {}
         self._valid = False
+        self._hazards = []
 
         if source:
             try:
@@ -73,6 +76,14 @@ class IModel:
     @property
     def valid(self) -> bool:
         return self._valid
+
+    @property
+    def hazards(self) -> List[Hazard]:
+        return self._hazards
+
+    @hazards.setter
+    def hazards(self, hazards: List[Hazard]):
+        self._hazards = hazards
 
     # Private
 
@@ -117,6 +128,26 @@ class IModel:
 
         self._valid = valid
         return valid, stack
+
+    def analyze(self) -> List[Hazard]:
+        stack = []
+
+        try:
+            for service_name, service in self._services.items():
+                for operation_name, operation in service.operations.items():
+                    series = pd.Series(operation.durations.values())
+                    # Filter outliers by 3 times standard deviation
+                    series = series[~((series-series.mean()).abs() > series.std() * 3)]
+                    diff = 1 - series.min() / series.max()
+
+                    # Min and Max response times differ by at least 50%
+                    if diff > 0.5:
+                        stack.append(WorkloadDeviation())
+
+            return stack
+        except BaseException as e:
+            tb(e)
+            return stack
 
     def print(self):
         for _, service in self._services.items():
