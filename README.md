@@ -8,7 +8,7 @@
 
 ## Description
 
-This project consists of 2 different applications:
+This project consists of 3 different applications:
 - Architecture Extraction:
   - Can import and create a model from:
     - traces from Jaeger and Zipkin
@@ -17,9 +17,12 @@ This project consists of 2 different applications:
   - Can validate models and architecture
   - ~~Can perform an automated hazard analysis~~
   - Can export a visualization of the architecture and analysis
+- Conversational Interface:
+  - Provides a chatbot interface
+  - Guides a user through the elicitation of resilience scenarios
 - Hazard Elicitation:
-  - ~~Provides an import of the architecture visualization and analysis~~
-  - ~~Provides a chatbot to elicit hazards~~
+  - Provides an import of the architecture visualization and analysis
+  - ~~Provides a resilience scenario template~~
 
 ## Setup
 
