@@ -35,6 +35,13 @@ function populateArchitectures() {
         .then(arches => fillSelect(arches));
 }
 
+function addContentExamples() {
+    content.addTab({
+        "title":   "secret",
+        "content": "secret"
+    }, "advanced");
+}
+
 function addChatExamples() {
     chat.add(new ChatMessage(Chat.Bot, "Hello I am a chatbot and I can help you with:"
         + "<ul>"
@@ -73,11 +80,12 @@ function addChatExamples() {
     chat.scroll();
 }
 
-function addContentExamples() {
-    content.addTab({
-        "title":   "secret",
-        "content": "secret"
-    }, "advanced");
+function addSampleGraph() {
+    graph = new Graph("#graph", "#context-menu", {
+        nodes:   {'0': {label: '0', id: 0}, '1': {label: '1', id: 1}, '2': {label: '2', id: 2}},
+        edges:   {'0': {label: '0->1', id: 0, source: 0, target: 1}, '1': {label: '1->2', id: 1, source: 1, target: 2}},
+        hazards: {}
+    });
 }
 
 /**
@@ -104,6 +112,7 @@ function onLoad() {
     if (DEBUG) {
         addChatExamples()
         addContentExamples();
+        addSampleGraph()
     }
 
     Config.loadConfig();
