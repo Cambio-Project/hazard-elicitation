@@ -1,6 +1,6 @@
 from typing import List
 
-from architecture_extraction_backend.arch_models.hints.hazard import Hazard
+from architecture_extraction_backend.arch_models.hazard import Hazard
 from architecture_extraction_backend.arch_models.model import IModel
 
 

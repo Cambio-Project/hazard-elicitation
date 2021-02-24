@@ -2,7 +2,7 @@ from typing import Union, Dict, Tuple, List, Any
 from typing.io import IO
 import pandas as pd
 
-from architecture_extraction_backend.arch_models.hints.hazard import Hazard, WorkloadDeviation
+from architecture_extraction_backend.arch_models.hazard import Hazard, ResponseTimeDeviation, ResponseTimeSpike
 from architecture_extraction_backend.arch_models.operation import Operation
 from architecture_extraction_backend.arch_models.service import Service
 from util.log import tb
@@ -111,15 +111,16 @@ class IModel:
                             continue
 
                         try:
-                            _ = self._services[dependency.service.label].operations[dependency.label]
+                            _ = self._services[dependency.service.name].operations[dependency.name]
 
                         # Service or operation is not known.
                         except AttributeError:
+                            print(service)
                             if not check_everything:
-                                return False, [UnknownOperation(service.label, operation.label)]
+                                return False, [UnknownOperation(service.name, operation.name)]
                             else:
                                 valid = False
-                                stack.append(UnknownOperation(service.label, operation.label))
+                                stack.append(UnknownOperation(service.name, operation.name))
 
         # Unknown exception has occurred.
         except BaseException as e:
@@ -133,16 +134,24 @@ class IModel:
         stack = []
 
         try:
-            for service_name, service in self._services.items():
-                for operation_name, operation in service.operations.items():
+            for _, service in self._services.items():
+                for _, operation in service.operations.items():
                     series = pd.Series(operation.durations.values())
+
                     # Filter outliers by 3 times standard deviation
-                    series = series[~((series-series.mean()).abs() > series.std() * 3)]
-                    diff = 1 - series.min() / series.max()
+                    filtered = series[~((series-series.mean()).abs() > series.std() * ResponseTimeSpike.DEVIATION_FACTOR)]
+                    diff = 1 - filtered.min() / filtered.max()
 
                     # Min and Max response times differ by at least 50%
-                    if diff > 0.5:
-                        stack.append(WorkloadDeviation())
+                    if diff > ResponseTimeDeviation.DEVIATION_INTERVAL:
+                        stack.append(ResponseTimeDeviation(operation, diff))
+
+                    # At least one outlier detected
+                    if len(filtered) < len(series):
+                        # Spike workload
+                        deviation = filtered.max() - series.max()
+                        if deviation > 0:
+                            stack.append(ResponseTimeSpike(operation, deviation))
 
             return stack
         except BaseException as e:

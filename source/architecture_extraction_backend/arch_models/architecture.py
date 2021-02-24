@@ -100,7 +100,13 @@ class Architecture:
         for hazard in self._model.hazards:
             result['hazards'][hazard.id] = {
                 'id': hazard.id,
-                'type': ''
+                'type': hazard.type,
+                'property_type': hazard.prop_type,
+                'property_name': hazard.prop_name,
+                'keyword': hazard.keyword,
+                'value': hazard.value,
+                'nodes': hazard.nodes,
+                'edges': hazard.edges
             }
 
         if pretty:

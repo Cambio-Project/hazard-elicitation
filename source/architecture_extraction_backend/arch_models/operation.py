@@ -19,7 +19,7 @@ class Operation:
 
     def __repr__(self) -> str:
         if self._service:
-            return '{} {} ({}/{})'.format(self.__class__.__name__, self._id, self._service.label, self._name)
+            return '{} {} ({}/{})'.format(self.__class__.__name__, self._id, self._service.name, self._name)
         else:
             return '{} {} ({})'.format(self.__class__.__name__, self._id, self._name)
 

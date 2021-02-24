@@ -7,6 +7,7 @@ from architecture_extraction_backend.arch_models.architecture import Architectur
 from architecture_extraction_backend.arch_models.jaeger_trace import JaegerTrace
 from architecture_extraction_backend.arch_models.misim_model import MiSimModel
 from architecture_extraction_backend.arch_models.zipkin_trace import ZipkinTrace
+from architecture_extraction_backend.controllers.analyzer import Analyzer
 from architecture_extraction_backend.controllers.exporter import Exporter
 from architecture_extraction_backend.models import ArchitectureModel
 from util.log import error
@@ -18,6 +19,7 @@ def upload(request):
         filename = request.FILES['file']
         content = json.load(filename)
 
+        # Load model
         try:
             if isinstance(content, dict):
                 if content.get('microservices', False):
@@ -29,12 +31,22 @@ def upload(request):
 
         except BaseException as e:
             error(e)
-            return HttpResponse('Processing error', status=500)
+            return HttpResponse('Processing error: Model could not be read.', status=500)
 
+        # Validate and analyze
+        if model:
+            validation = model.validate(True)
+            if not validation[0]:
+                return HttpResponse('Validation error: ' + '\n- ' + '\n- '.join(map(str, validation[1])), status=500)
+
+            model.hazards = Analyzer.analyze_model(model)
+
+        # Create architecture
         if model:
             arch = Architecture(model)
             export = Exporter.export_architecture(arch, 'JSON')
 
+            # Store architecture in DB
             try:
                 ArchitectureModel.objects.create(name=filename, content=export)
 
@@ -49,7 +61,7 @@ def upload(request):
 
     except BaseException as e:
         error(e)
-        return HttpResponse('Processing error', status=500)
+        return HttpResponse('Processing error: Unknown error.', status=500)
 
 
 def export_arch(request):
