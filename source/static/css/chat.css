@@ -119,10 +119,12 @@
 }
 
 .btn-link:hover, .btn-link:active, .btn-link:focus
+{ text-decoration : none; }
+
+.btn-link:hover
 {
-  text-decoration : none;
-  font-weight     : bold;
-  color           : var(--primary-text-color);
+  font-weight : bold;
+  color       : var(--primary-color);
 }
 
 /* Bot content*/

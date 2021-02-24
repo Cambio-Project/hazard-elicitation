@@ -25,7 +25,7 @@
 {
   font-weight : bold;
   border      : none;
-  padding     : 8px 35px 8px 8px;
+  padding     : 8px 2rem 8px 8px;
   margin      : 0 1px;
 }
 
@@ -113,7 +113,7 @@
 { flex-grow : 1; }
 
 #tab-scenario
-{ font-size: 1.25rem; }
+{ font-size : 1.25rem; }
 
 .tip-wrapper
 {

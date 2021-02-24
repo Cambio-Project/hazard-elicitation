@@ -228,6 +228,11 @@ input[type="checkbox"]:checked:before
   background-color : var(--white);
 }
 
+/* Textarea */
+
+::placeholder
+{ user-select: none; }
+
 /* Upload */
 
 .upload

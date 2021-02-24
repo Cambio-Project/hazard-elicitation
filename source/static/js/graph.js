@@ -106,12 +106,14 @@ class Graph {
         for (const hazard of graph.hazards._values()) {
             for (const nid of hazard.nodes) {
                 na.find('[id="n{}"]'.format(nid)).attr("class", "hazard")
-                Content.addHazard(nid, "node");
+                graph.nodes[nid].hazard_id = hazard.id;
+                graph.hazards[hazard.id].tab_id = Content.addHazard(nid, "node");
             }
 
             for (const eid of hazard.edges) {
                 ea.find('[id="e{}"]'.format(eid)).attr("class", "hazard")
-                Content.addHazard(eid, "edge");
+                graph.edges[eid].hazard_id = hazard.id;
+                graph.hazards[hazard.id].tab_id = Content.addHazard(eid, "edge");
             }
         }
     }
@@ -446,14 +448,24 @@ class ContextMenu {
             });
 
         const type = "source" in element ? "edge" : "node";
+        let dom;
+        if(type === "node") dom = $(".nodes").find('[id="n{}"]'.format(element.id));
+        else dom = $(".edges").find('[id="e{}"]'.format(element.id));
 
         this.anchor.html("");
         this.anchor.append(`<li><a class="dropdown-item"><b>${element.label}</b></a></li>`);
         this.anchor.append('<div class="dropdown-divider"></div>');
-        this.anchor.append(
-            `<li class="dropdown-action" name="hazard">
-              <a class="dropdown-item" onclick='Content.addHazard("${element.id}", "${type}");'>Mark as Hazard</a>
-            </li>`);
+        if (dom.attr("class") === "hazard") {
+            this.anchor.append(
+                `<li class="dropdown-action" name="hazard">
+                  <a class="dropdown-item" onclick='Content.openHazard("${element.id}");'>Open Hazard</a>
+                </li>`);
+        } else {
+            this.anchor.append(
+                `<li class="dropdown-action" name="hazard">
+                  <a class="dropdown-item" onclick='Content.addNewHazard("${element.id}", "${type}");'>Add as Hazard</a>
+                </li>`);
+        }
         this.anchor.append('<div class="dropdown-divider"></div>');
         this.anchor.append(this.createItems(element.data));
     }

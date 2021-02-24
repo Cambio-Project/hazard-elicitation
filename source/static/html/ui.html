@@ -80,7 +80,7 @@
             </div>
           </div>
 
-          <!-- Hazard content -->
+          <!-- Content -->
           <div id="content" class="content">
 
             <ul class="nav nav-tabs bline" id="tablist" role="tablist">
@@ -89,7 +89,11 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link config active show" role="tab" data-toggle="tab" id="tab-config-title"
-                   href="#tab-config" aria-selected="true">Configure</a>
+                   href="#tab-config">Configure</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link scenario" role="tab" data-toggle="tab" id="tab-scenario-title"
+                   href="#tab-scenario" aria-selected="true">Scenario</a>
               </li>
             </ul>
 
@@ -151,7 +155,7 @@
               <!-- Config -->
               <div class="tab-pane fade active show" role="tabpanel" id="tab-config">
                 <p class="bline p-2">
-                  <a class="btn-link" data-toggle="collapse" href="#config-graph" role="button" aria-expanded="true">
+                  <a class="btn-link" data-toggle="collapse" href="#config-graph" role="button">
                     <i class="arrow"></i>Configure Graph
                   </a>
                 </p>
@@ -175,7 +179,9 @@
                         <select class="col-sm-5 form-control" id="graph-selection"
                                 onchange="Config.updateControl(this);">
                         </select>
-                        <a href="/upload"><div class="icon upload-icon"></div></a>
+                        <a href="/upload">
+                          <div class="icon upload-icon"></div>
+                        </a>
                       </div>
                     </div>
 
@@ -303,6 +309,58 @@
                 </div>
 
               </div>
+
+
+              <!-- Scenario -->
+              <div class="tab-pane fade" role="tabpanel" id="tab-scenario">
+
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Description</div>
+                    <div class="p-1">The operation <code>frontend/dispatch</code> is experiencing a peek workload.</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Source</div>
+                    <div class="p-1">...</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Stimulus</div>
+                    <div class="p-1">increasing workload on the system</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Artifact</div>
+                    <div class="p-1">Service: frontend, Operation: dispatch</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Environment</div>
+                    <div class="p-1">operating</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Response</div>
+                    <div class="p-1">System workload should return to normal behaviour.</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Response Measure</div>
+                    <div class="p-1">
+                      After occurrence of {maximum tolerable workload} the operation frontend/dispatch should
+                      return to optimal response time {within 5 seconds} {in 90% of cases}.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
