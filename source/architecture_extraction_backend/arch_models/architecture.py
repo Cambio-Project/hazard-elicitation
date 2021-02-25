@@ -101,6 +101,7 @@ class Architecture:
             result['hazards'][hazard.id] = {
                 'id': hazard.id,
                 'type': hazard.type,
+                'metric': hazard.metric,
                 'property_type': hazard.prop_type,
                 'property_name': hazard.prop_name,
                 'keyword': hazard.keyword,

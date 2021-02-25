@@ -59,8 +59,9 @@ class Hazard:
 
     @staticmethod
     def get_id() -> int:
+        _id = Hazard.ID
         Hazard.ID += 1
-        return Hazard.ID
+        return _id
 
     @property
     def id(self) -> int:
