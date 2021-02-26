@@ -21,12 +21,16 @@ class DialogFlowClient:
 
         contexts = []
         for context in external_contexts:
-            parameters = df.types.Struct()
-            parameters.update(context.get('parameters'))
-            contexts.append(df.types.Context(
-                name=DialogFlowClient.CONTEXT.format(DialogFlowClient.PROJECT, session_id, context.get('name')),
-                lifespan_count=context.get('lifespan', 1),
-                parameters=parameters))
+            context_name = context.get('name', '')
+            context_parameters = context.get('parameters', {})
+            context_lifespan = context.get('lifespan', 1)
+            if context_name and context_parameters and context_lifespan:
+                parameters = df.types.Struct()
+                parameters.update(context_parameters)
+                contexts.append(df.types.Context(
+                    name=DialogFlowClient.CONTEXT.format(DialogFlowClient.PROJECT, session_id, context_name),
+                    lifespan_count=context_lifespan,
+                    parameters=parameters))
 
         return session_client, session, contexts
 

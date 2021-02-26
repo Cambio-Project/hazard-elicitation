@@ -1,12 +1,13 @@
 import pickle
 import argparse
 
+from architecture_extraction_backend.controllers.analyzer import Analyzer
 from architecture_extraction_backend.controllers.exporter import Exporter
 from architecture_extraction_backend.controllers.validator import Validator
-from architecture_extraction_backend.models.architecture import Architecture
-from architecture_extraction_backend.models.jaeger_trace import JaegerTrace
-from architecture_extraction_backend.models.misim_model import MiSimModel
-from architecture_extraction_backend.models.zipkin_trace import ZipkinTrace
+from architecture_extraction_backend.arch_models.architecture import Architecture
+from architecture_extraction_backend.arch_models.jaeger_trace import JaegerTrace
+from architecture_extraction_backend.arch_models.misim_model import MiSimModel
+from architecture_extraction_backend.arch_models.zipkin_trace import ZipkinTrace
 from util.parse import bool_from_string
 
 
@@ -14,13 +15,13 @@ def cli():
     parser = argparse.ArgumentParser(description='Converts a model into an architecture representation.')
 
     # Transformation
-    parser.add_argument('-m', '--model', dest='model', nargs=1, required=False,
+    parser.add_argument('-m', '--model', dest='model', nargs=1, required=False, metavar='generic_model',
                         help='Stores a previously converted model.')
-    parser.add_argument('--misim', dest='misim', type=str, nargs='+', required=False,
+    parser.add_argument('--misim', dest='misim', type=str, nargs='+', required=False, metavar='misim_json_model',
                         help='Converts a MiSim model. Takes the architecture model and an optional experiment model.')
-    parser.add_argument('--jaeger', dest='jaeger', type=str, nargs=1, required=False,
+    parser.add_argument('--jaeger', dest='jaeger', type=str, nargs=1, required=False, metavar='jaeger_json_trace',
                         help='Converts a Jager trace.')
-    parser.add_argument('--zipkin', dest='zipkin', type=str, nargs=1, required=False,
+    parser.add_argument('--zipkin', dest='zipkin', type=str, nargs=1, required=False, metavar='zipkin_json_trace',
                         help='Converts a Zipkin trace.')
 
     # Validation
@@ -29,11 +30,19 @@ def cli():
     parser.add_argument('-va', '--validate-architecture', dest='validate_architecture', action='store_true',
                         help='Validates the architecture.')
 
+    # Analysis
+    parser.add_argument('-am', '--analyze-model', dest='analyze_model', action='store_true',
+                        help='Analyzes the model.')
+    # parser.add_argument('-aa', '--analyze-architecture', dest='analyze_architecture', action='store_true',
+    #                     help='Analyzes the architecture.')
+
     # Export
     parser.add_argument('-em', '--export-model', dest='export_model', action='store_true',
                         help='Exports the converted model in an intermediate format (pickle).')
     parser.add_argument('-ea', '--export-architecture', dest='export_architecture', type=str, nargs='+', required=False,
-                        help='Stores a d3 graph and hazards of the architecture in the specified type (either "js" or "json").')
+                        metavar='export_type',
+                        help='Stores a d3 graph and hazards of the architecture in the specified format '
+                             '(either "js" or "json").')
 
     args = parser.parse_args()
     model = None
@@ -74,6 +83,10 @@ def cli():
         print('Validation of architecture: {} {}'.format(
             'Successful' if success else 'Failed',
             '' if not exceptions else '\n- ' + '\n- '.join(map(str, exceptions))))
+
+    # Analysis
+    if args.analyze_model and model:
+        model.hazards = Analyzer.analyze_model(model)
 
     # Export
     if args.export_model:

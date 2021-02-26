@@ -4,7 +4,7 @@
 class Config {
     static SETTINGS = {
         "dark-theme":       {default: false, callback: Config.setDarkTheme},
-        "graph-selection":  {default: "", callback: null},
+        "graph-selection":  {default: "", callback: Config.getGraph},
         "sticky-nodes":     {default: false, callback: Config.stickyNodes},
         "curvy-edges":      {default: false, callback: Config.curvyEdges},
         "use-tooltips":     {default: false, callback: Config.useTooltip},
@@ -59,7 +59,7 @@ class Config {
 
     /* Called when a control changes its value. Calls callback with the new value. */
     static updateControl(element) {
-        if (Config.SETTINGS[element.id].callback)
+        if (element && Config.SETTINGS[element.id].callback)
             Config.SETTINGS[element.id].callback(Config.getElement(element.id));
     }
 
@@ -105,6 +105,15 @@ class Config {
     static setDarkTheme(value) { document.documentElement.className = value ? "dark-theme" : "light-theme"; }
 
     static showAdvancedElements(show) { $(".advanced").css("display", show ? "inline-block" : "none"); }
+
+    static getGraph(id) {
+        if(id) {
+            fetch("api/arch?id=" + id)
+                .then(response => response.json())
+                .then(graph => window.graph =
+                    new Graph("#graph", "#context-menu", JSON.parse(graph[0]["content"])));
+        }
+    }
 
     static stickyNodes(sticky) { Graph.set("sticky", sticky); }
 

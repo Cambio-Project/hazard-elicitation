@@ -9,6 +9,7 @@ RUN pip install -r requirements.txt
 RUN apt-get purge -y --auto-remove gcc python-dev
 
 EXPOSE 8000
-CMD ["python", "manage.py", "migrate"]
+CMD ["python", "manage.py", "makemigrations"]
+CMD ["python", "manage.py", "migrate", "--run-syncdb"]
 CMD ["python", "manage.py", "collectstatic", "--noinput"]
 CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "hazard_elicitation.asgi:application"]

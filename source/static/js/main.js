@@ -1,39 +1,3 @@
-function time(date) {
-    return "{}-{}-{} {}:{}:{}".format(
-        date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
-        date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds())
-}
-
-function formattedStack(...args) {
-    const date   = new Date();
-    const stack  = new Error().stack.split("\n");
-    const parent = stack[stack.length - 2];
-    const start  = parent.lastIndexOf("/") + 1;
-    const file   = parent.substr(start, parent.length - start - 1);
-    return ["{} [{}] | {}:".format(time(date), file, args[0]), ...args.slice(1)];
-}
-
-function dir() {
-    console.dir(...formattedStack("DEBUG  ", ...arguments))
-}
-
-function debug() {
-    console.debug(...formattedStack("DEBUG  ", ...arguments))
-}
-
-function info() {
-    console.info(...formattedStack("INFO   ", ...arguments))
-}
-
-function warn() {
-    console.warn(...formattedStack("WARNING", ...arguments))
-}
-
-function error(what) {
-    console.error(...formattedStack("ERROR  ", ...arguments))
-}
-
-
 function splitAreas() {
     Split(['#left', '#bot'], {
         sizes:      [75, 25],
@@ -44,7 +8,7 @@ function splitAreas() {
 
     Split(['#arch', '#content'], {
         sizes:      [65, 35],
-        minSize:    [600, 300],
+        minSize:    [600, 50],
         gutterSize: 5,
         direction:  'vertical'
     })
@@ -55,6 +19,27 @@ function splitAreas() {
         gutterSize: 5,
         direction:  'vertical'
     })
+}
+
+function populateArchitectures() {
+    const fillSelect = function (arches) {
+        const select = $("#graph-selection");
+        $.each(arches, function (_, g) {
+            const o = $("<option />").val(g["id"]).text(g["name"]);
+            select.append(o);
+        });
+    }
+
+    fetch("api/archlist/")
+        .then(response => response.json())
+        .then(arches => fillSelect(arches));
+}
+
+function addContentExamples() {
+    content.addTab({
+        "title":   "secret",
+        "content": "secret"
+    }, "advanced");
 }
 
 function addChatExamples() {
@@ -95,11 +80,12 @@ function addChatExamples() {
     chat.scroll();
 }
 
-function addContentExamples() {
-    content.addTab({
-        "title":   "secret",
-        "content": "secret"
-    }, "advanced");
+function addSampleGraph() {
+    graph = new Graph("#graph", "#context-menu", {
+        nodes:   {'0': {label: '0', id: 0}, '1': {label: '1', id: 1}, '2': {label: '2', id: 2}},
+        edges:   {'0': {label: '0->1', id: 0, source: 0, target: 1}, '1': {label: '1->2', id: 1, source: 1, target: 2}},
+        hazards: {}
+    });
 }
 
 /**
@@ -119,16 +105,18 @@ window.onunload = onUnLoad;
 function onLoad() {
     splitAreas();
 
-    graph   = new Graph("#graph", "#context-menu", sample_graph);
-    chat    = new Chat("#chat", "#user-input");
     content = new Content("#content");
+    graph   = new Graph("#graph", "#context-menu", {nodes: {}, edges: {}, hazards: {}});
+    chat    = new Chat("#chat", "#user-input");
 
     if (DEBUG) {
         addChatExamples()
         addContentExamples();
+        addSampleGraph()
     }
 
     Config.loadConfig();
+    populateArchitectures();
 
     chat.ws.event("welcome", [{name: 'test', lifespan: 10, parameters: {test: 'asd'}}]);
 }

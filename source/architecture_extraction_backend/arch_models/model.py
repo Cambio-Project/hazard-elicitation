@@ -1,8 +1,10 @@
 from typing import Union, Dict, Tuple, List, Any
 from typing.io import IO
+import pandas as pd
 
-from architecture_extraction_backend.models.operation import Operation
-from architecture_extraction_backend.models.service import Service
+from architecture_extraction_backend.arch_models.hazard import Hazard, ResponseTimeDeviation, ResponseTimeSpike
+from architecture_extraction_backend.arch_models.operation import Operation
+from architecture_extraction_backend.arch_models.service import Service
 from util.log import tb
 
 
@@ -50,6 +52,7 @@ class IModel:
         self._model_type = model_type
         self._services = {}
         self._valid = False
+        self._hazards = []
 
         if source:
             try:
@@ -73,6 +76,14 @@ class IModel:
     @property
     def valid(self) -> bool:
         return self._valid
+
+    @property
+    def hazards(self) -> List[Hazard]:
+        return self._hazards
+
+    @hazards.setter
+    def hazards(self, hazards: List[Hazard]):
+        self._hazards = hazards
 
     # Private
 
@@ -100,15 +111,16 @@ class IModel:
                             continue
 
                         try:
-                            _ = self._services[dependency.service.label].operations[dependency.label]
+                            _ = self._services[dependency.service.name].operations[dependency.name]
 
                         # Service or operation is not known.
                         except AttributeError:
+                            print(service)
                             if not check_everything:
-                                return False, [UnknownOperation(service.label, operation.label)]
+                                return False, [UnknownOperation(service.name, operation.name)]
                             else:
                                 valid = False
-                                stack.append(UnknownOperation(service.label, operation.label))
+                                stack.append(UnknownOperation(service.name, operation.name))
 
         # Unknown exception has occurred.
         except BaseException as e:
@@ -117,6 +129,34 @@ class IModel:
 
         self._valid = valid
         return valid, stack
+
+    def analyze(self) -> List[Hazard]:
+        stack = []
+
+        try:
+            for _, service in self._services.items():
+                for _, operation in service.operations.items():
+                    series = pd.Series(operation.durations.values())
+
+                    # Filter outliers by 3 times standard deviation
+                    filtered = series[~((series-series.mean()).abs() > series.std() * ResponseTimeSpike.DEVIATION_FACTOR)]
+                    diff = 1 - filtered.min() / filtered.max()
+
+                    # Min and Max response times differ by at least 50%
+                    if diff > ResponseTimeDeviation.DEVIATION_INTERVAL:
+                        stack.append(ResponseTimeDeviation(operation, diff))
+
+                    # At least one outlier detected
+                    if len(filtered) < len(series):
+                        # Spike workload
+                        deviation = filtered.max() - series.max()
+                        if deviation > 0:
+                            stack.append(ResponseTimeSpike(operation, deviation))
+
+            return stack
+        except BaseException as e:
+            tb(e)
+            return stack
 
     def print(self):
         for _, service in self._services.items():

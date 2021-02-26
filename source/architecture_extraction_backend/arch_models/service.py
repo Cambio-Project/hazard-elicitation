@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from architecture_extraction_backend.models.operation import Operation
+from architecture_extraction_backend.arch_models.operation import Operation
 
 
 class Service:

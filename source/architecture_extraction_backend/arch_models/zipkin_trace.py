@@ -1,16 +1,16 @@
 import json
 
-from architecture_extraction_backend.models.model import IModel
+from architecture_extraction_backend.arch_models.model import IModel
 from typing import Union, Any, Dict, List
 
 from typing.io import IO
 
-from architecture_extraction_backend.models.operation import Operation
-from architecture_extraction_backend.models.service import Service
+from architecture_extraction_backend.arch_models.operation import Operation
+from architecture_extraction_backend.arch_models.service import Service
 
 
 class ZipkinTrace(IModel):
-    def __init__(self, source: Union[str, IO] = None):
+    def __init__(self, source: Union[str, IO, list] = None):
         super().__init__(self.__class__.__name__, source)
 
     def _parse(self, model: List[Dict[str, Any]]) -> bool:
@@ -46,23 +46,28 @@ class ZipkinTrace(IModel):
         for span in model:
             local = span['localEndpoint'] if 'localEndpoint' in span else {}
             if local['ipv4'] in service_ips:
-                service = service_ips[local['ipv4']]
+                service_name = service_ips[local['ipv4']]
             elif 'serviceName' in local and local['serviceName'] in self._services:
-                service = local['serviceName']
+                service_name = local['serviceName']
             # Unknown service
             else:
                 return False
 
             operation_name = span['name']
             operation_duration = span['duration']
-            operation_tags = span['tags']
-            operation_annotation = span['annotations']
+            operation_tags = span.get('tags', {})
+            operation_annotation = span.get('annotations', {})
 
-            operation = Operation(operation_name)
-            operation.duration = operation_duration
-            operation.tags = operation_tags
-            operation.logs = {a['timestamp']: {'log': a['value']} for a in operation_annotation}
-            self._services[service].add_operation(operation)
+            if operation_name in self.services[service_name].operations:
+                operation = self.services[service_name].operations[operation_name]
+            else:
+                operation = Operation(operation_name)
+                self._services[service_name].add_operation(operation)
+
+            span_id = span['id']
+            operation.durations[span_id] = operation_duration
+            operation.tags[span_id] = operation_tags
+            operation.logs[span_id] = {a['timestamp']: {'log': a['value']} for a in operation_annotation}
 
         # Add dependencies
         for span in model:
@@ -85,9 +90,11 @@ class ZipkinTrace(IModel):
 
         return True
 
-    def read(self, source: Union[str, IO] = None) -> bool:
+    def read(self, source: Union[str, IO, list] = None) -> bool:
         if isinstance(source, str):
             return self._parse(json.load(open(source, 'r')))
         elif isinstance(source, IO):
             return self._parse(json.load(source))
+        elif isinstance(source, list):
+            return self._parse(source)
         return False

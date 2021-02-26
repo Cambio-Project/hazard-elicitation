@@ -4,7 +4,7 @@ import requests
 import json
 
 from dialogflow_backend.dialogflow.settings import COMMANDS
-from dialogflow_backend.dialogflow.responses import TextMessage, QuickReply, Card, Accordion, ActionResponse
+from dialogflow_backend.dialogflow.response_types import TextMessage, QuickReply, Card, Accordion, ActionResponse
 from util.text.text import random_text, text
 from util.text.ids import *
 

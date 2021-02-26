@@ -8,7 +8,7 @@
 
 ## Description
 
-This project consists of 2 different applications:
+This project consists of 3 different applications:
 - Architecture Extraction:
   - Can import and create a model from:
     - traces from Jaeger and Zipkin
@@ -17,9 +17,12 @@ This project consists of 2 different applications:
   - Can validate models and architecture
   - ~~Can perform an automated hazard analysis~~
   - Can export a visualization of the architecture and analysis
+- Conversational Interface:
+  - Provides a chatbot interface
+  - Guides a user through the elicitation of resilience scenarios
 - Hazard Elicitation:
-  - ~~Provides an import of the architecture visualization and analysis~~
-  - ~~Provides a chatbot to elicit hazards~~
+  - Provides an import of the architecture visualization and analysis
+  - ~~Provides a resilience scenario template~~
 
 ## Setup
 
@@ -43,6 +46,8 @@ Make sure to set `DEBUG` in `source/hazard_elicitation/settings.py` to `False`.
 
 ```
 cd source
+python manage.py makemigrations
+python manage.py migrate --run-syncdb
 python manage.py collectstatic --noinput
 daphne -b 0.0.0.0 -p 8000 hazard_elicitation.asgi:application
 ```

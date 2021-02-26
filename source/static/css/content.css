@@ -1,6 +1,8 @@
 .light-theme
 {
   --dark-mode-image : url("../img/sun.png");
+  --upload-image    : url("../img/upload.png");
+  --scenario-image  : url("../img/scenario.png");
   --settings-image  : url("../img/settings.png");
   --tip-1-img       : url("../img/tip_1.png");
 }
@@ -8,6 +10,8 @@
 .dark-theme
 {
   --dark-mode-image : url("../img/moon.png");
+  --upload-image    : url("../img/upload_dark.png");
+  --scenario-image  : url("../img/scenario.png");
   --settings-image  : url("../img/settings_dark.png");
   --tip-1-img       : url("../img/tip_1_dark.png");
 }
@@ -21,7 +25,7 @@
 {
   font-weight : bold;
   border      : none;
-  padding     : 8px 35px 8px 8px;
+  padding     : 8px 2rem 8px 8px;
   margin      : 0 1px;
 }
 
@@ -71,8 +75,8 @@
 
 .nav-link.help.active
 {
-  color            : var(--white);
-  background-color : var(--primary-color);
+  color            : var(--black);
+  background-color : var(--help-color);
 }
 
 .nav-item > a.nav-link.help::after
@@ -87,6 +91,15 @@
 .nav-item > a.nav-link.config::after
 { background-image : var(--settings-image); }
 
+.nav-link.scenario.active
+{
+  color            : var(--white);
+  background-color : var(--primary-color);
+}
+
+.nav-item > a.nav-link.scenario::after
+{ background-image : var(--scenario-image); }
+
 /* Tab Content */
 
 .tab-content
@@ -98,6 +111,9 @@
 
 .tab-pane
 { flex-grow : 1; }
+
+#tab-scenario
+{ font-size : 1.25rem; }
 
 .tip-wrapper
 {
@@ -127,14 +143,29 @@
 .tip-1
 { background-image : var(--tip-1-img); }
 
+.icon
+{
+  display             : inline-block;
+  background-position : center center;
+  background-repeat   : no-repeat;
+  background-size     : 1.5rem 1.5rem;
+  height              : 100%;
+  width               : auto;
+  min-width           : 1.5rem;
+  margin              : 0 0.5rem;
+}
+
+.icon:hover
+{
+  transform  : rotate(360deg);
+  transition : 300ms ease;
+}
+
 .dark-mode-icon
 {
-  background-position : 0 0;
-  background-size     : 1.0rem 1.0rem;
-  height              : 1.0rem;
-  width               : 1.0rem;
-  background-image    : var(--dark-mode-image);
-  background-repeat   : no-repeat;
-  transition          : 150ms;
-  filter              : drop-shadow(0 0 10px var(--shadow-color));
+  background-image : var(--dark-mode-image);
+  filter           : drop-shadow(0 0 10px var(--shadow-color));
 }
+
+.upload-icon
+{ background-image : var(--upload-image); }

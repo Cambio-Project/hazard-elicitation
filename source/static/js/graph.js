@@ -22,6 +22,8 @@ class Graph {
 
         // HTML
         this.svg = d3.select(svg);
+        this.svg.html("");
+        this.svg.selectAll("*").remove();
         this.svg.on("click", function () { Graph.ContextMenu.hide() });
 
         this.anchor = this.svg.append("g");
@@ -104,10 +106,14 @@ class Graph {
         for (const hazard of graph.hazards._values()) {
             for (const nid of hazard.nodes) {
                 na.find('[id="n{}"]'.format(nid)).attr("class", "hazard")
+                graph.nodes[nid].hazard_id = hazard.id;
+                graph.hazards[hazard.id].tab_id = content.addHazard(nid, "node");
             }
 
             for (const eid of hazard.edges) {
                 ea.find('[id="e{}"]'.format(eid)).attr("class", "hazard")
+                graph.edges[eid].hazard_id = hazard.id;
+                graph.hazards[hazard.id].tab_id = content.addHazard(eid, "edge");
             }
         }
     }
@@ -247,23 +253,24 @@ class Graph {
         if (id !== "") el = search.find(e => e.id === id);
         else el = search.find(e => e.label === name);
 
-        // Unselect active elements
-        $(".graph").find('[active="true"]').attr("active", false);
-
         if (el !== null) {
+            // Select element and label that were selected.
+            let element, label;
             if (!is_edge) {
-                const nodes = $(".nodes");
-                nodes.find(`circle[id="n${el.id}"]`).attr("active", true);
-
-                const node_labels = $(".node-labels");
-                node_labels.find(`text[id="nl${el.id}"]`).attr("active", true);
+                element = $(".nodes").find(`circle[id="n${el.id}"]`);
+                label   = $(".node-labels").find(`text[id="nl${el.id}"]`);
             } else {
-                const edges = $(".edges");
-                edges.find(`path[id="e${el.id}"]`).attr("active", true);
-
-                const edge_labels = $(".edge-labels");
-                edge_labels.find(`text[id="el${el.id}"]`).attr("active", true);
+                element = $(".edges").find(`path[id="e${el.id}"]`);
+                label   = $(".edge-labels").find(`text[id="el${el.id}"]`);
             }
+
+            // Remember state.
+            const active = element.attr("active") === "false" || element.attr("active") === undefined;
+            // Unselect active elements
+            $(".graph").find('[active="true"]').attr("active", false);
+            // Mark the new state.
+            element.attr("active", active);
+            label.attr("active", active);
         }
     }
 
@@ -319,7 +326,7 @@ class Graph {
                       target    = this.getPointAtLength(point_len - node_hull);
 
                 // Text flip does not work for chrome >:(
-                // label.select("textPath").attr("side", flip ? "left" : "right");
+                label.select("textPath").attr("side", flip ? "left" : "right");
 
                 if (curved_edges)
                     edge.attr("d", "M {} {} A {} {} 0 0 {} {} {}".format(x1, y1, d, d, "1", target.x, target.y));
@@ -441,14 +448,24 @@ class ContextMenu {
             });
 
         const type = "source" in element ? "edge" : "node";
+        let dom;
+        if(type === "node") dom = $(".nodes").find('[id="n{}"]'.format(element.id));
+        else dom = $(".edges").find('[id="e{}"]'.format(element.id));
 
         this.anchor.html("");
         this.anchor.append(`<li><a class="dropdown-item"><b>${element.label}</b></a></li>`);
         this.anchor.append('<div class="dropdown-divider"></div>');
-        this.anchor.append(
-            `<li class="dropdown-action" name="hazard">
-              <a class="dropdown-item" onclick='Content.addHazard("${element.id}", "${type}");'>Mark as Hazard</a>
-            </li>`);
+        if (dom.attr("class") === "hazard") {
+            this.anchor.append(
+                `<li class="dropdown-action" name="hazard">
+                  <a class="dropdown-item" onclick='content.openHazard("${element.id}");'>Open Hazard</a>
+                </li>`);
+        } else {
+            this.anchor.append(
+                `<li class="dropdown-action" name="hazard">
+                  <a class="dropdown-item" onclick='content.addNewHazard("${element.id}", "${type}");'>Add as Hazard</a>
+                </li>`);
+        }
         this.anchor.append('<div class="dropdown-divider"></div>');
         this.anchor.append(this.createItems(element.data));
     }

@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Third party JS -->
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
           integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
           crossorigin="anonymous"></script>
@@ -34,10 +33,10 @@
   <script type="text/javascript" src="../../static/js/util.js"></script>
   <script type="text/javascript" src="../../static/js/config.js"></script>
   <script type="text/javascript" src="../../static/js/commands.js"></script>
-  <script type="text/javascript" src="../../static/js/sample_graph.js"></script>
 
   <!-- Third party CSS -->
-  <link type="text/css" rel="stylesheet" href="../../static/css/third_party/bootstrap.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
   <!-- Custom CSS -->
   <link type="text/css" rel="stylesheet" href="../../static/css/main.css">
@@ -81,7 +80,7 @@
             </div>
           </div>
 
-          <!-- Hazard content -->
+          <!-- Content -->
           <div id="content" class="content">
 
             <ul class="nav nav-tabs bline" id="tablist" role="tablist">
@@ -90,7 +89,11 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link config active show" role="tab" data-toggle="tab" id="tab-config-title"
-                   href="#tab-config" aria-selected="true">Configure</a>
+                   href="#tab-config">Configure</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link scenario" role="tab" data-toggle="tab" id="tab-scenario-title"
+                   href="#tab-scenario" aria-selected="true">Scenario</a>
               </li>
             </ul>
 
@@ -152,7 +155,7 @@
               <!-- Config -->
               <div class="tab-pane fade active show" role="tabpanel" id="tab-config">
                 <p class="bline p-2">
-                  <a class="btn-link" data-toggle="collapse" href="#config-graph" role="button" aria-expanded="true">
+                  <a class="btn-link" data-toggle="collapse" href="#config-graph" role="button">
                     <i class="arrow"></i>Configure Graph
                   </a>
                 </p>
@@ -172,12 +175,13 @@
                       </div>
 
                       <div class="row">
-                        <label class="col-sm-6 col-form-label" for="graph-selection">Graph</label>
-                        <select class="col-sm-5 form-control" id="graph-selection">
-                          <option>Hotrod</option>
-                          <option>Books</option>
-                          <option>ABCDE</option>
+                        <label class="col-sm-5 col-form-label" for="graph-selection">Trace/Model</label>
+                        <select class="col-sm-5 form-control" id="graph-selection"
+                                onchange="Config.updateControl(this);">
                         </select>
+                        <a href="/upload">
+                          <div class="icon upload-icon"></div>
+                        </a>
                       </div>
                     </div>
 
@@ -246,7 +250,8 @@
                           Curvy edges
                           <svg class="d-inline-block" height="1rem" width="1rem">
                             <path marker-end="url(#end)"
-                                  d="M 2 15 A 5 11 0 0 1 10 8" fill="transparent" stroke="#CCCCCC" stroke-width="2"></path>
+                                  d="M 2 15 A 5 11 0 0 1 10 8" fill="transparent" stroke="#CCCCCC"
+                                  stroke-width="2"></path>
                           </svg>
                         </label>
                         <div class="p-1">
@@ -281,9 +286,9 @@
                       </div>
 
                       <div class="row d-inline-block">
-                          <button class="btn" type="button" onclick="Graph.pauseSimulation();">Play</button>
-                          <button class="btn" type="button" onclick="Graph.pauseSimulation();">Pause</button>
-                          <button class="btn" type="button" onclick="Graph.resumeSimulation();">Resume</button>
+                        <button class="btn" type="button" onclick="Graph.pauseSimulation();">Play</button>
+                        <button class="btn" type="button" onclick="Graph.pauseSimulation();">Pause</button>
+                        <button class="btn" type="button" onclick="Graph.resumeSimulation();">Resume</button>
                       </div>
                     </div>
 
@@ -293,8 +298,8 @@
                 <!-- Dark mode -->
                 <div class="control-entry w-100 ">
                   <div class="row">
-                    <label class="col-sm-5 col-form-label" for="dark-theme">
-                      Dark Theme <span class="dark-mode-icon d-inline-block"></span>
+                    <label class="col-sm-6 col-form-label" for="dark-theme">
+                      Dark Theme <span class="icon dark-mode-icon"></span>
                     </label>
                     <div class="p-1">
                       <input type="checkbox" id="dark-theme" onchange="Config.updateControl(this);">
@@ -304,6 +309,58 @@
                 </div>
 
               </div>
+
+
+              <!-- Scenario -->
+              <div class="tab-pane fade" role="tabpanel" id="tab-scenario">
+
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Description</div>
+                    <div class="p-1">The operation <code>frontend/dispatch</code> is experiencing a peek workload.</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Source</div>
+                    <div class="p-1">...</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Stimulus</div>
+                    <div class="p-1">increasing workload on the system</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Artifact</div>
+                    <div class="p-1">Service: frontend, Operation: dispatch</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Environment</div>
+                    <div class="p-1">operating</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Response</div>
+                    <div class="p-1">System workload should return to normal behaviour.</div>
+                  </div>
+                </div>
+                <div class="control-entry rline">
+                  <div class="row">
+                    <div class="col-sm-9 col-form-label">Response Measure</div>
+                    <div class="p-1">
+                      After occurrence of {maximum tolerable workload} the operation frontend/dispatch should
+                      return to optimal response time {within 5 seconds} {in 90% of cases}.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -314,8 +371,8 @@
         <div id="chat" class="chat flex-column justify-content-end"></div>
         <div id="chat-input">
           <div class="chat-area">
-            <textarea class="w-100 h-100 input-area" id="user-input"
-                      placeholder="Type something and press enter &#128522;"></textarea>
+            <textarea class="w-100 h-100 input-area" id="user-input" placeholder="One moment please..."
+                      disabled></textarea>
             <button class="send-button" type="button" id="send">&#10148;</button>
           </div>
         </div>
