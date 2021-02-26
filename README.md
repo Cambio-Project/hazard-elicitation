@@ -1,6 +1,8 @@
 # Hazard Elicitation
 
 ![Tests](https://github.com/Cambio-Project/hazard-elicitation/workflows/Tests/badge.svg)
+![Model Test](https://github.com/Cambio-Project/hazard-elicitation/workflows/Model%20Tests/badge.svg)
+![Deploy](https://github.com/Cambio-Project/hazard-elicitation/workflows/Deploy/badge.svg)
 
 [Live](https://hazardelicitation.eu-gb.mybluemix.net/ui/)
 
