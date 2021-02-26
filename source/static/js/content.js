@@ -29,7 +29,7 @@ class Content {
         const content = data.content || "...";
 
         const header_content = $("<a></a>")
-            .html(close ? `<span onclick="Content.this.removeTab(${id})">✕  </span>${title}` : title)
+            .html(close ? `<span onclick="this.removeTab(${id})">✕ </span>${title}` : title)
             .addClass("nav-link " + class_name)
             .attr({
                 "role":        "tab",
@@ -65,7 +65,7 @@ class Content {
         }
     }
 
-    static addHazard(id, type) {
+    addHazard(id, type) {
         let element;
         if (type === "node") {
             element = Graph.this.graph.nodes[id];
@@ -91,7 +91,7 @@ class Content {
         }
         addEntry(element.data);
 
-        const tab_id = Content.this.addTab({
+        const tab_id = this.addTab({
             "title":   "{}: {}".format(type, element.label),
             "content": `
               <table>
@@ -104,12 +104,12 @@ class Content {
         return tab_id;
     }
 
-    static addNewHazard(id, type) {
+    addNewHazard(id, type) {
         const hazard_id                 = Math.max(Graph.this.graph.hazards._keys()) + 1;
-        graph.hazards[hazard_id].tab_id = Content.addHazard(id, type);
+        graph.hazards[hazard_id].tab_id = this.addHazard(id, type);
     }
 
-    static openHazard(id, type) {
+    openHazard(id, type) {
         const G         = Graph.this.graph;
         const hazard_id = type === "node" ? G.nodes[id].hazard_id : G.edges[id].hazard_id;
         content.show(G.hazards[hazard_id].tab_id);

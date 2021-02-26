@@ -107,13 +107,13 @@ class Graph {
             for (const nid of hazard.nodes) {
                 na.find('[id="n{}"]'.format(nid)).attr("class", "hazard")
                 graph.nodes[nid].hazard_id = hazard.id;
-                graph.hazards[hazard.id].tab_id = Content.addHazard(nid, "node");
+                graph.hazards[hazard.id].tab_id = content.addHazard(nid, "node");
             }
 
             for (const eid of hazard.edges) {
                 ea.find('[id="e{}"]'.format(eid)).attr("class", "hazard")
                 graph.edges[eid].hazard_id = hazard.id;
-                graph.hazards[hazard.id].tab_id = Content.addHazard(eid, "edge");
+                graph.hazards[hazard.id].tab_id = content.addHazard(eid, "edge");
             }
         }
     }
@@ -326,7 +326,7 @@ class Graph {
                       target    = this.getPointAtLength(point_len - node_hull);
 
                 // Text flip does not work for chrome >:(
-                // label.select("textPath").attr("side", flip ? "left" : "right");
+                label.select("textPath").attr("side", flip ? "left" : "right");
 
                 if (curved_edges)
                     edge.attr("d", "M {} {} A {} {} 0 0 {} {} {}".format(x1, y1, d, d, "1", target.x, target.y));
@@ -458,12 +458,12 @@ class ContextMenu {
         if (dom.attr("class") === "hazard") {
             this.anchor.append(
                 `<li class="dropdown-action" name="hazard">
-                  <a class="dropdown-item" onclick='Content.openHazard("${element.id}");'>Open Hazard</a>
+                  <a class="dropdown-item" onclick='content.openHazard("${element.id}");'>Open Hazard</a>
                 </li>`);
         } else {
             this.anchor.append(
                 `<li class="dropdown-action" name="hazard">
-                  <a class="dropdown-item" onclick='Content.addNewHazard("${element.id}", "${type}");'>Add as Hazard</a>
+                  <a class="dropdown-item" onclick='content.addNewHazard("${element.id}", "${type}");'>Add as Hazard</a>
                 </li>`);
         }
         this.anchor.append('<div class="dropdown-divider"></div>');
