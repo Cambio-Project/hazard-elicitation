@@ -29,7 +29,7 @@ class Content {
         const content = data.content || "...";
 
         const header_content = $("<a></a>")
-            .html(close ? `<span onclick="this.removeTab(${id})">✕ </span>${title}` : title)
+            .html(close ? `<span onclick="Content.this.removeTab(${id})">✕ </span>${title}` : title)
             .addClass("nav-link " + class_name)
             .attr({
                 "role":        "tab",
@@ -62,6 +62,12 @@ class Content {
         if (tab_id in this.tabs) {
             this.tabs[tab_id].map(e => e.remove());
             $("#" + tab_id).tab('dispose');
+        }
+    }
+
+    removeAllTabs() {
+        for(const [id, _] of this.tabs._entries()) {
+            this.removeTab(id);
         }
     }
 

@@ -107,11 +107,19 @@ class Config {
     static showAdvancedElements(show) { $(".advanced").css("display", show ? "inline-block" : "none"); }
 
     static getGraph(id) {
-        if(id) {
+        if (id) {
             fetch("api/arch?id=" + id)
                 .then(response => response.json())
-                .then(graph => window.graph =
-                    new Graph("#graph", "#context-menu", JSON.parse(graph[0]["content"])));
+                .then(function (json) {
+                    const graph = JSON.parse(json[0]["content"]);
+                    Content.this.removeAllTabs();
+                    window.graph = new Graph("#graph", "#context-menu", graph);
+                    Chat.this.ws.event("empty", [{
+                        name: 'graph',
+                        lifespan: 1000,
+                        parameters: {arch: Graph.this.minimal()}
+                    }]);
+                });
         }
     }
 

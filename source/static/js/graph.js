@@ -106,13 +106,13 @@ class Graph {
         for (const hazard of graph.hazards._values()) {
             for (const nid of hazard.nodes) {
                 na.find('[id="n{}"]'.format(nid)).attr("class", "hazard")
-                graph.nodes[nid].hazard_id = hazard.id;
+                graph.nodes[nid].hazard_id      = hazard.id;
                 graph.hazards[hazard.id].tab_id = content.addHazard(nid, "node");
             }
 
             for (const eid of hazard.edges) {
                 ea.find('[id="e{}"]'.format(eid)).attr("class", "hazard")
-                graph.edges[eid].hazard_id = hazard.id;
+                graph.edges[eid].hazard_id      = hazard.id;
                 graph.hazards[hazard.id].tab_id = content.addHazard(eid, "edge");
             }
         }
@@ -129,6 +129,22 @@ class Graph {
     get(property) { return this.properties[property]; }
 
     set(property, value) { this.properties[property] = value; }
+
+    minimal() {
+        const filterKeys = function(obj, keys) {
+            if(typeof obj !== "object") return obj
+            for(const [key, val] of obj._entries()) {
+                if(keys.indexOf(key) > -1) {
+                    delete obj[key];
+                } else {
+                    obj[key] = filterKeys(val, keys);
+                }
+            }
+            return obj;
+        }
+
+        return filterKeys(Object.assign({}, this.graph), ["data", "x", "y", "vx", "vy"]);
+    }
 
     /* Init Graph */
 
@@ -243,8 +259,6 @@ class Graph {
         const y = mouse_pos[1] + (mouse_pos[1] - scroll_offset[1] + y_offset / zoom_factor) * zoom_factor;
         return {"x": svg_pos.x + x, "y": svg_pos.y + y}
     }
-
-    /*  */
 
     static selectElement(type, name, id) {
         const is_edge = type === "edge";
@@ -449,7 +463,7 @@ class ContextMenu {
 
         const type = "source" in element ? "edge" : "node";
         let dom;
-        if(type === "node") dom = $(".nodes").find('[id="n{}"]'.format(element.id));
+        if (type === "node") dom = $(".nodes").find('[id="n{}"]'.format(element.id));
         else dom = $(".edges").find('[id="e{}"]'.format(element.id));
 
         this.anchor.html("");
