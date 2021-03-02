@@ -133,17 +133,16 @@ class Graph {
     minimal() {
         const filterKeys = function(obj, keys) {
             if(typeof obj !== "object") return obj
+            let result = {};
             for(const [key, val] of obj._entries()) {
-                if(keys.indexOf(key) > -1) {
-                    delete obj[key];
-                } else {
-                    obj[key] = filterKeys(val, keys);
+                if(keys.indexOf(key) === -1) {
+                    result[key] = filterKeys(val, keys);
                 }
             }
-            return obj;
+            return result;
         }
 
-        return filterKeys(Object.assign({}, this.graph), ["data", "x", "y", "vx", "vy"]);
+        return filterKeys(JSON.parse(JSON.stringify(this.graph)), ["data", "x", "y", "vx", "vy"]);
     }
 
     /* Init Graph */
