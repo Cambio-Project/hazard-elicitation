@@ -13,6 +13,7 @@ DEFAULT = text_id()
 INTENT_PROCESSING_ERROR = text_id()
 
 # Default intents
+INTENT_EMPTY_NAME = text_id()
 INTENT_FALLBACK_NAME = text_id()
 INTENT_FALLBACK_TEXT = text_id()
 INTENT_HELP_NAME = text_id()

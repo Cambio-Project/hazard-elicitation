@@ -2,6 +2,7 @@ from util.text.en import TEXT
 from dialogflow_backend.dialogflow.intent_handler import *
 
 INTENT_HANDLERS = {
+    TEXT[INTENT_EMPTY_NAME]:                empty_handler,
     TEXT[INTENT_FALLBACK_NAME]:             fallback_handler,
     TEXT[INTENT_HELP_NAME]:                 help_handler,
     TEXT[INTENT_WELCOME_NAME]:              welcome_handler,

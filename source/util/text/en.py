@@ -7,6 +7,7 @@ TEXT = {
     INTENT_PROCESSING_ERROR:          'Ops something went wrong.',
 
     # Default
+    INTENT_EMPTY_NAME:                'Default-Empty',
     INTENT_FALLBACK_NAME:             'Default-Fallback',
     INTENT_FALLBACK_TEXT:             [
         'That doesn\'t compute. Maybe you can rephrase your sentence?',

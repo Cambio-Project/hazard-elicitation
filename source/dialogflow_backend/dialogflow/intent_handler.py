@@ -4,9 +4,15 @@ import requests
 import json
 
 from dialogflow_backend.dialogflow.settings import COMMANDS
-from dialogflow_backend.dialogflow.response_types import TextMessage, QuickReply, Card, Accordion, ActionResponse
+from dialogflow_backend.dialogflow.response_types import TextMessage, QuickReply, Card, Accordion, ActionResponse, \
+    EmptyResponse
 from util.text.text import random_text, text
 from util.text.ids import *
+
+
+async def empty_handler(result) -> List[Dict]:
+    response = EmptyResponse()
+    return [response.__repr__()]
 
 
 async def fallback_handler(result) -> List[Dict]:
