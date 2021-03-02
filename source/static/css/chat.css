@@ -1,22 +1,17 @@
-.light-theme
-{
+.light-theme {
   --icon-bg    : #CCCCCC;
   --bot-image  : url("../img/bot.png");
   --user-image : url("../img/user.png");
-
 }
 
-.dark-theme
-{
+.dark-theme {
   --icon-bg    : #555555;
   --bot-image  : url("../img/bot_dark.png");
   --user-image : url("../img/user_dark.png");
 }
 
 /* Chat input */
-
-.chat-area
-{
+.chat-area {
   position         : relative;
   width            : 100%;
   height           : 100%;
@@ -25,8 +20,7 @@
   background-color : var(--primary-text-color-bg);
 }
 
-.send-button
-{
+.send-button {
   position         : absolute;
   top              : 0;
   right            : -0px;
@@ -40,15 +34,12 @@
   transition       : 300ms;
 }
 
-.send-button:hover
-{
+.send-button:hover {
   color            : var(--primary-color-hover);
   background-color : transparent;
 }
 
-
-.input-area
-{
+.input-area {
   color            : var(--primary-text-color);
   background-color : var(--primary-text-color-bg);
   border-color     : transparent;
@@ -56,99 +47,80 @@
   resize           : none;
 }
 
-.input-area:focus
-{
+.input-area:focus {
   color            : var(--primary-text-color);
   background-color : var(--primary-text-color-bg);
 }
 
 /* Chat text */
-
-.chat
-{
+.chat {
   overflow-y       : auto;
   overflow-x       : hidden;
-
   color            : var(--secondary-text-color);
   background-color : var(--secondary-text-color-bg);
 }
 
-.chat-content
-{
+.chat-content {
   min-width : 75%;
   margin    : 20px;
 }
 
 /* Rich content */
-
-.rich-content
-{
+.rich-content {
   min-width : 200px;
   max-width : 400px;
   margin    : 0 auto;
 }
 
-.rich
-{
+.rich {
   border-radius    : 0;
   color            : var(--primary-text-color);
   background-color : var(--primary-text-color-bg);
 }
 
-.card
-{
+.card {
   border     : 1px solid var(--secondary-text-color-bg);
   box-shadow : 0 0 10px 1px var(--shadow-color-light);
 }
 
-.accordion .card-header
-{
+.accordion .card-header {
   border-bottom    : 1px solid var(--tertiary-text-color-bg);
   background-color : var(--primary-text-color-bg);
 }
 
-.accordion .card-body
-{ background-color : var(--primary-text-color-bg); }
+.accordion .card-body { background-color : var(--primary-text-color-bg); }
 
-.btn-link
-{
+.btn-link {
   color       : var(--primary-text-color);
   white-space : normal;
   word-wrap   : break-word;
   transition  : 50ms;
 }
 
-.btn-link:hover, .btn-link:active, .btn-link:focus
-{ text-decoration : none; }
+.btn-link:hover, .btn-link:active, .btn-link:focus { text-decoration : none; }
 
-.btn-link:hover
-{
+.btn-link:hover {
   font-weight : bold;
   color       : var(--primary-color);
 }
 
 /* Bot content*/
-
-.bot-content
-{
+.bot-content {
   min-width     : 75%;
   border-radius : 20%
 }
 
-.bot
-{
+.bot {
   position         : relative;
   min-width        : 60%;
   max-width        : 75%;
   margin-left      : 55px;
-
   background-color : var(--secondary-color);
   color            : var(--black);
   box-shadow       : 0 0 10px 1px var(--shadow-color-light);
 }
 
-.bot::before
-{
+.bot::before {
   content             : "";
   position            : absolute;
   top                 : 0;
@@ -160,13 +132,11 @@
   background-size     : 90% 90%;
   background-position : 2px 10px;
   background-repeat   : no-repeat;
-
   background-color    : var(--icon-bg);
   box-shadow          : 0 0 8px 3px var(--shadow-color-light);
 }
 
-.bot::after
-{
+.bot::after {
   position         : absolute;
   left             : -9px;
   top              : 15px;
@@ -174,32 +144,24 @@
   height           : 20px;
   transform        : rotate(45deg);
   content          : "";
-
   border-radius    : 2px;
   background-color : var(--secondary-color);
   box-shadow       : -4px 4px 4px 0 var(--shadow-color-lighter);
 }
 
 /* User content */
+.user-content { min-width : 75%; }
 
-.user-content
-{
-  min-width : 75%;
-}
-
-.user
-{
+.user {
   min-width        : 60%;
   max-width        : 75%;
   margin-right     : 55px;
-
   color            : var(--white);
   background-color : var(--primary-color);
   box-shadow       : 0 0 10px 1px var(--shadow-color-light);
 }
 
-.user::before
-{
+.user::before {
   content             : "";
   position            : absolute;
   top                 : 0;
@@ -211,13 +173,11 @@
   background-size     : 90% 90%;
   background-position : 3px 7px;
   background-repeat   : no-repeat;
-
   background-color    : var(--icon-bg);
   box-shadow          : 0 0 8px 3px var(--shadow-color-light);
 }
 
-.user::after
-{
+.user::after {
   position         : absolute;
   right            : -9px;
   top              : 15px;
@@ -225,7 +185,6 @@
   height           : 20px;
   transform        : rotate(45deg);
   content          : "";
-
   border-radius    : 2px;
   background-color : var(--primary-color);
   box-shadow       : 4px -4px 4px 0 var(--shadow-color-lighter);

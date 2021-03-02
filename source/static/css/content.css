@@ -1,5 +1,4 @@
-.light-theme
-{
+.light-theme {
   --dark-mode-image : url("../img/sun.png");
   --upload-image    : url("../img/upload.png");
   --scenario-image  : url("../img/scenario.png");
@@ -7,8 +6,7 @@
   --tip-1-img       : url("../img/tip_1.png");
 }
 
-.dark-theme
-{
+.dark-theme {
   --dark-mode-image : url("../img/moon.png");
   --upload-image    : url("../img/upload_dark.png");
   --scenario-image  : url("../img/scenario.png");
@@ -16,37 +14,30 @@
   --tip-1-img       : url("../img/tip_1_dark.png");
 }
 
-.content
-{ background-color : var(--primary-text-color-bg); }
+.content { background-color : var(--primary-text-color-bg); }
 
 /* Tab Header */
-
-.nav-tabs .nav-link
-{
+.nav-tabs .nav-link {
   font-weight : bold;
   border      : none;
   padding     : 8px 2rem 8px 8px;
   margin      : 0 1px;
 }
 
-.nav-link
-{
+.nav-link {
   position         : relative;
   color            : var(--secondary-text-color);
   background-color : var(--secondary-text-color-bg);
 }
 
-.nav-link:hover
-{
+.nav-link:hover {
   color            : var(--tertiary-text-color);
   background-color : var(--tertiary-text-color-bg);
 }
 
-.nav-link.active
-{ background-color : var(--primary-text-color-bg); }
+.nav-link.active { background-color : var(--primary-text-color-bg); }
 
-.nav-item > a.nav-link::after
-{
+.nav-item > a.nav-link::after {
   background-position : 0 0;
   background-size     : 1.4rem 1.4rem;
   height              : 1.4rem;
@@ -58,79 +49,63 @@
   display             : inline-block;
 }
 
-.nav-item > a.nav-link:hover::after
-{
+.nav-item > a.nav-link:hover::after {
   transform  : rotate(360deg);
   transition : 500ms ease;
 }
 
-.nav-link.hazard.active
-{
+.nav-link.hazard.active {
   color            : var(--black);
   background-color : var(--hazard-color);
 }
 
-.nav-item > a.nav-link.hazard::after
-{ background-image : url("../img/hazard.png"); }
+.nav-item > a.nav-link.hazard::after { background-image : url("../img/hazard.png"); }
 
-.nav-link.help.active
-{
+.nav-link.help.active {
   color            : var(--black);
   background-color : var(--help-color);
 }
 
-.nav-item > a.nav-link.help::after
-{ background-image : url("../img/help.png"); }
+.nav-item > a.nav-link.help::after { background-image : url("../img/help.png"); }
 
-.nav-link.config.active
-{
+.nav-link.config.active {
   color            : var(--white);
   background-color : var(--config-color);
 }
 
-.nav-item > a.nav-link.config::after
-{ background-image : var(--settings-image); }
+.nav-item > a.nav-link.config::after { background-image : var(--settings-image); }
 
-.nav-link.scenario.active
-{
+.nav-link.scenario.active {
   color            : var(--white);
   background-color : var(--primary-color);
 }
 
-.nav-item > a.nav-link.scenario::after
-{ background-image : var(--scenario-image); }
+.nav-item > a.nav-link.scenario::after { background-image : var(--scenario-image); }
 
 /* Tab Content */
-
-.tab-content
-{
+.tab-content {
   padding  : 10px;
   height   : calc(100% - 30px - 16px);
   overflow : auto;
 }
 
-.tab-pane
-{ flex-grow : 1; }
+.tab-pane { flex-grow : 1; }
 
-#tab-scenario
-{ font-size : 1.25rem; }
+#tab-scenario { font-size : 1.25rem; }
 
-.tip-wrapper
-{
+.tip-wrapper {
   height : 150px;
   width  : 300px;
 }
 
-.tip-wrapper-sm
-{
+.tip-wrapper-sm {
   height         : 1.5rem;
   width          : 1.5rem;
   display        : inline-block;
   vertical-align : text-bottom;
 }
 
-.tip
-{
+.tip {
   vertical-align      : middle;
   background-repeat   : no-repeat;
   background-size     : contain;
@@ -140,11 +115,9 @@
   min-height          : 100%
 }
 
-.tip-1
-{ background-image : var(--tip-1-img); }
+.tip-1 { background-image : var(--tip-1-img); }
 
-.icon
-{
+.icon {
   display             : inline-block;
   background-position : center center;
   background-repeat   : no-repeat;
@@ -155,17 +128,14 @@
   margin              : 0 0.5rem;
 }
 
-.icon:hover
-{
+.icon:hover {
   transform  : rotate(360deg);
   transition : 300ms ease;
 }
 
-.dark-mode-icon
-{
+.dark-mode-icon {
   background-image : var(--dark-mode-image);
   filter           : drop-shadow(0 0 10px var(--shadow-color));
 }
 
-.upload-icon
-{ background-image : var(--upload-image); }
+.upload-icon { background-image : var(--upload-image); }
