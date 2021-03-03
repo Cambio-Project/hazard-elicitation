@@ -60,6 +60,11 @@
   background-color : var(--secondary-text-color-bg);
 }
 
+.chat > :first-child {
+    margin-top: auto !important;
+    /* use !important to prevent breakage from child margin settings */
+}
+
 .chat-content {
   min-width : 75%;
   margin    : 20px;
@@ -102,6 +107,13 @@
 .btn-link:hover {
   font-weight : bold;
   color       : var(--primary-color);
+}
+
+.divider {
+  margin: 2rem auto;
+  width   : 75%;
+  height   : 0;
+  border-bottom: 1px solid var(--tertiary-text-color);
 }
 
 /* Bot content*/

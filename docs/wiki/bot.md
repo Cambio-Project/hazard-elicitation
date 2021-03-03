@@ -22,6 +22,14 @@ action = {
     }
 }
 
+formatting = {
+    'intent':  '',
+    'type':    'formatting',
+    'payload': {
+        'text': 'format specific content'
+    }
+}
+
 text = {
     'intent':  '',
     'type':    'text',

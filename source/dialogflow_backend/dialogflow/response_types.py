@@ -61,6 +61,23 @@ class ActionResponse(IDFResponse):
         self._data['payload']['values'] = values
 
 
+class FormattingMessage(IDFResponse):
+    def __init__(self, data: Dict = None):
+        super().__init__(data)
+        self._data['type'] = 'formatting'
+
+    def __iadd__(self, text: str):
+        self._data['payload']['text'] += text
+
+    @property
+    def text(self) -> str:
+        return self._data['payload']['text']
+
+    @text.setter
+    def text(self, text: str):
+        self._data['payload']['text'] = text
+
+
 class TextMessage(IDFResponse):
     def __init__(self, data: Dict = None):
         super().__init__(data)
