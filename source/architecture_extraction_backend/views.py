@@ -16,8 +16,11 @@ from util.log import error
 def upload(request):
     try:
         model = None
-        filename = request.FILES['file']
-        content = json.load(filename)
+        file = request.FILES['file']
+        content = json.load(file)
+
+        if ArchitectureModel.objects.filter(name=file).exists():
+            return HttpResponse('Model does exist already. Please choose another name.', status=500)
 
         # Load model
         try:
@@ -48,7 +51,7 @@ def upload(request):
 
             # Store architecture in DB
             try:
-                ArchitectureModel.objects.create(name=filename, content=export)
+                ArchitectureModel.objects.create(name=file, content=export)
 
             except BaseException as e:
                 error(e)
