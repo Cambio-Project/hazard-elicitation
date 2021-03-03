@@ -2,6 +2,7 @@ class Commands {
     static CONFIG_COMMANDS = {
         "set-dark-theme":            "dark-theme",
         "set-sticky-nodes":          "sticky-nodes",
+        "set-architecture":          "graph-selection",
         "set-zoom":                  "graph-zoom",
         "set-node-visibility":       "show-nodes",
         "set-edge-visibility":       "show-edges",
@@ -12,6 +13,7 @@ class Commands {
     static MANAGE_COMMANDS = {
         "select": Graph.selectElement,
         "reply": Chat.addUserMessage,
+        "event": Chat.event,
     }
 
     static castValues(values) {
@@ -34,7 +36,7 @@ class Commands {
     call(action, values) {
         if (action === "command") {
             if (values.length < 1) {
-                warn("At least one argument required (command).")
+                console.warn("At least one argument required (command).")
                 return;
             }
 
@@ -50,7 +52,7 @@ class Commands {
             else if (command in Commands.MANAGE_COMMANDS)
                 this.manageCommand(command, args);
             else
-                warn("Unknown command '{}'".format(command))
+                console.warn("Unknown command '{}'".format(command))
         }
     }
 

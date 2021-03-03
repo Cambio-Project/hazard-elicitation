@@ -225,6 +225,10 @@ class Chat {
             chat.chat_input.focus().val(chat.history.get());
         }
     }
+
+    static event(event) {
+        Chat.this.ws.event(event);
+    }
 }
 
 class ChatElement {
@@ -233,23 +237,15 @@ class ChatElement {
     }
 
     html(wrap = false) {
-        if (!wrap) {
-            let alignment = this.actor === Chat.Rich ? "" : this.actor === Chat.User ? "flex-row-reverse" : "flex-row";
+        let alignment = this.actor === Chat.Rich ? "" : this.actor === Chat.User ? "flex-row-reverse" : "flex-row";
+        alignment     = wrap ? alignment + " flex-wrap" : alignment;
 
-            return "" +
-                `<div class="chat-content">
+        return "" +
+            `<div class="chat-content">
                   <div class="${this.actor}-content d-flex ${alignment}">
                     {}
                   </div>
                 </div>`;
-        } else {
-            return "" +
-                `<div class="chat-content">
-                  <div class="${this.actor}-content wrap">
-                    {}
-                  </div>
-                </div>`;
-        }
     }
 }
 
@@ -314,7 +310,7 @@ class ChatCard extends ChatElement {
 
 class ChatQuickReply extends ChatElement {
     constructor(replies) {
-        super(Chat.Rich);
+        super(Chat.User);
         this.replies = replies;
     }
 

@@ -131,11 +131,11 @@ class Graph {
     set(property, value) { this.properties[property] = value; }
 
     minimal() {
-        const filterKeys = function(obj, keys) {
-            if(typeof obj !== "object") return obj
+        const filterKeys = function (obj, keys) {
+            if (typeof obj !== "object") return obj
             let result = {};
-            for(const [key, val] of obj._entries()) {
-                if(keys.indexOf(key) === -1) {
+            for (const [key, val] of obj._entries()) {
+                if (keys.indexOf(key) === -1) {
                     result[key] = filterKeys(val, keys);
                 }
             }
@@ -285,6 +285,21 @@ class Graph {
             element.attr("active", active);
             label.attr("active", active);
         }
+    }
+
+    static setGraph(name) {
+        fetch("api/arch?name=" + name)
+            .then(response => response.json())
+            .then(function (json) {
+                const graph = JSON.parse(json[0]["content"]);
+                Content.this.removeAllTabs();
+                window.graph = new Graph("#graph", "#context-menu", graph);
+                Chat.this.ws.event("empty", [{
+                    name:       'graph',
+                    lifespan:   1000,
+                    parameters: {arch: Graph.this.minimal()}
+                }]);
+            });
     }
 
     /* Callbacks */
