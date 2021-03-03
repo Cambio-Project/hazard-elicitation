@@ -54,11 +54,11 @@ class DFWebSocket extends CustomWebSocket {
         });
     }
 
-    async send(data, contexts) {
+    async send(type, data, contexts) {
         await DFWebSocket.isReady().then(function () {
             chat.setPending();
             const content = JSON.stringify({
-                'type':     'dialogflow_text_input',
+                'type':     type,
                 'data':     data,
                 'contexts': contexts || []
             });
@@ -67,17 +67,9 @@ class DFWebSocket extends CustomWebSocket {
         });
     }
 
-    async event(data, contexts) {
-        await DFWebSocket.isReady().then(function () {
-            const content = JSON.stringify({
-                'type':     'dialogflow_event_input',
-                'data':     data,
-                'contexts': contexts || []
-            });
-            DFWebSocket.WS.socket.send(content);
-            console.debug('On event ', content);
-        });
-    }
+    intent(data, contexts) { this.send('dialogflow_text_input', data, contexts); }
+
+    event(data, contexts) { this.send('dialogflow_event_input', data, contexts); }
 
     /**
      * Receives a dialogflow response. The response type defines the processing.
@@ -95,6 +87,9 @@ class DFWebSocket extends CustomWebSocket {
                     break;
                 case 'action':
                     chat.commands.call(payload.action, payload.values)
+                    break;
+                case 'formatting':
+                    chat.add(new FormattingMessage(Chat.Rich, payload.text));
                     break;
                 case 'text':
                     chat.add(new ChatMessage(Chat.Bot, payload.text));
@@ -211,7 +206,7 @@ class Chat {
             chat.add(new ChatMessage(Chat.User, text));
             chat.scroll();
 
-            chat.ws.send(text);
+            chat.ws.intent(text);
             this.value = "";
         } else if (e.keyCode === 38) {
             e.preventDefault();
@@ -261,6 +256,20 @@ class ChatPendingMessage extends ChatElement {
                 <p class="card-text">...</p>              
               </div>
             </div>`);
+    }
+}
+
+class FormattingMessage extends ChatElement {
+    constructor(actor, formatting) {
+        super(actor);
+        this.formatting = formatting;
+    }
+
+    html() {
+        switch (this.formatting) {
+            case 'divider': return super.html().format('<div class="divider"></div>');
+            default: return ''
+        }
     }
 }
 

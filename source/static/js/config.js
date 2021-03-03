@@ -106,7 +106,7 @@ class Config {
 
     static showAdvancedElements(show) { $(".advanced").css("display", show ? "inline-block" : "none"); }
 
-    static setGraph(id) { if (id) Graph.setGraph(id); }
+    static setGraph(name) { if (name) Graph.setGraph(name); }
 
     static stickyNodes(sticky) { Graph.set("sticky", sticky); }
 

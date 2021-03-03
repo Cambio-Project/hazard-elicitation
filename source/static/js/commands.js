@@ -11,9 +11,10 @@ class Commands {
     }
 
     static MANAGE_COMMANDS = {
-        "select": Graph.selectElement,
         "reply": Chat.addUserMessage,
         "event": Chat.event,
+        "select-element": Graph.selectElement,
+        "select-architecture": Graph.setGraph,
     }
 
     static castValues(values) {

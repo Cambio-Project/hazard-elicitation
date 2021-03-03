@@ -1,7 +1,7 @@
 from google.api_core.exceptions import InvalidArgument
 
 from dialogflow_backend.dialogflow.intents import INTENT_HANDLERS, TextMessage, INTENT_PROCESSING_ERROR
-from util.log import error, warning
+from util.log import error, warning, debug
 from util.text.text import text
 
 
@@ -14,6 +14,8 @@ async def create_response(result):
     """
     response_data = None
     intent = result.query_result.intent.display_name
+
+    debug(intent)
 
     if intent in INTENT_HANDLERS:
         try:

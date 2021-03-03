@@ -131,18 +131,15 @@ class Graph {
     set(property, value) { this.properties[property] = value; }
 
     minimal() {
-        const filterKeys = function (obj, keys) {
-            if (typeof obj !== "object") return obj
-            let result = {};
-            for (const [key, val] of obj._entries()) {
-                if (keys.indexOf(key) === -1) {
-                    result[key] = filterKeys(val, keys);
-                }
-            }
-            return result;
+        let result = {"nodes": {}, "edges": {}, "hazards": {}};
+        for (const [_, val] of this.graph.nodes._entries()) {
+            result["nodes"][val.label] = val.id
         }
-
-        return filterKeys(JSON.parse(JSON.stringify(this.graph)), ["data", "x", "y", "vx", "vy"]);
+        for (const [_, val] of this.graph.edges._entries()) {
+            result["edges"][val.label] = val.id
+        }
+        result["hazards"] = this.graph.hazards;
+        return result;
     }
 
     /* Init Graph */
@@ -284,6 +281,15 @@ class Graph {
             // Mark the new state.
             element.attr("active", active);
             label.attr("active", active);
+
+            Chat.this.ws.event("specify-response", [{
+                name:       'elicitation',
+                lifespan:   100,
+                parameters: {
+                    component: label.text(),
+                    type: type
+                }
+            }]);
         }
     }
 
@@ -298,6 +304,13 @@ class Graph {
                     name:       'graph',
                     lifespan:   1000,
                     parameters: {arch: Graph.this.minimal()}
+                }]);
+                Chat.this.ws.event("select-component", [{
+                    name:       'elicitation',
+                    lifespan:   100,
+                    parameters: {
+                        arch: name
+                    }
                 }]);
             });
     }
