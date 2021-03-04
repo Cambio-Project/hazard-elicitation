@@ -22,17 +22,17 @@ class CustomWebSocket {
         chat.chat_input.attr("disabled", "disabled");
     }
 
-    onError(e) { console.debug('Error Websocket ', e) }
+    onError(e) { console.debug("Error Websocket\n", e) }
 
     onMessage(e) {
-        console.debug('On Message ', e)
+        console.debug("On Message\n", JSON.parse(e.data));
 
         const message = JSON.parse(e.data);
 
         if (message.type in CustomWebSocket.WS) {
             CustomWebSocket.WS[message.type](message.data);
         } else {
-            console.warn("No handler function for '" + message.type + "'.")
+            console.warn("No handler function for '{}'.".format(message.type));
         }
     }
 }
@@ -58,12 +58,13 @@ class DFWebSocket extends CustomWebSocket {
         await DFWebSocket.isReady().then(function () {
             chat.setPending();
             const content = JSON.stringify({
-                'type':     type,
-                'data':     data,
-                'contexts': contexts || []
+                "uuid":     Config.getStorage("uuid"),
+                "type":     type,
+                "data":     data,
+                "contexts": contexts || []
             });
             DFWebSocket.WS.socket.send(content);
-            console.debug('On send ', content);
+            console.debug("On send\n", JSON.parse(content));
         });
     }
 
@@ -78,33 +79,37 @@ class DFWebSocket extends CustomWebSocket {
     dialogflow_response(data) {
         chat.removePending();
         for (const [key, val] of data._entries()) {
-            const intent = val.intent;
             const type   = val.type;
             let payload  = val.payload;
 
             switch (type) {
-                case 'empty':
+                case "empty":
                     break;
-                case 'action':
+                case "action":
                     chat.commands.call(payload.action, payload.values)
                     break;
-                case 'formatting':
+                case "multi_action":
+                    for (const action of payload.entries()) {
+                        chat.commands.call(action.action, action.values)
+                    }
+                    break;
+                case "formatting":
                     chat.add(new FormattingMessage(Chat.Rich, payload.text));
                     break;
-                case 'text':
+                case "text":
                     chat.add(new ChatMessage(Chat.Bot, payload.text));
                     break;
-                case 'card':
+                case "card":
                     chat.add(new ChatCard(payload));
                     break;
-                case 'quick_reply':
+                case "quick_reply":
                     chat.add(new ChatQuickReply(payload.values));
                     break;
-                case 'accordion':
+                case "accordion":
                     chat.add(new ChatAccordion(payload.values));
                     break;
                 default:
-                    console.debug("Unknown data type '" + type + "'.")
+                    console.debug("Unknown data type '{}'".format(type))
             }
         }
         chat.scroll();
@@ -221,8 +226,8 @@ class Chat {
         }
     }
 
-    static event(event) {
-        Chat.this.ws.event(event);
+    static event(event, contexts) {
+        Chat.this.ws.event(event, contexts);
     }
 }
 
@@ -267,8 +272,10 @@ class FormattingMessage extends ChatElement {
 
     html() {
         switch (this.formatting) {
-            case 'divider': return super.html().format('<div class="divider"></div>');
-            default: return ''
+            case 'divider':
+                return super.html().format('<div class="divider"></div>');
+            default:
+                return ''
         }
     }
 }

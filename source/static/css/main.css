@@ -81,15 +81,15 @@ html, body {
   background-repeat   : no-repeat;
   background-position : 50%;
   border-width        : 1px;
-  padding: 3px;
+  padding             : 3px;
   border-color        : var(--gutter-color-fg);
   background-color    : var(--gutter-color-bg);
 }
 
 .gutter:hover,
 .gutter:active {
-  border-color    : var(--primary-color);
-  background-color    : var(--primary-color-hover);
+  border-color     : var(--primary-color);
+  background-color : var(--primary-color-hover);
 }
 
 .gutter.gutter-vertical {
@@ -133,6 +133,7 @@ label, input, select, button, textarea, input[type="range"], input[type="checkbo
 button {
   color            : var(--white);
   background-color : var(--primary-color);
+  padding          : 0.25rem 0.5rem !important;
 }
 
 button:hover { background-color : var(--primary-color-hover); }

@@ -1,13 +1,15 @@
 .light-theme {
-  --icon-bg    : #CCCCCC;
-  --bot-image  : url("../img/bot.png");
-  --user-image : url("../img/user.png");
+  --icon-bg       : #CCCCCC;
+  --divider-color : #BBBBBB;
+  --bot-image     : url("../img/bot.png");
+  --user-image    : url("../img/user.png");
 }
 
 .dark-theme {
-  --icon-bg    : #555555;
-  --bot-image  : url("../img/bot_dark.png");
-  --user-image : url("../img/user_dark.png");
+  --icon-bg       : #555555;
+  --divider-color : #666666;
+  --bot-image     : url("../img/bot_dark.png");
+  --user-image    : url("../img/user_dark.png");
 }
 
 /* Chat input */
@@ -61,13 +63,13 @@
 }
 
 .chat > :first-child {
-    margin-top: auto !important;
-    /* use !important to prevent breakage from child margin settings */
+  margin-top : auto !important;
+  /* use !important to prevent breakage from child margin settings */
 }
 
 .chat-content {
   min-width : 75%;
-  margin    : 20px;
+  margin    : 0.75rem 20px;
 }
 
 /* Rich content */
@@ -87,6 +89,8 @@
   border     : 1px solid var(--secondary-text-color-bg);
   box-shadow : 0 0 10px 1px var(--shadow-color-light);
 }
+
+.card-body { padding : 1rem; }
 
 .accordion .card-header {
   border-bottom    : 1px solid var(--tertiary-text-color-bg);
@@ -109,11 +113,19 @@
   color       : var(--primary-color);
 }
 
+.link {
+  color       : var(--primary-color);
+  font-weight : bold;
+  white-space : normal;
+  word-wrap   : break-word;
+  transition  : 50ms;
+}
+
 .divider {
-  margin: 2rem auto;
-  width   : 75%;
-  height   : 0;
-  border-bottom: 1px solid var(--tertiary-text-color);
+  margin        : 2rem auto;
+  width         : 75%;
+  height        : 0;
+  border-bottom : 1px solid var(--divider-color);
 }
 
 /* Bot content*/
@@ -201,3 +213,6 @@
   background-color : var(--primary-color);
   box-shadow       : 4px -4px 4px 0 var(--shadow-color-lighter);
 }
+
+/* Utility */
+ol > li::marker { font-weight : bold; }
