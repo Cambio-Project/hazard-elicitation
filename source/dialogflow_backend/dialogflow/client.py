@@ -15,7 +15,7 @@ class DialogFlowClient:
     AUDIO_SAMPLE_RATE = 48000
 
     @staticmethod
-    def preprocess(external_contexts: list, session_id: str = uuid.uuid4()):
+    def preprocess(external_contexts: list, session_id: str):
         session_client = df.SessionsClient()
         session = session_client.session_path(DialogFlowClient.PROJECT, session_id)
 
@@ -24,7 +24,7 @@ class DialogFlowClient:
             context_name = context.get('name', '')
             context_parameters = context.get('parameters', {})
             context_lifespan = context.get('lifespan', 1)
-            if context_name and context_parameters and context_lifespan:
+            if context_name and context_lifespan:
                 parameters = df.types.Struct()
                 parameters.update(context_parameters)
                 contexts.append(df.types.Context(
@@ -35,7 +35,7 @@ class DialogFlowClient:
         return session_client, session, contexts
 
     @staticmethod
-    def detect_event(event: str, external_contexts: list, session_id: str = uuid.uuid4()):
+    def detect_event(event: str, external_contexts: list, session_id: str):
         session_client, session, contexts = DialogFlowClient.preprocess(external_contexts, session_id)
 
         query_params = df.types.QueryParameters(contexts=contexts)
@@ -48,7 +48,7 @@ class DialogFlowClient:
             query_params=query_params)
 
     @staticmethod
-    def detect_intent(text: str, external_contexts: list, session_id: str = uuid.uuid4()):
+    def detect_intent(text: str, external_contexts: list, session_id: str):
         session_client, session, contexts = DialogFlowClient.preprocess(external_contexts, session_id)
 
         sentiment_config = df.types.SentimentAnalysisRequestConfig(analyze_query_text_sentiment=True)
@@ -66,7 +66,7 @@ class DialogFlowClient:
         # output_audio_config=output_audio_config)
 
     @staticmethod
-    def detect_intent_audio(audio: bytes, session: str = uuid.uuid4()):
+    def detect_intent_audio(audio: bytes, session: str):
         session_client = df.SessionsClient()
         session = session_client.session_path(DialogFlowClient.PROJECT, session)
 
@@ -89,7 +89,7 @@ class DialogFlowClient:
         )
 
     @staticmethod
-    def detect_intent_audio_stream(audio: bytes, session: str = uuid.uuid4()):
+    def detect_intent_audio_stream(audio: bytes, session: str):
         session_client = df.SessionsClient()
         session = session_client.session_path(DialogFlowClient.PROJECT, session)
 
