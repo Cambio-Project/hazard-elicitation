@@ -20,18 +20,14 @@ class Commands {
     static castValues(values) {
         let casted_values = [];
         for (const el of values) {
-            if (el.isBool())
+            if (isBool(el))
                 casted_values.push(el.parseBool());
-            else if (el.isNumber())
+            else if (isNumber(el))
                 casted_values.push(el.parseNumber());
             else
                 casted_values.push(el);
         }
         return casted_values;
-    }
-
-    constructor() {
-
     }
 
     call(action, values) {
@@ -46,6 +42,8 @@ class Commands {
 
             if (values.length > 1)
                 args = Commands.castValues(values.slice(1));
+
+            console.debug("Call: {}({})".format(command, args.join(",")));
 
 
             if (command in Commands.CONFIG_COMMANDS)

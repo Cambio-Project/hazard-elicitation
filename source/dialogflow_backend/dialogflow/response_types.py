@@ -3,18 +3,10 @@ from typing import Dict, Union, List, Any
 
 class IDFResponse:
     def __init__(self, data: Dict = None):
-        self._data = data if data else {'intent': '', 'type': '', 'payload': {}}
+        self._data = data if data else {'type': '', 'payload': {}}
 
     def __repr__(self) -> Dict:
         return self._data
-
-    @property
-    def intent(self) -> str:
-        return self._data.get('intent', '')
-
-    @intent.setter
-    def intent(self, intent: str):
-        self._data['intent'] = intent
 
     @property
     def type(self) -> str:
@@ -59,6 +51,30 @@ class ActionResponse(IDFResponse):
     @values.setter
     def values(self, values: List[Any]):
         self._data['payload']['values'] = values
+
+
+class MultiActionResponse(IDFResponse):
+    def __init__(self, data: Dict = None):
+        super().__init__(data)
+        self._data['type'] = 'multi_action'
+        self._data['payload']['values'] = []
+
+    def __iadd__(self, value):
+        self._data['payload']['values'] += value
+
+    @property
+    def values(self) -> List[Dict]:
+        return self._data['payload']['values']
+
+    @values.setter
+    def values(self, values: List[Dict]):
+        self._data['payload']['values'] = values
+
+    def add_action(self, action: str, values: List[Any]):
+        self._data['payload']['values'].append({
+            'action': action,
+            'values': values
+        })
 
 
 class FormattingMessage(IDFResponse):

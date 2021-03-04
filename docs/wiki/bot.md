@@ -2,19 +2,16 @@
 
 ```python
 generic_response = {
-    'intent':  '',
     'type':    '',
     'payload': {},
 }
 
 empty = {
-    'intent':  '',
     'type':    'empty',
     'payload': {}
 }
 
 action = {
-    'intent':  '',
     'type':    'action',
     'payload': {
         'action': 'some-action',
@@ -22,8 +19,20 @@ action = {
     }
 }
 
+multi_action = {
+    'type':    'action',
+    'payload': {
+        'values': [{
+            'action': 'some-action',
+            'values': ['param-1']
+        }, {
+            'action': 'some-other-action',
+            'values': ['param-1', 'param-2']
+        }]
+    }
+}
+
 formatting = {
-    'intent':  '',
     'type':    'formatting',
     'payload': {
         'text': 'format specific content'
@@ -31,7 +40,6 @@ formatting = {
 }
 
 text = {
-    'intent':  '',
     'type':    'text',
     'payload': {
         'text': 'Some text!'
@@ -39,7 +47,6 @@ text = {
 }
 
 card = {
-    'intent':  '',
     'type':    'card',
     'payload': {
         'title': 'Hi',
@@ -53,7 +60,6 @@ card = {
 }
 
 quick_reply = {
-    'intent':  '',
     'type':    'quick_reply',
     'payload': {
         'values': [
@@ -72,7 +78,6 @@ quick_reply = {
 }
 
 accordion = {
-    'intent':  '',
     'type':    'accordion',
     'payload': {
         'values': [
