@@ -116,6 +116,8 @@ class Graph {
                 graph.hazards[hazard.id].tab_id = content.addHazard(eid, "edge");
             }
         }
+
+        Config.updateControl($("#graph-zoom")[0]);
     }
 
     static get this() { return Graph.GRAPH; }
@@ -256,12 +258,24 @@ class Graph {
         return {"x": svg_pos.x + x, "y": svg_pos.y + y}
     }
 
+    static getEdge(id, name) {
+        if (id !== "") return Graph.this.graph.edges._values().find(e => e.id === id);
+        else return Graph.this.graph.edges._values().find(e => e.label === name);
+    }
+
+    static getNode(id, name) {
+        if (id !== "") return Graph.this.graph.nodes._values().find(e => e.id === id);
+        else return Graph.this.graph.nodes._values().find(e => e.label === name);
+    }
+
+    static getElement(type, id, name) {
+        const is_edge = type === "edge";
+        return is_edge ? Graph.getEdge(id, name) : Graph.getNode(id, name);
+    }
+
     static selectElement(type, name, id) {
         const is_edge = type === "edge";
-        const search  = is_edge ? Graph.this.graph.edges._values() : Graph.this.graph.nodes._values();
-        let el;
-        if (id !== "") el = search.find(e => e.id === id);
-        else el = search.find(e => e.label === name);
+        const el      = Graph.getElement(type, id, name);
 
         if (el !== null) {
             // Select element and label that were selected.
@@ -282,12 +296,17 @@ class Graph {
             element.attr("active", active);
             label.attr("active", active);
 
-            Chat.this.ws.event("specify-response", [{
-                name:       'elicitation',
+            if(el.hazard_id) {
+                Content.this.openHazard(el.id, type);
+            }
+
+            Chat.this.ws.event("e-specify-response", [{
+                name:       "c-elicitation",
                 lifespan:   100,
                 parameters: {
                     component: label.text(),
-                    type: type
+                    type:      type,
+                    id:        el.id
                 }
             }]);
         }
@@ -300,13 +319,13 @@ class Graph {
                 const graph = JSON.parse(json[0]["content"]);
                 Content.this.removeAllTabs();
                 window.graph = new Graph("#graph", "#context-menu", graph);
-                Chat.this.ws.event("empty", [{
-                    name:       'graph',
+                Chat.this.ws.event("e-empty", [{
+                    name:       "c-graph",
                     lifespan:   1000,
                     parameters: {arch: Graph.this.minimal()}
                 }]);
-                Chat.this.ws.event("select-component", [{
-                    name:       'elicitation',
+                Chat.this.ws.event("e-select-component", [{
+                    name:       "c-elicitation",
                     lifespan:   100,
                     parameters: {
                         arch: name

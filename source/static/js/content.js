@@ -66,7 +66,7 @@ class Content {
     }
 
     removeAllTabs() {
-        for(const [id, _] of this.tabs._entries()) {
+        for (const [id, _] of this.tabs._entries()) {
             this.removeTab(id);
         }
     }
@@ -107,17 +107,30 @@ class Content {
         }, "hazard", true);
         Graph.CONTEXT_MENU.hide();
 
+        $(`#tab-${tab_id}-title`).click(function () {
+            Chat.this.ws.event("e-specify-response", [{
+                name:       "c-elicitation",
+                lifespan:   100,
+                parameters: {
+                    component: element.label,
+                    type:      type,
+                    id:        element.id,
+                    hazard:    Graph.this.graph.hazards._values().find(e => e.tab_id === tab_id).id
+                }
+            }]);
+        });
+
         return tab_id;
     }
 
     addNewHazard(id, type) {
         const hazard_id                 = Math.max(Graph.this.graph.hazards._keys()) + 1;
         graph.hazards[hazard_id].tab_id = this.addHazard(id, type);
+        Graph.getElement(type, id).hazard_id = hazard_id;
     }
 
     openHazard(id, type) {
-        const G         = Graph.this.graph;
-        const hazard_id = type === "node" ? G.nodes[id].hazard_id : G.edges[id].hazard_id;
-        content.show(G.hazards[hazard_id].tab_id);
+        const el = Graph.getElement(type, id);
+        content.show(Graph.this.graph.hazards[el.hazard_id].tab_id);
     }
 }
