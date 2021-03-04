@@ -32,7 +32,6 @@ async def empty_handler(result) -> List[Dict]:
 
 async def fallback_handler(result) -> List[Dict]:
     response = TextMessage()
-    response.intent = text(INTENT_FALLBACK_NAME)
     response.text = random_text(INTENT_FALLBACK_TEXT)
 
     return [response.__repr__()]
@@ -40,31 +39,104 @@ async def fallback_handler(result) -> List[Dict]:
 
 async def help_handler(result) -> List[Dict]:
     response = TextMessage()
-    response.intent = text(INTENT_HELP_NAME)
     response.text = random_text(INTENT_HELP_TEXT)
     return [response.__repr__()]
 
 
-async def welcome_handler(result) -> List[Dict]:
-    intent = text(INTENT_WELCOME_NAME)
+async def guide_handler(result) -> List[Dict]:
+    context = await get_context('c-guide-option', result)
+    conversation = []
 
+    quick_reply = QuickReply()
+
+    for option in text(INTENT_GUIDE_OPTIONS):
+        quick_reply.add_reply(option, 'event', ['e-guide', [{
+            'name':       'c-guide-option',
+            'lifespan':   1,
+            'parameters': {
+                'option': option
+            },
+        }]])
+    quick_reply.add_reply('I am good, let\'s continue! &#x2714;', 'event', ['e-select-architecture'])
+
+    if context and 'option' in context.parameters:
+        divider = FormattingMessage()
+        divider.text = 'divider'
+
+        response = TextMessage()
+        response.text = text(INTENT_GUIDE_OPTIONS)[context.parameters['option']]
+
+        more = TextMessage()
+        more.text = random_text(INTENT_GUIDE_CONTINUE)
+
+        conversation.append(divider.__repr__())
+        conversation.append(response.__repr__())
+        conversation.append(more.__repr__())
+        conversation.append(quick_reply.__repr__())
+
+    else:
+        response = TextMessage()
+        response.text = text(INTENT_GUIDE_TEXT)
+
+        conversation.append(response.__repr__())
+        conversation.append(quick_reply.__repr__())
+
+    return conversation
+
+
+async def guide_option_handler(result) -> List[Dict]:
+    response = ActionResponse()
+    response.action = 'command'
+    response.values = ['event', 'e-guide', [{
+        'name':       'e-guide-option',
+        'lifespan':   1,
+        'parameters': {
+            'option': result.query_result.parameters['option']
+        }
+    }]]
+    return [response.__repr__()]
+
+
+async def guide_confirm_handler(result) -> List[Dict]:
+    response = ActionResponse()
+    response.action = 'command'
+    response.values = ['event', 'e-select-architecture']
+    return [response.__repr__()]
+
+
+# Welcome
+
+async def welcome_handler(result) -> List[Dict]:
     response = TextMessage()
-    response.intent = intent
     response.text = text(INTENT_WELCOME_TEXT)
 
     quick_reply = QuickReply()
-    quick_reply.intent = intent
-    quick_reply.add_reply('Yes, let\'s go! &#x1F44D;', 'event', ['select-architecture'])
+    quick_reply.add_reply(text(INTENT_WELCOME_NO_TEXT), 'event', ['e-guide'])
+    quick_reply.add_reply(text(INTENT_WELCOME_YES_TEXT), 'event', ['e-select-architecture'])
     return [response.__repr__(), quick_reply.__repr__()]
+
+
+async def welcome_confirm_handler(result) -> List[Dict]:
+    response = ActionResponse()
+    response.action = 'command'
+    response.values = ['event', 'e-select-architecture']
+    return [response.__repr__()]
+
+
+async def welcome_decline_handler(result) -> List[Dict]:
+    response = ActionResponse()
+    response.action = 'command'
+    response.values = ['event', 'e-guide']
+    return [response.__repr__()]
 
 
 # Elicitation handlers
 
 async def elicitation_select_architecture_handler(result) -> List[Dict]:
-    intent = text(INTENT_ELICITATION_SELECT_ARCHITECTURE_NAME)
+    divider = FormattingMessage()
+    divider.text = 'divider'
 
     question = TextMessage()
-    question.intent = intent
     question.text = text(INTENT_ELICITATION_SELECT_ARCHITECTURE_TEXT)
 
     architectures = []
@@ -76,43 +148,42 @@ async def elicitation_select_architecture_handler(result) -> List[Dict]:
     await sync_to_async(c)()
 
     quick_replies = QuickReply()
-    quick_replies.intent = intent
     for arch in architectures:
         quick_replies.add_reply(arch, 'select-architecture', [arch])
 
-    return [question.__repr__(), quick_replies.__repr__()]
+    return [
+        divider.__repr__(),
+        question.__repr__(),
+        quick_replies.__repr__()]
 
 
 async def elicitation_select_component_handler(result) -> List[Dict]:
-    intent = text(INTENT_ELICITATION_SELECT_COMPONENT_NAME)
-
-    context = await get_context('elicitation', result)
+    context = await get_context('c-elicitation', result)
 
     divider = FormattingMessage()
     divider.text = 'divider'
 
     response = TextMessage()
-    response.intent = intent
     response.text = text(INTENT_ELICITATION_SELECT_COMPONENT_TEXT).format(context.parameters['arch'])
 
     services = TextMessage()
-    services.text = text(INTENT_ELICITATION_SELECT_COMPONENT_TEXT_SERVICE)
+    services.text = text(INTENT_ELICITATION_SELECT_COMPONENT_SERVICE_TEXT)
     service_replies = QuickReply()
 
     operations = TextMessage()
-    operations.text = text(INTENT_ELICITATION_SELECT_COMPONENT_TEXT_OPERATION)
+    operations.text = text(INTENT_ELICITATION_SELECT_COMPONENT_OPERATION_TEXT)
     operation_replies = QuickReply()
 
-    context = await get_context('graph', result)
+    context = await get_context('c-graph', result)
 
     if context:
         nodes = context.parameters['arch']['nodes']
         for node in nodes:
-            service_replies.add_reply(node, 'select-element', ['node', node, ""])
+            service_replies.add_reply(node, 'select-element', ['node', node, ''])
 
         edges = context.parameters['arch']['edges']
         for edge in edges:
-            operation_replies.add_reply(edge, 'select-element', ['edge', edge, ""])
+            operation_replies.add_reply(edge, 'select-element', ['edge', edge, ''])
 
     return [
         divider.__repr__(),
@@ -121,41 +192,37 @@ async def elicitation_select_component_handler(result) -> List[Dict]:
         service_replies.__repr__(),
         operations.__repr__(),
         operation_replies.__repr__(),
-        divider.__repr__()]
+    ]
 
 
 async def elicitation_specify_response(result) -> List[Dict]:
-    intent = text(INTENT_ELICITATION_SPECIFY_RESPONSE_NAME)
+    context = await get_context('c-elicitation', result)
 
-    context = await get_context('elicitation', result)
-    print(context.parameters)
+    if False:
+        pass
 
-    response = TextMessage()
-    response.intent = intent
-    response.text = text(INTENT_ELICITATION_SPECIFY_RESPONSE_TEXT).format(context.parameters['component'])
+    if context and 'component' in context.parameters:
+        divider = FormattingMessage()
+        divider.text = 'divider'
 
-    return [response.__repr__()]
+        response = TextMessage()
+        response.text = text(INTENT_ELICITATION_SPECIFY_RESPONSE_TEXT).format(context.parameters['component'])
 
-
-async def elicitation_question_handler(result) -> List[Dict]:
-    intent = text(INTENT_ELICITATION_QUESTION_NAME)
-
-    question = TextMessage()
-    question.intent = intent
-    question.text = random_text(INTENT_ELICITATION_QUESTION_TEXT)
-
-    quick_replies = QuickReply()
-    quick_replies.intent = intent
-    quick_replies.add_reply('Yes', '', [])
-    quick_replies.add_reply('No', '', [])
-    return [question.__repr__(), quick_replies.__repr__()]
+        return [
+            divider.__repr__(),
+            response.__repr__()
+        ]
+    else:
+        response = ActionResponse()
+        response.action = 'command'
+        response.values = ['event', 'e-select-component']
+        return [response.__repr__()]
 
 
 # Config handlers
 
 async def config_handler(result) -> List[Dict]:
     response = ActionResponse()
-    response.intent = text(INTENT_COMMAND_CONFIG_NAME)
     response.action = 'command'
     response.values = [
         result.query_result.parameters['config-command'],
@@ -170,14 +237,12 @@ async def config_list_handler(result) -> List[Dict]:
     cmd_list = '<ul>{}</ul>'.format(''.join(map(code_list, COMMANDS.keys())))
 
     response = Accordion()
-    response.intent = text(INTENT_COMMAND_CONFIG_LIST_NAME)
     response.add_pane('Commands', cmd_list)
     return [response.__repr__()]
 
 
 async def manage_handler(result) -> List[Dict]:
     response = ActionResponse()
-    response.intent = text(INTENT_COMMAND_CONFIG_NAME)
     response.action = 'command'
     response.values = [
         result.query_result.parameters['manage-command'],
@@ -207,10 +272,12 @@ async def fact_handler(result) -> List[Dict]:
 
 
 async def joke_handler(result) -> List[Dict]:
-    random = 'https://official-joke-api.appspot.com/random_joke'
-    # programming = 'https://official-joke-api.appspot.com/jokes/programming/random'
-
-    data = json.loads(requests.get(random).text)
+    if randint(0, 10) < 5:
+        url = 'https://official-joke-api.appspot.com/random_joke'
+        data = json.loads(requests.get(url).text)
+    else:
+        url = 'https://official-joke-api.appspot.com/jokes/programming/random'
+        data = json.loads(requests.get(url).text[0])
 
     joke = Accordion()
     joke.add_pane(data['setup'], data['punchline'])
