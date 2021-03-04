@@ -116,9 +116,10 @@ function onLoad() {
     }
 
     Config.loadConfig();
+    Config.setStorage("uuid", Config.getStorage("uuid") || uuid.v4());
     populateArchitectures();
 
-    chat.ws.event("welcome");
+    chat.ws.event("e-welcome", [{name: "c-welcome", lifespan: 5, parameters: {}}]);
 }
 
 /**

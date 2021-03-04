@@ -17,14 +17,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"
           integrity="sha512-FHsFVKQ/T1KWJDGSbrUhTJyS1ph3eRrxI228ND0EGaEp6v4a/vGwPWd3Dtd/+9cI7ccofZvl/wulICEurHN1pg=="
           crossorigin="anonymous"></script>
-
-  <!--
-    <script type="text/javascript" src="../../static/js/third_party/jquery.js"></script>
-    <script type="text/javascript" src="../../static/js/third_party/bootstrap.js"></script>
-    <script type="text/javascript" src="../../static/js/third_party/split.js"></script>
-    <script type="text/javascript" src="../../static/js/third_party/d3.js"></script>
-  -->
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"
+          integrity="sha512-UNM1njAgOFUa74Z0bADwAq8gbTcqZC8Ej4xPSzpnh0l6KMevwvkBvbldF9uR++qKeJ+MOZHRjV1HZjoRvjDfNQ=="
+          crossorigin="anonymous"></script>
+  
   <!-- Custom JS -->
   <script type="text/javascript" src="../../static/js/main.js"></script>
   <script type="text/javascript" src="../../static/js/content.js"></script>
@@ -35,8 +31,10 @@
   <script type="text/javascript" src="../../static/js/commands.js"></script>
 
   <!-- Third party CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
 
   <!-- Custom CSS -->
   <link type="text/css" rel="stylesheet" href="../../static/css/main.css">
@@ -88,12 +86,19 @@
                 <a class="nav-link help" role="tab" data-toggle="tab" id="tab-help-title" href="#tab-help">Help</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link config active show" role="tab" data-toggle="tab" id="tab-config-title"
+                <a class="nav-link config active show"
+                   role="tab"
+                   data-toggle="tab"
+                   id="tab-config-title"
                    href="#tab-config">Configure</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link scenario" role="tab" data-toggle="tab" id="tab-scenario-title"
-                   href="#tab-scenario" aria-selected="true">Scenario</a>
+                <a class="nav-link scenario"
+                   role="tab"
+                   data-toggle="tab"
+                   id="tab-scenario-title"
+                   href="#tab-scenario"
+                   aria-selected="true">Scenario</a>
               </li>
             </ul>
 
@@ -125,8 +130,7 @@
                     The chat is connected to a chatbot.
                     Use the send button (
                     <button type="button" class="position-relative send-button">➤</button>
-                    ) to send a message.
-                  </p>
+                    ) to send a message. </p>
                 </div>
 
                 <p class="bline p-2">
@@ -137,8 +141,7 @@
                 <div class="collapse m-md-2" id="help-expert">
                   <p class="d-inline">
                     This chatbot can understand commands and configure settings on this page.
-                    Some commands are listed here:
-                  </p>
+                    Some commands are listed here: </p>
                   <ul>
                     <li><code>set-dark-theme &lt;boolean&gt;</code></li>
                     <!--<li><code>set-zoom &lt;float&gt;</code></li>-->
@@ -170,13 +173,20 @@
                         <label class="col-sm-6 col-form-label" for="graph-zoom">
                           Zoom <img alt="" src="../../static/img/zoom.png"/>
                         </label>
-                        <input class="col-sm-5" type="range" min="0.4" max="4" value="1" step="0.1" id="graph-zoom"
+                        <input class="col-sm-5"
+                               type="range"
+                               min="0.4"
+                               max="4"
+                               value="1"
+                               step="0.1"
+                               id="graph-zoom"
                                onchange="Config.updateControl(this);"/>
                       </div>
 
                       <div class="row">
                         <label class="col-sm-5 col-form-label" for="graph-selection">Trace/Model</label>
-                        <select class="col-sm-5 form-control" id="graph-selection"
+                        <select class="col-sm-5 form-control"
+                                id="graph-selection"
                                 onchange="Config.updateControl(this);">
                         </select>
                         <a href="/upload">
@@ -203,8 +213,7 @@
                         <label class="col-sm-9 col-form-label" for="show-edges">
                           Show edges
                           <svg class="d-inline-block" height="1rem" width="1rem">
-                            <path marker-end="url(#end)"
-                                  d="M 2 15 L 8 7" stroke="#CCCCCC" stroke-width="2"></path>
+                            <path marker-end="url(#end)" d="M 2 15 L 8 7" stroke="#CCCCCC" stroke-width="2"></path>
                           </svg>
                         </label>
                         <div class="p-1">
@@ -250,7 +259,9 @@
                           Curvy edges
                           <svg class="d-inline-block" height="1rem" width="1rem">
                             <path marker-end="url(#end)"
-                                  d="M 2 15 A 5 11 0 0 1 10 8" fill="transparent" stroke="#CCCCCC"
+                                  d="M 2 15 A 5 11 0 0 1 10 8"
+                                  fill="transparent"
+                                  stroke="#CCCCCC"
                                   stroke-width="2"></path>
                           </svg>
                         </label>
@@ -371,7 +382,9 @@
         <div id="chat" class="chat d-flex flex-column"></div>
         <div id="chat-input">
           <div class="chat-area">
-            <textarea class="w-100 h-100 input-area" id="user-input" placeholder="One moment please..."
+            <textarea class="w-100 h-100 input-area"
+                      id="user-input"
+                      placeholder="One moment please..."
                       disabled></textarea>
             <button class="send-button" type="button" id="send">&#10148;</button>
           </div>
