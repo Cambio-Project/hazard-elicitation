@@ -1,6 +1,7 @@
+import json
+
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from dialogflow_backend.dialogflow.intent_handler import *
 from dialogflow_backend.dialogflow.client import DialogFlowClient
 from dialogflow_backend.dialogflow.response_handler import create_response
 from util.log import info, warning, error

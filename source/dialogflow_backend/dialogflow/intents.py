@@ -1,5 +1,10 @@
 from util.text.en import TEXT
-from dialogflow_backend.dialogflow.intent_handler import *
+from dialogflow_backend.dialogflow.intent_handlers.default import *
+from dialogflow_backend.dialogflow.intent_handlers.guide import *
+from dialogflow_backend.dialogflow.intent_handlers.welcome import *
+from dialogflow_backend.dialogflow.intent_handlers.elicitation import *
+from dialogflow_backend.dialogflow.intent_handlers.commands import *
+from dialogflow_backend.dialogflow.intent_handlers.extra import *
 
 INTENT_HANDLERS = {
     TEXT[INTENT_EMPTY_NAME]:                           empty_handler,
