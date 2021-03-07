@@ -32,27 +32,36 @@ TEXT = {
         'Let us go through this, step by step.<br>'
         'Please select or tell me about which topic you would like to learn more about...'),
     INTENT_GUIDE_OPTIONS:                               {
-        'Architecture': str(
-            'An architecture is constructed from the result of a '
-            '<a class="link" href="https://en.wikipedia.org/wiki/Tracing_(software)" target="_blank">tracing tool</a> '
-            'analysis. '
-            'This tool can understand and analyze traces from either '
-            '<a class="link" href="https://www.jaegertracing.io/" target="_blank">Jaeger</a> or '
-            '<a class="link" href="https://zipkin.io/" target="_blank">Zipkin</a>.'),
-        'Analysis':     str(
-            'In the analysis of a trace services and operations are identified. '
-            'The relationships between these services and operations is visualized as graph. '
-            'You can see the constructed graph on the left.'
-        ),
-        'Component':    str(
-            'In this context a component is part of the graph that is constructed during the analysis. '
-        )
+        'Architecture': {
+            'text':  str(
+                'An architecture is constructed from the result of a '
+                '<a class="link" href="https://en.wikipedia.org/wiki/Tracing_(software)" target="_blank">'
+                'tracing tool</a> analysis. This tool can understand and analyze traces from either '
+                '<a class="link" href="https://www.jaegertracing.io/" target="_blank">Jaeger</a> or '
+                '<a class="link" href="https://zipkin.io/" target="_blank">Zipkin</a>.'),
+            'link':  {
+                'text': 'Read more here',
+                'url':  'https://en.wikipedia.org/wiki/Tracing_(software)'
+            },
+            'image': 'static/img/guide/arch.png'
+        },
+        'Analysis':     {
+            'text': str(
+                'In the analysis of a trace services and operations are identified. '
+                'The relationships between these services and operations is visualized as graph. '
+                'You can see the constructed graph on the left.'
+            )},
+        'Component':    {
+            'text': str(
+                'In this context a component is part of the graph that is constructed during the analysis. '
+            )}
     },
-    INTENT_GUIDE_CONTINUE:                              [
+    INTENT_GUIDE_CONTINUE_TEXT:                         [
         'Do you want to know more?',
         'Do you need more infos?',
         'Anything else you want to know?'
     ],
+    INTENT_GUIDE_CONTINUE_CONFIRM_TEXT:                 'I am good, let\'s continue! &#x2714;',
     INTENT_GUIDE_OPTION_NAME:                           'Default-Guide-Option',
     INTENT_GUIDE_CONFIRM_NAME:                          'Default-Guide-Confirm',
 
@@ -72,31 +81,31 @@ TEXT = {
         'or configure the scenario in the user interface.<br><br>'
         'Everything clear? Are you ready?'
     ),
+    INTENT_WELCOME_RESUME_TEXT:                         'Continue where you left. &#x21bb;',
     INTENT_WELCOME_YES_TEXT:                            'Yes, let\'s go! &#x1F44D;',
-    INTENT_WELCOME_NO_TEXT:                             'No, I need more information.',
+    INTENT_WELCOME_NO_TEXT:                             'No, I need more information. &#x2753;',
     INTENT_WELCOME_CONFIRM_NAME:                        'Default-Welcome-Confirm',
     INTENT_WELCOME_DECLINE_NAME:                        'Default-Welcome-Decline',
 
     # Elicitation
     INTENT_ELICITATION_SELECT_ARCHITECTURE_NAME:        'Elicitation-Select-Architecture',
-    INTENT_ELICITATION_SELECT_ARCHITECTURE_TEXT:        str(
-        '<h6>Step 1 - Select an architecture</h6>'
-        'Below you are given a list of architectures. '
-        'Please select one architecture.'
-    ),
+    INTENT_ELICITATION_SELECT_ARCHITECTURE_TEXT:        {
+        'title': 'Step 1 - Select an architecture',
+        'text':  str('Below you are given a list of architectures. '
+                     'Please select one architecture.')
+    },
     INTENT_ELICITATION_SELECT_COMPONENT_NAME:           'Elicitation-Select-Component',
-    INTENT_ELICITATION_SELECT_COMPONENT_TEXT:           str(
-        '<h6>Step 2 - Select a component for <i>{}</i></h6>'
-        'I created a selection for you to choose from. '
-        'Please select one component.'
-    ),
+    INTENT_ELICITATION_SELECT_COMPONENT_TEXT:           {
+        'title': 'Step 2 - Select a component for <i>{}</i>',
+        'text':  'Please select one component from the following selection.'
+    },
     INTENT_ELICITATION_SELECT_COMPONENT_SERVICE_TEXT:   'Here are the services to choose from ...',
     INTENT_ELICITATION_SELECT_COMPONENT_OPERATION_TEXT: 'Here are the operations to choose from ...',
     INTENT_ELICITATION_SPECIFY_RESPONSE_NAME:           'Elicitation-Specify-Response',
-    INTENT_ELICITATION_SPECIFY_RESPONSE_TEXT:           str(
-        '<h6>Step 3 - Specify response and response measure for <i>{}</i></h6>'
-        ''
-    ),
+    INTENT_ELICITATION_SPECIFY_RESPONSE_TEXT:           {
+        'title': 'Step 3 - Specify response and response measure for <i>{}</i>',
+        'text':  ''
+    },
     INTENT_ELICITATION_SPECIFY_RESPONSE_MEASURE_TEXT:   str(
         'Specify the response measurement for <i>{}</i>'
     ),

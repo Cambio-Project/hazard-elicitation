@@ -1,67 +1,54 @@
 from typing import List, Dict
 
 from dialogflow_backend.dialogflow.response_types import *
-from dialogflow_backend.dialogflow.util import get_context
+from dialogflow_backend.dialogflow.util import get_context, is_in_context, next_event
 from util.text.text import random_text, text
 from util.text.ids import *
 
 
 async def guide_handler(result) -> List[Dict]:
-    context = await get_context('c-guide-option', result)
     conversation = []
 
-    quick_reply = QuickReply()
-
+    # Add options to ask.
+    quick_reply = QuickReplyResponse()
     for option in text(INTENT_GUIDE_OPTIONS):
         quick_reply.add_reply(option, 'event', ['e-guide', [{
             'name':       'c-guide-option',
             'lifespan':   1,
-            'parameters': {
-                'option': option
-            },
+            'parameters': {'quick-option': option}
         }]])
-    quick_reply.add_reply('I am good, let\'s continue! &#x2714;', 'event', ['e-select-architecture'])
+    # Continue option
+    quick_reply.add_reply(text(INTENT_GUIDE_CONTINUE_CONFIRM_TEXT), 'event', [next_event(result)])
 
-    if context and 'option' in context.parameters:
-        divider = FormattingMessage()
-        divider.text = 'divider'
-
-        response = TextMessage()
-        response.text = text(INTENT_GUIDE_OPTIONS)[context.parameters['option']]
-
-        more = TextMessage()
-        more.text = random_text(INTENT_GUIDE_CONTINUE)
-
-        conversation.append(divider.__repr__())
-        conversation.append(response.__repr__())
-        conversation.append(more.__repr__())
-        conversation.append(quick_reply.__repr__())
-
+    # Check if option is given by the user.
+    option_context = get_context('c-guide-option', result)
+    if is_in_context('quick-option', option_context):
+        option_value = option_context.parameters['quick-option']
+    elif is_in_context('option', result.query_result):
+        option_value = result.query_result.parameters['option']
     else:
-        response = TextMessage()
-        response.text = text(INTENT_GUIDE_TEXT)
+        option_value = None
 
-        conversation.append(response.__repr__())
-        conversation.append(quick_reply.__repr__())
+    conversation.append(FormattingResponse.create('divider'))
+
+    # If option is given, explain it and add further quick reply options.
+    if option_value:
+        conversation.append(CardResponse.create(option_value, **text(INTENT_GUIDE_OPTIONS)[option_value]))
+        conversation.append(TextResponse.create(random_text(INTENT_GUIDE_CONTINUE_TEXT)))
+
+    # Otherwise tell the user to ask something.
+    else:
+        conversation.append(TextResponse.create(text(INTENT_GUIDE_TEXT)))
+
+    conversation.append(quick_reply.__repr__())
 
     return conversation
 
 
 async def guide_option_handler(result) -> List[Dict]:
-    response = ActionResponse()
-    response.action = 'command'
-    response.values = ['event', 'e-guide', [{
-        'name':       'e-guide-option',
-        'lifespan':   1,
-        'parameters': {
-            'option': result.query_result.parameters['option']
-        }
-    }]]
-    return [response.__repr__()]
+    return await guide_handler(result)
 
 
 async def guide_confirm_handler(result) -> List[Dict]:
-    response = ActionResponse()
-    response.action = 'command'
-    response.values = ['event', 'e-select-architecture']
-    return [response.__repr__()]
+    response = ActionResponse.create('command', ['event', next_event(result)])
+    return [response]
