@@ -22,17 +22,17 @@ class CustomWebSocket {
         chat.chat_input.attr("disabled", "disabled");
     }
 
-    onError(e) { console.debug('Error Websocket ', e) }
+    onError(e) { console.debug("Error Websocket\n", e) }
 
     onMessage(e) {
-        console.debug('On Message ', e)
+        console.debug("On Message\n", JSON.parse(e.data));
 
         const message = JSON.parse(e.data);
 
         if (message.type in CustomWebSocket.WS) {
             CustomWebSocket.WS[message.type](message.data);
         } else {
-            console.warn("No handler function for '" + message.type + "'.")
+            console.warn("No handler function for '{}'.".format(message.type));
         }
     }
 }
@@ -54,26 +54,23 @@ class DFWebSocket extends CustomWebSocket {
         });
     }
 
-    async send(data, contexts) {
+    async send(type, data, contexts) {
         await DFWebSocket.isReady().then(function () {
             chat.setPending();
-            DFWebSocket.WS.socket.send(JSON.stringify({
-                'type':     'dialogflow_text_input',
-                'data':     data,
-                'contexts': contexts || []
-            }));
+            const content = JSON.stringify({
+                "uuid":     Config.getStorage("uuid"),
+                "type":     type,
+                "data":     data,
+                "contexts": contexts || []
+            });
+            DFWebSocket.WS.socket.send(content);
+            console.debug("On send\n", JSON.parse(content));
         });
     }
 
-    async event(data, contexts) {
-        await DFWebSocket.isReady().then(function () {
-            DFWebSocket.WS.socket.send(JSON.stringify({
-                'type':     'dialogflow_event_input',
-                'data':     data,
-                'contexts': contexts || []
-            }));
-        });
-    }
+    intent(data, contexts) { this.send('dialogflow_text_input', data, contexts); }
+
+    event(data, contexts) { this.send('dialogflow_event_input', data, contexts); }
 
     /**
      * Receives a dialogflow response. The response type defines the processing.
@@ -82,30 +79,37 @@ class DFWebSocket extends CustomWebSocket {
     dialogflow_response(data) {
         chat.removePending();
         for (const [key, val] of data._entries()) {
-            const intent = val.intent;
             const type   = val.type;
             let payload  = val.payload;
 
             switch (type) {
-                case 'empty':
+                case "empty":
                     break;
-                case 'action':
+                case "action":
                     chat.commands.call(payload.action, payload.values)
                     break;
-                case 'text':
+                case "multi_action":
+                    for (const action of payload.entries()) {
+                        chat.commands.call(action.action, action.values)
+                    }
+                    break;
+                case "formatting":
+                    chat.add(new FormattingMessage(Chat.Rich, payload.text));
+                    break;
+                case "text":
                     chat.add(new ChatMessage(Chat.Bot, payload.text));
                     break;
-                case 'card':
+                case "card":
                     chat.add(new ChatCard(payload));
                     break;
-                case 'quick_reply':
+                case "quick_reply":
                     chat.add(new ChatQuickReply(payload.values));
                     break;
-                case 'accordion':
+                case "accordion":
                     chat.add(new ChatAccordion(payload.values));
                     break;
                 default:
-                    console.debug("Unknown data type '" + type + "'.")
+                    console.debug("Unknown data type '{}'".format(type))
             }
         }
         chat.scroll();
@@ -207,7 +211,7 @@ class Chat {
             chat.add(new ChatMessage(Chat.User, text));
             chat.scroll();
 
-            chat.ws.send(text);
+            chat.ws.intent(text);
             this.value = "";
         } else if (e.keyCode === 38) {
             e.preventDefault();
@@ -221,6 +225,10 @@ class Chat {
             chat.chat_input.focus().val(chat.history.get());
         }
     }
+
+    static event(event, contexts) {
+        Chat.this.ws.event(event, contexts);
+    }
 }
 
 class ChatElement {
@@ -229,23 +237,15 @@ class ChatElement {
     }
 
     html(wrap = false) {
-        if (!wrap) {
-            let alignment = this.actor === Chat.Rich ? "" : this.actor === Chat.User ? "flex-row-reverse" : "flex-row";
+        let alignment = this.actor === Chat.Rich ? "" : this.actor === Chat.User ? "flex-row-reverse" : "flex-row";
+        alignment     = wrap ? alignment + " flex-wrap" : alignment;
 
-            return "" +
-                `<div class="chat-content">
+        return "" +
+            `<div class="chat-content">
                   <div class="${this.actor}-content d-flex ${alignment}">
                     {}
                   </div>
                 </div>`;
-        } else {
-            return "" +
-                `<div class="chat-content">
-                  <div class="${this.actor}-content wrap">
-                    {}
-                  </div>
-                </div>`;
-        }
     }
 }
 
@@ -261,6 +261,22 @@ class ChatPendingMessage extends ChatElement {
                 <p class="card-text">...</p>              
               </div>
             </div>`);
+    }
+}
+
+class FormattingMessage extends ChatElement {
+    constructor(actor, formatting) {
+        super(actor);
+        this.formatting = formatting;
+    }
+
+    html() {
+        switch (this.formatting) {
+            case 'divider':
+                return super.html().format('<div class="divider"></div>');
+            default:
+                return ''
+        }
     }
 }
 
@@ -310,7 +326,7 @@ class ChatCard extends ChatElement {
 
 class ChatQuickReply extends ChatElement {
     constructor(replies) {
-        super(Chat.Rich);
+        super(Chat.User);
         this.replies = replies;
     }
 

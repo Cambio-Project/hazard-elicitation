@@ -11,7 +11,7 @@ class Graph {
             tooltip:           false,
             node_size:         5,
             edge_size:         2,
-            node_label_offset: {x: 10, y: 0},
+            node_label_offset: {x: 10, y: -10},
             edge_label_offset: {x: 10, y: 15, dy: -5},
             edge_label_font:   {size: 10, dx: 3, dy: 5},
             curved_edges:      true,
@@ -106,16 +106,18 @@ class Graph {
         for (const hazard of graph.hazards._values()) {
             for (const nid of hazard.nodes) {
                 na.find('[id="n{}"]'.format(nid)).attr("class", "hazard")
-                graph.nodes[nid].hazard_id = hazard.id;
+                graph.nodes[nid].hazard_id      = hazard.id;
                 graph.hazards[hazard.id].tab_id = content.addHazard(nid, "node");
             }
 
             for (const eid of hazard.edges) {
                 ea.find('[id="e{}"]'.format(eid)).attr("class", "hazard")
-                graph.edges[eid].hazard_id = hazard.id;
+                graph.edges[eid].hazard_id      = hazard.id;
                 graph.hazards[hazard.id].tab_id = content.addHazard(eid, "edge");
             }
         }
+
+        Config.updateControl($("#graph-zoom")[0]);
     }
 
     static get this() { return Graph.GRAPH; }
@@ -129,6 +131,18 @@ class Graph {
     get(property) { return this.properties[property]; }
 
     set(property, value) { this.properties[property] = value; }
+
+    minimal() {
+        let result = {"nodes": {}, "edges": {}, "hazards": {}};
+        for (const [_, val] of this.graph.nodes._entries()) {
+            result["nodes"][val.label] = val.id
+        }
+        for (const [_, val] of this.graph.edges._entries()) {
+            result["edges"][val.label] = val.id
+        }
+        result["hazards"] = this.graph.hazards;
+        return result;
+    }
 
     /* Init Graph */
 
@@ -244,14 +258,24 @@ class Graph {
         return {"x": svg_pos.x + x, "y": svg_pos.y + y}
     }
 
-    /*  */
+    static getEdge(id, name) {
+        if (id !== "") return Graph.this.graph.edges._values().find(e => e.id === id);
+        else return Graph.this.graph.edges._values().find(e => e.label === name);
+    }
+
+    static getNode(id, name) {
+        if (id !== "") return Graph.this.graph.nodes._values().find(e => e.id === id);
+        else return Graph.this.graph.nodes._values().find(e => e.label === name);
+    }
+
+    static getElement(type, id, name) {
+        const is_edge = type === "edge";
+        return is_edge ? Graph.getEdge(id, name) : Graph.getNode(id, name);
+    }
 
     static selectElement(type, name, id) {
         const is_edge = type === "edge";
-        const search  = is_edge ? Graph.this.graph.edges._values() : Graph.this.graph.nodes._values();
-        let el;
-        if (id !== "") el = search.find(e => e.id === id);
-        else el = search.find(e => e.label === name);
+        const el      = Graph.getElement(type, id, name);
 
         if (el !== null) {
             // Select element and label that were selected.
@@ -271,7 +295,43 @@ class Graph {
             // Mark the new state.
             element.attr("active", active);
             label.attr("active", active);
+
+            if(el.hazard_id) {
+                Content.this.openHazard(el.id, type);
+            }
+
+            Chat.this.ws.event("e-specify-response", [{
+                name:       "c-elicitation",
+                lifespan:   100,
+                parameters: {
+                    component: label.text(),
+                    type:      type,
+                    id:        el.id
+                }
+            }]);
         }
+    }
+
+    static setGraph(name) {
+        fetch("api/arch?name=" + name)
+            .then(response => response.json())
+            .then(function (json) {
+                const graph = JSON.parse(json[0]["content"]);
+                Content.this.removeAllTabs();
+                window.graph = new Graph("#graph", "#context-menu", graph);
+                Chat.this.ws.event("e-empty", [{
+                    name:       "c-graph",
+                    lifespan:   100,
+                    parameters: {arch: Graph.this.minimal()}
+                }]);
+                Chat.this.ws.event("e-select-component", [{
+                    name:       "c-elicitation",
+                    lifespan:   100,
+                    parameters: {
+                        arch: name
+                    }
+                }]);
+            });
     }
 
     /* Callbacks */
@@ -449,7 +509,7 @@ class ContextMenu {
 
         const type = "source" in element ? "edge" : "node";
         let dom;
-        if(type === "node") dom = $(".nodes").find('[id="n{}"]'.format(element.id));
+        if (type === "node") dom = $(".nodes").find('[id="n{}"]'.format(element.id));
         else dom = $(".edges").find('[id="e{}"]'.format(element.id));
 
         this.anchor.html("");

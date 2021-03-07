@@ -1,7 +1,7 @@
 function splitAreas() {
     Split(['#left', '#bot'], {
-        sizes:      [75, 25],
-        minSize:    [525, 375],
+        sizes:      [70, 30],
+        minSize:    [550, 450],
         gutterSize: 5,
         cursor:     'col-resize'
     })
@@ -25,7 +25,7 @@ function populateArchitectures() {
     const fillSelect = function (arches) {
         const select = $("#graph-selection");
         $.each(arches, function (_, g) {
-            const o = $("<option />").val(g["id"]).text(g["name"]);
+            const o = $("<option />").val(g["name"]).text(g["name"]);
             select.append(o);
         });
     }
@@ -91,7 +91,7 @@ function addSampleGraph() {
 /**
  * Constants
  */
-const DEBUG = true;
+const DEBUG = false;
 let graph   = null;
 let chat    = null;
 let content = null;
@@ -116,9 +116,10 @@ function onLoad() {
     }
 
     Config.loadConfig();
+    Config.setStorage("uuid", Config.getStorage("uuid") || uuid.v4());
     populateArchitectures();
 
-    chat.ws.event("welcome", [{name: 'test', lifespan: 10, parameters: {test: 'asd'}}]);
+    chat.ws.event("e-welcome", [{name: "c-welcome", lifespan: 5, parameters: {}}]);
 }
 
 /**

@@ -4,7 +4,7 @@
 class Config {
     static SETTINGS = {
         "dark-theme":       {default: false, callback: Config.setDarkTheme},
-        "graph-selection":  {default: "", callback: Config.getGraph},
+        "graph-selection":  {default: "", callback: Config.setGraph},
         "sticky-nodes":     {default: false, callback: Config.stickyNodes},
         "curvy-edges":      {default: false, callback: Config.curvyEdges},
         "use-tooltips":     {default: false, callback: Config.useTooltip},
@@ -106,14 +106,7 @@ class Config {
 
     static showAdvancedElements(show) { $(".advanced").css("display", show ? "inline-block" : "none"); }
 
-    static getGraph(id) {
-        if(id) {
-            fetch("api/arch?id=" + id)
-                .then(response => response.json())
-                .then(graph => window.graph =
-                    new Graph("#graph", "#context-menu", JSON.parse(graph[0]["content"])));
-        }
-    }
+    static setGraph(name) { if (name) Graph.setGraph(name); }
 
     static stickyNodes(sticky) { Graph.set("sticky", sticky); }
 

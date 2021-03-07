@@ -5,7 +5,11 @@ INTENTS = [
     'Default-Fallback',
     'Default-Help',
     'Default-Welcome',
-    'Elicitation-Question',
+    'Default-Welcome-Confirm',
+    'Default-Welcome-Decline',
+    'Elicitation-Select-Architecture',
+    'Elicitation-Select-Component',
+    'Elicitation-Specify-Response',
     'Extra-Fact',
     'Extra-Joke',
     'Guide'
@@ -18,6 +22,7 @@ ENTITIES = [
     'command-value',
     'config-command',
     'config-command-synonyms',
+    'guide-option',
     'manage-command',
     'manage-command-property',
     'manage-command-synonyms',
@@ -28,8 +33,12 @@ ENTITIES = [
 ]
 
 CONTEXTS = [
-    'guide',
-    'elicitation'
+    'c-config',
+    'c-elicitation',
+    'c-guide',
+    'c-guide-option',
+    'c-manage',
+    'c-welcome',
 ]
 
 COMMANDS = {

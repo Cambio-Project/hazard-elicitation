@@ -1,6 +1,7 @@
+import json
+
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from dialogflow_backend.dialogflow.intent_handler import *
 from dialogflow_backend.dialogflow.client import DialogFlowClient
 from dialogflow_backend.dialogflow.response_handler import create_response
 from util.log import info, warning, error
@@ -46,30 +47,32 @@ class DFWebsocket(AsyncWebsocketConsumer):
             warning('No handler for message type "{}"'.format(msg_type))
             return
 
-        await getattr(self, msg_type)(data.get('data'), data.get('contexts'))
+        await getattr(self, msg_type)(data.get('data'), data.get('contexts'), data.get('uuid'))
 
     @add_trace(True)
-    async def dialogflow_text_input(self, data: str, contexts: list):
+    async def dialogflow_text_input(self, data: str, contexts: list, uuid: str):
         """
         Processes text input from a user and detects an intent.
         A response is triggered based on the detected intent name.
         @param data: str    The text input send from an application.
         @param contexts:    List of contexts.
+        @param uuid:        UUID created on client.
         """
         try:
-            await self.response_handler(DialogFlowClient.detect_intent(data, contexts))
+            await self.response_handler(DialogFlowClient.detect_intent(data, contexts, uuid))
         except Exception as e:
             error('Something went wrong during text input processing: {}'.format(e))
 
     @add_trace(True)
-    async def dialogflow_event_input(self, data: str, contexts: list):
+    async def dialogflow_event_input(self, data: str, contexts: list, uuid: str):
         """
         Processes an event and triggers a response based on the detected intent.
         @param data: str    The event input send from an application.
         @param contexts:    List of contexts.
+        @param uuid:        UUID created on client.
         """
         try:
-            await self.response_handler(DialogFlowClient.detect_event(data, contexts))
+            await self.response_handler(DialogFlowClient.detect_event(data, contexts, uuid))
         except Exception as e:
             error('Something went wrong during event input processing: {}'.format(e))
 

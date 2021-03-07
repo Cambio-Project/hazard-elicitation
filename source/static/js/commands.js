@@ -2,6 +2,7 @@ class Commands {
     static CONFIG_COMMANDS = {
         "set-dark-theme":            "dark-theme",
         "set-sticky-nodes":          "sticky-nodes",
+        "set-architecture":          "graph-selection",
         "set-zoom":                  "graph-zoom",
         "set-node-visibility":       "show-nodes",
         "set-edge-visibility":       "show-edges",
@@ -10,16 +11,18 @@ class Commands {
     }
 
     static MANAGE_COMMANDS = {
-        "select": Graph.selectElement,
         "reply": Chat.addUserMessage,
+        "event": Chat.event,
+        "select-element": Graph.selectElement,
+        "select-architecture": Graph.setGraph,
     }
 
     static castValues(values) {
         let casted_values = [];
         for (const el of values) {
-            if (el.isBool())
+            if (isBool(el))
                 casted_values.push(el.parseBool());
-            else if (el.isNumber())
+            else if (isNumber(el))
                 casted_values.push(el.parseNumber());
             else
                 casted_values.push(el);
@@ -27,14 +30,10 @@ class Commands {
         return casted_values;
     }
 
-    constructor() {
-
-    }
-
     call(action, values) {
         if (action === "command") {
             if (values.length < 1) {
-                warn("At least one argument required (command).")
+                console.warn("At least one argument required (command).")
                 return;
             }
 
@@ -44,13 +43,15 @@ class Commands {
             if (values.length > 1)
                 args = Commands.castValues(values.slice(1));
 
+            console.debug("Call: {}({})".format(command, args.join(",")));
+
 
             if (command in Commands.CONFIG_COMMANDS)
                 this.configCommand(command, args);
             else if (command in Commands.MANAGE_COMMANDS)
                 this.manageCommand(command, args);
             else
-                warn("Unknown command '{}'".format(command))
+                console.warn("Unknown command '{}'".format(command))
         }
     }
 
