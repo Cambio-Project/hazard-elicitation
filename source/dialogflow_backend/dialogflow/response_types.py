@@ -1,4 +1,4 @@
-from typing import Dict, Union, List, Any
+from typing import Dict, List, Any
 
 
 class IDFResponse:
@@ -36,6 +36,13 @@ class ActionResponse(IDFResponse):
     def __iadd__(self, value):
         self._data['payload']['values'] += value
 
+    @staticmethod
+    def create(action: str = '', values: List[Any] = None):
+        response = ActionResponse()
+        response.action = action
+        response.values = values
+        return response.__repr__()
+
     @property
     def action(self) -> str:
         return self._data['payload']['action']
@@ -62,6 +69,13 @@ class MultiActionResponse(IDFResponse):
     def __iadd__(self, value):
         self._data['payload']['values'] += value
 
+    @staticmethod
+    def create(actions: Dict[str, List]):
+        response = MultiActionResponse()
+        for action, values in actions.items():
+            response.add_action(action, values)
+        return response.__repr__()
+
     @property
     def values(self) -> List[Dict]:
         return self._data['payload']['values']
@@ -77,13 +91,19 @@ class MultiActionResponse(IDFResponse):
         })
 
 
-class FormattingMessage(IDFResponse):
+class FormattingResponse(IDFResponse):
     def __init__(self, data: Dict = None):
         super().__init__(data)
         self._data['type'] = 'formatting'
 
     def __iadd__(self, text: str):
         self._data['payload']['text'] += text
+
+    @staticmethod
+    def create(text: str = ''):
+        response = FormattingResponse()
+        response.text = text
+        return response.__repr__()
 
     @property
     def text(self) -> str:
@@ -94,13 +114,19 @@ class FormattingMessage(IDFResponse):
         self._data['payload']['text'] = text
 
 
-class TextMessage(IDFResponse):
+class TextResponse(IDFResponse):
     def __init__(self, data: Dict = None):
         super().__init__(data)
         self._data['type'] = 'text'
 
     def __iadd__(self, text: str):
         self._data['payload']['text'] += text
+
+    @staticmethod
+    def create(text: str = ''):
+        response = TextResponse()
+        response.text = text
+        return response.__repr__()
 
     @property
     def text(self) -> str:
@@ -111,10 +137,19 @@ class TextMessage(IDFResponse):
         self._data['payload']['text'] = text
         
 
-class Card(IDFResponse):
+class CardResponse(IDFResponse):
     def __init__(self, data: Dict = None):
         super().__init__(data)
         self._data['type'] = 'card'
+
+    @staticmethod
+    def create(title: str = '', text: str = '', image: str = '', link: Dict[str, str] = None):
+        response = CardResponse()
+        response.title = title
+        response.text = text
+        response.image = image
+        response.link = link
+        return response.__repr__()
 
     @property
     def title(self) -> str:
@@ -149,7 +184,7 @@ class Card(IDFResponse):
         self._data['payload']['link'] = link
 
 
-class QuickReply(IDFResponse):
+class QuickReplyResponse(IDFResponse):
     def __init__(self, data: Dict = None):
         super().__init__(data)
         self._data['type'] = 'quick_reply'
@@ -157,6 +192,13 @@ class QuickReply(IDFResponse):
 
     def __iter__(self):
         return self._data['payload'].get('values', [])
+
+    @staticmethod
+    def create(replies: Dict[str, str] = None):
+        response = QuickReplyResponse()
+        for reply in replies:
+            response.add_reply(**reply)
+        return response.__repr__()
 
     @property
     def replies(self) -> List[Dict[str, str]]:
@@ -174,7 +216,7 @@ class QuickReply(IDFResponse):
         })
 
 
-class Accordion(IDFResponse):
+class AccordionResponse(IDFResponse):
     def __init__(self, data: Dict = None):
         super().__init__(data)
         self._data['type'] = 'accordion'
@@ -182,6 +224,13 @@ class Accordion(IDFResponse):
 
     def __iter__(self):
         return self._data['payload'].get('values', [])
+
+    @staticmethod
+    def create(panes: List[Dict[str, str]] = None):
+        response = AccordionResponse()
+        for pane in panes:
+            response.add_pane(**pane)
+        return response.__repr__()
 
     @property
     def panes(self) -> List[Dict[str, str]]:
