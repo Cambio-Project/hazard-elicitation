@@ -11,7 +11,7 @@ class Graph {
             tooltip:           false,
             node_size:         5,
             edge_size:         2,
-            node_label_offset: {x: 10, y: 0},
+            node_label_offset: {x: 10, y: -10},
             edge_label_offset: {x: 10, y: 15, dy: -5},
             edge_label_font:   {size: 10, dx: 3, dy: 5},
             curved_edges:      true,
@@ -321,7 +321,7 @@ class Graph {
                 window.graph = new Graph("#graph", "#context-menu", graph);
                 Chat.this.ws.event("e-empty", [{
                     name:       "c-graph",
-                    lifespan:   1000,
+                    lifespan:   100,
                     parameters: {arch: Graph.this.minimal()}
                 }]);
                 Chat.this.ws.event("e-select-component", [{
