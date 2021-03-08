@@ -4,7 +4,7 @@ from asgiref.sync import sync_to_async
 
 from architecture_extraction_backend.models import ArchitectureModel
 from dialogflow_backend.dialogflow.response_types import *
-from dialogflow_backend.dialogflow.util import get_context
+from dialogflow_backend.dialogflow.util import get_context, is_in_context
 from util.text.text import text
 from util.text.ids import *
 
@@ -72,22 +72,63 @@ async def elicitation_select_component_handler(result) -> List[Dict]:
     return conversation
 
 
-async def elicitation_specify_response(result) -> List[Dict]:
+async def elicitation_specify_response_handler(result) -> List[Dict]:
     context = get_context('c-elicitation', result)
 
-    if False:
-        pass
-
-    if context and 'component' in context.parameters:
-        divider = FormattingResponse.create('divider')
+    if is_in_context('component', context):
+        conversation = [FormattingResponse.create('divider')]
 
         content = text(INTENT_ELICITATION_SPECIFY_RESPONSE_TEXT)
         response = CardResponse.create(
             title=content['title'].format(context.parameters['component']),
             text=content['text'])
+        conversation.append(response)
 
-        return [divider, response]
+        conversation.append(TextResponse.create())
+
+        return conversation
 
     else:
-        response = ActionResponse.create('command', ['event', 'e-select-component'])
-        return [response]
+        return await elicitation_select_component_handler(result)
+
+
+async def elicitation_specify_response_measure_handler(result) -> List[Dict]:
+    context = get_context('c-elicitation', result)
+
+    if is_in_context('response', context):
+        conversation = [FormattingResponse.create('divider')]
+
+        content = text(INTENT_ELICITATION_SPECIFY_RESPONSE_MEASURE_TEXT)
+        response = CardResponse.create(
+            title=content['title'].format(context.parameters['component']),
+            text=content['text'])
+        conversation.append(response)
+
+        return conversation
+
+    else:
+        return await elicitation_specify_response_handler(result)
+
+
+async def elicitation_save_scenario_handler(result) -> List[Dict]:
+    context = get_context('c-elicitation', result)
+
+    if is_in_context('response_measure', context):
+        conversation = [FormattingResponse.create('divider')]
+
+        content = text(INTENT_ELICITATION_SAVE_SCENARIO_TEXT)
+        response = CardResponse.create(title=content['title'], text=content['text'])
+        conversation.append(response)
+
+        parameters = AccordionResponse.create([
+            {'title': 'Architecture', 'text': ''},
+            {'title': 'Component', 'text': ''},
+            {'title': 'Response', 'text': ''},
+            {'title': 'Response Measure', 'text': ''}
+        ])
+        conversation.append(parameters)
+
+        return conversation
+
+    else:
+        return await elicitation_specify_response_measure_handler(result)

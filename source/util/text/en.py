@@ -54,6 +54,8 @@ TEXT = {
         'Component':    {
             'text': str(
                 'In this context a component is part of the graph that is constructed during the analysis. '
+                'One type of component is a node which represents a service of the systems architecture. '
+                'Another type of component is an edge which represents an operation of the system.'
             )}
     },
     INTENT_GUIDE_CONTINUE_TEXT:                         [
@@ -72,10 +74,11 @@ TEXT = {
         'I am a chatbot and I will help you to elicit <b>resilience scenarios</b>. '
         'For each scenario we will go through the following steps:<br>'
         '<ol>'
-        '<li>Select an architecture to analyze</li>'
+        '<li>Select an <b>architecture</b> to analyze</li>'
         '<li>Select a <b>component</b> of the architecture</li>'
-        '<li>Specify a <b>response</b> and a <b>response measurement</b></li>'
-        '<li>Save or create another <b>resilience scenario</b></li>'
+        '<li>Specify a <b>response</b></li>'
+        '<li>Specify a <b>response measure</b></li>'
+        '<li>Save the <b>resilience scenario</b></li>'
         '</ol>'
         'For every step you can choose from options I propose, you can write to me, '
         'or configure the scenario in the user interface.<br><br>'
@@ -91,24 +94,30 @@ TEXT = {
     INTENT_ELICITATION_SELECT_ARCHITECTURE_NAME:        'Elicitation-Select-Architecture',
     INTENT_ELICITATION_SELECT_ARCHITECTURE_TEXT:        {
         'title': 'Step 1 - Select an architecture',
-        'text':  str('Below you are given a list of architectures. '
-                     'Please select one architecture.')
+        'text':  'Below you are given a list of architectures. Please select one architecture.'
     },
     INTENT_ELICITATION_SELECT_COMPONENT_NAME:           'Elicitation-Select-Component',
     INTENT_ELICITATION_SELECT_COMPONENT_TEXT:           {
-        'title': 'Step 2 - Select a component for <i>{}</i>',
+        'title': 'Step 2 - Select a component from <i>{}</i>',
         'text':  'Please select one component from the following selection.'
     },
     INTENT_ELICITATION_SELECT_COMPONENT_SERVICE_TEXT:   'Here are the services to choose from ...',
     INTENT_ELICITATION_SELECT_COMPONENT_OPERATION_TEXT: 'Here are the operations to choose from ...',
     INTENT_ELICITATION_SPECIFY_RESPONSE_NAME:           'Elicitation-Specify-Response',
     INTENT_ELICITATION_SPECIFY_RESPONSE_TEXT:           {
-        'title': 'Step 3 - Specify response and response measure for <i>{}</i>',
+        'title': 'Step 3 - Specify response for <i>{}</i>',
         'text':  ''
     },
-    INTENT_ELICITATION_SPECIFY_RESPONSE_MEASURE_TEXT:   str(
-        'Specify the response measurement for <i>{}</i>'
-    ),
+    INTENT_ELICITATION_SPECIFY_RESPONSE_MEASURE_NAME:   'Elicitation-Specify-Response-Measure',
+    INTENT_ELICITATION_SPECIFY_RESPONSE_MEASURE_TEXT:   {
+        'title': 'Step 4 - Specify response measure for <i>{}</i>',
+        'text':  ''
+    },
+    INTENT_ELICITATION_SAVE_SCENARIO_NAME:   'Elicitation-Save-Scenario',
+    INTENT_ELICITATION_SAVE_SCENARIO_TEXT:   {
+        'title': 'Step 5 - Save scenario',
+        'text':  ''
+    },
 
     # Util
     INTENT_COMMAND_CONFIG_NAME:                         'Command-Config',
