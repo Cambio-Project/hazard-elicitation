@@ -13,7 +13,7 @@ from util.text.ids import *
 
 async def elicitation_select_architecture_handler(result) -> List[Dict]:
     divider = FormattingResponse.create('divider')
-    content = text(INTENT_ELICITATION_SELECT_ARCHITECTURE_TEXT)
+    content = text(INTENT_ELICITATION_ARCHITECTURE_TEXT)
     question = CardResponse.create(title=content['title'], text=content['text'])
 
     architectures = []
@@ -40,7 +40,7 @@ async def elicitation_select_component_handler(result) -> List[Dict]:
     # Text
     conversation.append(FormattingResponse.create('divider'))
 
-    content = text(INTENT_ELICITATION_SELECT_COMPONENT_TEXT)
+    content = text(INTENT_ELICITATION_COMPONENT_TEXT)
     response = CardResponse.create(
         title=content['title'].format(elicitation.parameters['arch']),
         text=content['text'])
@@ -48,7 +48,7 @@ async def elicitation_select_component_handler(result) -> List[Dict]:
     conversation.append(response)
 
     # Services
-    services = TextResponse.create(text(INTENT_ELICITATION_SELECT_COMPONENT_SERVICE_TEXT))
+    services = TextResponse.create(text(INTENT_ELICITATION_COMPONENT_SERVICE_TEXT))
     service_replies = QuickReplyResponse()
 
     nodes = graph_context.parameters['arch']['nodes']
@@ -59,7 +59,7 @@ async def elicitation_select_component_handler(result) -> List[Dict]:
     conversation.append(service_replies.__repr__())
 
     # Operations
-    operations = TextResponse.create(text(INTENT_ELICITATION_SELECT_COMPONENT_OPERATION_TEXT))
+    operations = TextResponse.create(text(INTENT_ELICITATION_COMPONENT_OPERATION_TEXT))
     operation_replies = QuickReplyResponse()
 
     edges = graph_context.parameters['arch']['edges']
@@ -72,19 +72,30 @@ async def elicitation_select_component_handler(result) -> List[Dict]:
     return conversation
 
 
-async def elicitation_specify_response_handler(result) -> List[Dict]:
-    context = get_context('c-elicitation', result)
+# Response
 
-    if is_in_context('component', context):
+async def elicitation_specify_response_handler(result) -> List[Dict]:
+    elicitation_context = get_context('c-elicitation', result)
+    if is_in_context('component', elicitation_context):
         conversation = [FormattingResponse.create('divider')]
 
-        content = text(INTENT_ELICITATION_SPECIFY_RESPONSE_TEXT)
-        response = CardResponse.create(
-            title=content['title'].format(context.parameters['component']),
-            text=content['text'])
-        conversation.append(response)
+        if is_in_context('response', elicitation_context):
+            return await elicitation_specify_response_measure_handler(result)
+        else:
+            content = text(INTENT_ELICITATION_RESPONSE_TEXT)
+            response = CardResponse.create(
+                title=content['title'].format(elicitation_context.parameters['component']),
+                text=content['text'])
+            conversation.append(response)
 
-        conversation.append(TextResponse.create())
+            quick_reply = QuickReplyResponse()
+            quick_reply.add_reply('response', 'event', ['e-specify-response', [{
+                'name':       'c-elicitation',
+                'lifespan':   2,
+                'parameters': {
+                    'response': 'blabla'
+                }}]])
+            conversation.append(quick_reply.__repr__())
 
         return conversation
 
@@ -92,13 +103,19 @@ async def elicitation_specify_response_handler(result) -> List[Dict]:
         return await elicitation_select_component_handler(result)
 
 
+async def elicitation_specify_response_followup_handler(result) -> List[Dict]:
+    return await elicitation_specify_response_handler(result)
+
+
+# Response Measure
+
 async def elicitation_specify_response_measure_handler(result) -> List[Dict]:
     context = get_context('c-elicitation', result)
 
     if is_in_context('response', context):
         conversation = [FormattingResponse.create('divider')]
 
-        content = text(INTENT_ELICITATION_SPECIFY_RESPONSE_MEASURE_TEXT)
+        content = text(INTENT_ELICITATION_RESPONSE_MEASURE_TEXT)
         response = CardResponse.create(
             title=content['title'].format(context.parameters['component']),
             text=content['text'])
@@ -109,6 +126,12 @@ async def elicitation_specify_response_measure_handler(result) -> List[Dict]:
     else:
         return await elicitation_specify_response_handler(result)
 
+
+async def elicitation_specify_response_measure_followup_handler(result) -> List[Dict]:
+    return await elicitation_specify_response_measure_handler(result)
+
+
+# Save scenario
 
 async def elicitation_save_scenario_handler(result) -> List[Dict]:
     context = get_context('c-elicitation', result)
