@@ -1,6 +1,7 @@
 import uuid
 
-import dialogflow_v2 as df
+#import dialogflow_v2 as df
+import dialogflow_v2beta1 as df
 # import google.cloud.dialogflow_v2.types as df_types
 
 from hazard_elicitation.settings import KEYS
@@ -11,6 +12,7 @@ class DialogFlowClient:
     LANGUAGE = LanguageConfig.LANGUAGE
     PROJECT = KEYS.get('dialogflow_project')
     CONTEXT = 'projects/{}/agent/sessions/{}/contexts/{}'
+    KB = 'projects/{}/knowledgeBases/{}'
     AUDIO_ENCODING = df.types.audio_config_pb2.AudioEncoding.AUDIO_ENCODING_LINEAR_16
     AUDIO_SAMPLE_RATE = 48000
 
@@ -52,7 +54,10 @@ class DialogFlowClient:
         session_client, session, contexts = DialogFlowClient.preprocess(external_contexts, session_id)
 
         sentiment_config = df.types.SentimentAnalysisRequestConfig(analyze_query_text_sentiment=True)
-        query_params = df.types.QueryParameters(sentiment_analysis_request_config=sentiment_config, contexts=contexts)
+        query_params = df.types.QueryParameters(
+            knowledge_base_names=[DialogFlowClient.KB.format(DialogFlowClient.PROJECT, 'NzEwOTcxNzA2MzEwNjU2MDAw')],
+            sentiment_analysis_request_config=sentiment_config,
+            contexts=contexts)
         text_input = df.types.TextInput(text=text, language_code=DialogFlowClient.LANGUAGE)
         query_input = df.types.QueryInput(text=text_input)
 
