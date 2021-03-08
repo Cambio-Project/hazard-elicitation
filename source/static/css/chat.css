@@ -74,12 +74,14 @@
 
 /* Rich content */
 .rich-content {
-  min-width : 200px;
-  max-width : 400px;
-  margin    : 0 auto;
+  margin : 0 auto;
+  text-align: center;
+  max-width: 75%;
 }
 
 .rich {
+  text-align       : left;
+  margin           : 0 auto;
   border-radius    : 0;
   color            : var(--primary-text-color);
   background-color : var(--primary-text-color-bg);

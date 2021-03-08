@@ -139,3 +139,12 @@
 }
 
 .upload-icon { background-image : var(--upload-image); }
+
+/* Table */
+.table-section {
+  display: inline-block;
+  text-align: left;
+  min-width: calc(15% + 300px);
+  width: 33%;
+  padding: 1rem;
+}

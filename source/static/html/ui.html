@@ -20,7 +20,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"
           integrity="sha512-UNM1njAgOFUa74Z0bADwAq8gbTcqZC8Ej4xPSzpnh0l6KMevwvkBvbldF9uR++qKeJ+MOZHRjV1HZjoRvjDfNQ=="
           crossorigin="anonymous"></script>
-  
+
   <!-- Custom JS -->
   <script type="text/javascript" src="../../static/js/main.js"></script>
   <script type="text/javascript" src="../../static/js/content.js"></script>
@@ -107,6 +107,12 @@
               <!-- Help -->
               <div class="tab-pane fade" role="tabpanel" id="tab-help">
                 <h3>Need help?</h3>
+
+                <p>
+                  The chatbot you see on the right is able to explain a variety of topics to you.
+                  Ask the chatbot about something you want to know or click
+                  <button class="btn" type="button" onclick="Chat.event('e-guide');">this</button>
+                  button. </p>
 
                 <p class="bline p-2">
                   <a class="btn-link" data-toggle="collapse" href="#help-graph" role="button" aria-expanded="false">
@@ -323,55 +329,87 @@
 
 
               <!-- Scenario -->
-              <div class="tab-pane fade" role="tabpanel" id="tab-scenario">
+              <div class="tab-pane fade text-center" role="tabpanel" id="tab-scenario">
 
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Description</div>
-                    <div class="p-1">The operation <code>frontend/dispatch</code> is experiencing a peek workload.</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Source</div>
-                    <div class="p-1">...</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Stimulus</div>
-                    <div class="p-1">increasing workload on the system</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Artifact</div>
-                    <div class="p-1">Service: frontend, Operation: dispatch</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Environment</div>
-                    <div class="p-1">operating</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Response</div>
-                    <div class="p-1">System workload should return to normal behaviour.</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Response Measure</div>
-                    <div class="p-1">
-                      After occurrence of {maximum tolerable workload} the operation frontend/dispatch should
-                      return to optimal response time {within 5 seconds} {in 90% of cases}.
+                <div class="table-section">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Description</h5>
+                      <p class="card-text">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
+                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
+                        but also the leap into electronic </p>
                     </div>
                   </div>
                 </div>
-              </div>
 
+                <div class="table-section">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Source</h5>
+                      <p class="card-text">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
+                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
+                        but also the leap into electronic </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="table-section">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Artifact</h5>
+                      <p class="card-text">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
+                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
+                        but also the leap into electronic </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="table-section">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Environment</h5>
+                      <p class="card-text">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
+                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
+                        but also the leap into electronic </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="table-section">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Response</h5>
+                      <p class="card-text">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
+                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
+                        but also the leap into electronic </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="table-section">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Response Measure</h5>
+                      <p class="card-text">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                        the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley
+                        of type and scrambled it to make a type specimen book. It has survived not only five centuries,
+                        but also the leap into electronic </p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
