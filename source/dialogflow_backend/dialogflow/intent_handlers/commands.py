@@ -1,6 +1,6 @@
 from typing import List, Dict
 
-from dialogflow_backend.dialogflow.settings import COMMANDS
+from dialogflow_backend.dialogflow.data import COMMANDS
 from dialogflow_backend.dialogflow.response_types import *
 
 

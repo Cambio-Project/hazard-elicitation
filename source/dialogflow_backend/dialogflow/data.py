@@ -20,13 +20,19 @@ ENTITIES = [
     'command',
     'command-regex',
     'command-value',
+    'component',
     'config-command',
     'config-command-synonyms',
+    'gibberish',
     'guide-option',
     'manage-command',
     'manage-command-property',
     'manage-command-synonyms',
     'manage-command-value',
+    'operation',
+    'operation-synonyms',
+    'service',
+    'service-synonyms',
     'string',
     'string-camel',
     'string-capital'
@@ -39,6 +45,10 @@ CONTEXTS = [
     'c-guide-option',
     'c-manage',
     'c-welcome',
+]
+
+KNOWLEDGE_BASES = [
+    'NzEwOTcxNzA2MzEwNjU2MDAw'
 ]
 
 COMMANDS = {
