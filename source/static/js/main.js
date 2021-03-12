@@ -95,15 +95,17 @@ const DEBUG = false;
 let graph   = null;
 let chat    = null;
 let content = null;
+let scenarios = null;
 
-window.onload   = onLoad;
-window.onunload = onUnLoad;
+window.onload         = onLoad;
+window.onbeforeunload = onUnLoad;
 
 /**
  * Runs on page load.
  */
 function onLoad() {
     splitAreas();
+    populateArchitectures();
 
     content = new Content("#content");
     graph   = new Graph("#graph", "#context-menu", {nodes: {}, edges: {}, hazards: {}});
@@ -117,9 +119,8 @@ function onLoad() {
 
     Config.loadConfig();
     Config.setStorage("uuid", Config.getStorage("uuid") || uuid.v4());
-    populateArchitectures();
 
-    chat.ws.event("e-welcome", [{name: "c-welcome", lifespan: 5, parameters: {}}]);
+    chat.ws.event("e-welcome");
 }
 
 /**

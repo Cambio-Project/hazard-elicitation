@@ -71,7 +71,7 @@ class Content {
         }
     }
 
-    addHazard(id, type) {
+    addHazard(id, type, data) {
         let element;
         if (type === "node") {
             element = Graph.this.graph.nodes[id];
@@ -83,54 +83,71 @@ class Content {
             $(".edges").find(`path[id="e${id}"]`).addClass("hazard");
         }
 
-        let properties = "";
-        const addEntry = function (data, indent = 0) {
-            for (const [key, val] of data._entries()) {
-                if (!isObject(val)) {
-                    const space = "&nbsp;".repeat(indent);
-                    properties += `<tr><th>${space}${key}</th><td>${val}</td></tr>`;
-                } else {
-                    properties += `<tr><th>${key}</th><td></td></tr>`;
-                    addEntry(val, indent + 2)
-                }
-            }
-        }
-        addEntry(element.data);
-
         const tab_id = this.addTab({
             "title":   "{}: {}".format(type, element.label),
-            "content": `
-              <table>
-                <tr><th>Label</th><td>${element.label}</td></tr>
-                ${properties}
-              </table>`,
+            "content": new Scenario(data).html(),
         }, "hazard", true);
         Graph.CONTEXT_MENU.hide();
-
-        $(`#tab-${tab_id}-title`).click(function () {
-            Chat.this.ws.event("e-specify-response", [{
-                name:       "c-elicitation",
-                lifespan:   100,
-                parameters: {
-                    component: element.label,
-                    type:      type,
-                    id:        element.id,
-                    hazard:    Graph.this.graph.hazards._values().find(e => e.tab_id === tab_id).id
-                }
-            }]);
-        });
 
         return tab_id;
     }
 
-    addNewHazard(id, type) {
-        const hazard_id                 = Math.max(Graph.this.graph.hazards._keys()) + 1;
-        graph.hazards[hazard_id].tab_id = this.addHazard(id, type);
+    addNewHazard(id, type, data) {
+        const hazard_id                      = Math.max(Graph.this.graph.hazards._keys()) + 1;
+        Graph.this.graph.hazards[hazard_id]  = {tab_id: this.addHazard(id, type, data)};
         Graph.getElement(type, id).hazard_id = hazard_id;
+        this.openHazard(id, type);
     }
 
     openHazard(id, type) {
         const el = Graph.getElement(type, id);
         content.show(Graph.this.graph.hazards[el.hazard_id].tab_id);
+    }
+
+    static saveScenario(json) {
+        const parsed_json = JSON.parse(JSON.stringify(json));
+        const component = parsed_json["artifact"] === "Service" ? "node" : "edge";
+        Content.this.addNewHazard(parsed_json["id"], component, parsed_json);
+        Chat.this.ws.event("e-next-step");
+    }
+}
+
+class Scenario {
+    constructor(json) {
+        console.debug(json);
+        this.json = $.extend(true, {
+            "description": "",
+            "source": "",
+            "artifact": "",
+            "stimulus": "",
+            "environment": "",
+            "response": "",
+            "response-measure": "",
+        }, json);
+    }
+
+    export() {
+
+    }
+
+    card(title, body) {
+        return "" +
+        `<div class="scenario-section col-md-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">${title}</h5>
+              <p class="card-text">${body}</p>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    html() {
+        let html = "";
+        const cards = ["Description", "Source", "Artifact", "Stimulus", "Environment", "Response", "Response Measure"];
+        for(const card of cards) {
+            html += this.card(card, this.json[card.toLowerCase().replaceAll(" ", "-")]);
+        }
+        return html;
     }
 }
