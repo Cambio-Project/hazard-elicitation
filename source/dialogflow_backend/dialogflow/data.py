@@ -1,7 +1,4 @@
 INTENTS = [
-    'Command-Config',
-    'Command-Config-List',
-    'Command-Manage',
     'Default-Fallback',
     'Default-Help',
     'Default-Welcome',
@@ -17,18 +14,15 @@ INTENTS = [
 
 ENTITIES = [
     'boolean',
-    'command',
-    'command-regex',
-    'command-value',
     'component',
-    'config-command',
-    'config-command-synonyms',
+    'file',
     'gibberish',
     'guide-option',
-    'manage-command',
-    'manage-command-property',
-    'manage-command-synonyms',
-    'manage-command-value',
+    'keyword-architecture',
+    'keyword-component',
+    'keyword-response',
+    'keyword-response-measure',
+    'keyword-stimulus',
     'operation',
     'operation-synonyms',
     'service',
@@ -42,21 +36,14 @@ CONTEXTS = [
     'c-config',
     'c-elicitation',
     'c-guide',
-    'c-guide-option',
-    'c-manage',
+    'c-guide-option'
     'c-welcome',
+]
+
+EVENTS = [
+    ''
 ]
 
 KNOWLEDGE_BASES = [
     'NzEwOTcxNzA2MzEwNjU2MDAw'
 ]
-
-COMMANDS = {
-    'set-dark-theme':            0,
-    'set-sticky-nodes':          0,
-    'set-zoom':                  0,
-    'set-node-visibility':       0,
-    'set-edge-visibility':       0,
-    'set-node-label-visibility': 0,
-    'set-edge-label-visibility': 0,
-}
