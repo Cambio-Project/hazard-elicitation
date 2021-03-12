@@ -1,6 +1,4 @@
-import uuid
-
-#import dialogflow_v2 as df
+# import dialogflow_v2 as df
 import dialogflow_v2beta1 as df
 # import google.cloud.dialogflow_v2.types as df_types
 
@@ -13,11 +11,20 @@ class DialogFlowClient:
     PROJECT = KEYS.get('dialogflow_project')
     CONTEXT = 'projects/{}/agent/sessions/{}/contexts/{}'
     KB = 'projects/{}/knowledgeBases/{}'
+    """
+    # Unused: audio input and output
     AUDIO_ENCODING = df.types.audio_config_pb2.AudioEncoding.AUDIO_ENCODING_LINEAR_16
     AUDIO_SAMPLE_RATE = 48000
+    """
 
     @staticmethod
     def preprocess(external_contexts: list, session_id: str):
+        """
+        Updates existing contexts with external contexts.
+        @param external_contexts:   List of dictionaries containing contexts.
+        @param session_id:          The session of the conversation.
+        @return: SessionClient, Session, Contexts
+        """
         session_client = df.SessionsClient()
         session = session_client.session_path(DialogFlowClient.PROJECT, session_id)
 
@@ -38,6 +45,13 @@ class DialogFlowClient:
 
     @staticmethod
     def detect_event(event: str, external_contexts: list, session_id: str):
+        """
+        Detects an intent from event input. An event is usually send by an application.
+        @param event:               Name of the event
+        @param external_contexts:   A list of dictionaries containing external contexts.
+        @param session_id:          The session of the conversation.
+        @return: DialogFlowAnalysisResult
+        """
         session_client, session, contexts = DialogFlowClient.preprocess(external_contexts, session_id)
 
         query_params = df.types.QueryParameters(contexts=contexts)
@@ -51,6 +65,13 @@ class DialogFlowClient:
 
     @staticmethod
     def detect_intent(text: str, external_contexts: list, session_id: str):
+        """
+        Detects an intent from text input. Text is usually send by the user via a text input.
+        @param text:                Text from the user.
+        @param external_contexts:   A list of dictionaries containing external contexts.
+        @param session_id:          The session of the conversation.
+        @return: DialogFlowAnalysisResult
+        """
         session_client, session, contexts = DialogFlowClient.preprocess(external_contexts, session_id)
 
         sentiment_config = df.types.SentimentAnalysisRequestConfig(analyze_query_text_sentiment=True)
@@ -70,6 +91,8 @@ class DialogFlowClient:
             query_params=query_params)
         # output_audio_config=output_audio_config)
 
+    """
+    Unused: audio input and output
     @staticmethod
     def detect_intent_audio(audio: bytes, session: str):
         session_client = df.SessionsClient()
@@ -111,3 +134,4 @@ class DialogFlowClient:
         ]
 
         return session_client.streaming_detect_intent(requests=requests)
+    """
