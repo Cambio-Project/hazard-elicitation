@@ -140,11 +140,10 @@
 
 .upload-icon { background-image : var(--upload-image); }
 
-/* Table */
-.table-section {
+/* Scenario card */
+.scenario-section {
   display: inline-block;
   text-align: left;
-  min-width: calc(15% + 300px);
-  width: 33%;
+  min-width: calc(300px);
   padding: 1rem;
 }
