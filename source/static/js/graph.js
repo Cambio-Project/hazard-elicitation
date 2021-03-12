@@ -259,18 +259,17 @@ class Graph {
     }
 
     static getEdge(id, name) {
-        if (id !== "") return Graph.this.graph.edges._values().find(e => e.id === id);
+        if (name === undefined) return Graph.this.graph.edges._values().find(e => e.id === parseFloat(id));
         else return Graph.this.graph.edges._values().find(e => e.label === name);
     }
 
     static getNode(id, name) {
-        if (id !== "") return Graph.this.graph.nodes._values().find(e => e.id === id);
+        if (name === undefined) return Graph.this.graph.nodes._values().find(e => e.id === parseFloat(id));
         else return Graph.this.graph.nodes._values().find(e => e.label === name);
     }
 
     static getElement(type, id, name) {
-        const is_edge = type === "edge";
-        return is_edge ? Graph.getEdge(id, name) : Graph.getNode(id, name);
+        return type === "edge" ? Graph.getEdge(id, name) : Graph.getNode(id, name);
     }
 
     static selectElement(type, name, id) {
@@ -296,16 +295,16 @@ class Graph {
             element.attr("active", active);
             label.attr("active", active);
 
-            if(el.hazard_id) {
+            if (el.hazard_id) {
                 Content.this.openHazard(el.id, type);
             }
 
-            Chat.this.ws.event("e-specify-response", [{
+            Chat.this.ws.event("e-specify-stimuli", [{
                 name:       "c-elicitation",
                 lifespan:   100,
                 parameters: {
                     component: label.text(),
-                    type:      type,
+                    artifact:  is_edge ? "Operation" : "Service",
                     id:        el.id
                 }
             }]);
@@ -416,13 +415,13 @@ class Graph {
 
     static zoom(val) { Graph.this.zoom_level.scaleTo(Graph.this.svg, val); }
 
-    static onEdgeClick(e) { Graph.selectElement("edge", "", e.id); }
+    static onEdgeClick(e) { Graph.selectElement("edge", undefined, e.id); }
 
-    static onNodeClick(n) { Graph.selectElement("node", "", n.id); }
+    static onNodeClick(n) { Graph.selectElement("node", undefined, n.id); }
 
-    static onEdgeLabelClick(e) { Graph.selectElement("edge", "", e.id); }
+    static onEdgeLabelClick(e) { Graph.selectElement("edge", undefined, e.id); }
 
-    static onNodeLabelClick(n) { Graph.selectElement("node", "", n.id); }
+    static onNodeLabelClick(n) { Graph.selectElement("node", undefined, n.id); }
 
     static onContextMenu(e) {
         const coords = Graph.transformCoordinates(this, 20, 10)

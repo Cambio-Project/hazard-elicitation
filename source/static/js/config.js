@@ -43,9 +43,9 @@ class Config {
     /* Sets a value to the storage. */
     static setStorage(key, value) {
         if (isBool(value))
-            localStorage.setItem(key, value ? "true" : "false")
+            localStorage.setItem(key, value ? "true" : "false");
         else
-            localStorage.setItem(key, value)
+            localStorage.setItem(key, "" + value);
     }
 
     /* Gets a value from the storage. */
@@ -59,26 +59,29 @@ class Config {
 
     /* Called when a control changes its value. Calls callback with the new value. */
     static updateControl(element) {
-        if (element && Config.SETTINGS[element.id].callback)
+        if (element && Config.SETTINGS[element.id].callback) {
+            Config.setStorage(element.id, Config.getElement(element.id));
             Config.SETTINGS[element.id].callback(Config.getElement(element.id));
+        }
     }
 
     /* Returns the value of a control element. */
     static getElement(id) {
         const el  = $("#" + id);
         const val = el.val();
-        if (val === "on") {
+
+        if (val === "on")
             return el.prop("checked");
-        }
         return val;
     }
 
     /* Sets the value of a control element. */
     static setElement(id, val) {
+        let el = $("#" + id);
         if (isBool(val))
-            $("#" + id).prop("checked", val).change();
+            el.prop("checked", val).change();
         else
-            $("#" + id).val(val).change();
+            el.val(val).change();
     }
 
     /* Saves all control values to the storage. */
@@ -92,7 +95,7 @@ class Config {
     static loadConfig() {
         for (const key of Config.SETTINGS._keys()) {
             const val = Config.getStorage(key);
-            if (val !== null)
+            if (val)
                 Config.setElement(key, val);
             else
                 Config.setElement(key, Config.getDefault(key));
