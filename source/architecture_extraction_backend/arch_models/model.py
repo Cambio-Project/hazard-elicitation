@@ -48,7 +48,7 @@ class IModel:
     IModel provides a validation method that checks for validity of the model.
     This validation checks the semantic of the model.
     """
-    def __init__(self, model_type: str, source: Union[str, IO] = None):
+    def __init__(self, model_type: str, source: Union[str, IO] = None, multiple: bool = False):
         self._model_type = model_type
         self._services = {}
         self._valid = False
@@ -56,7 +56,12 @@ class IModel:
 
         if source:
             try:
-                if not self.read(source):
+                if multiple:
+                    success = self.read_multiple(source)
+                else:
+                    success = self.read(source)
+
+                if not success:
                     print('Model was not read successful')
             except BaseException as e:
                 print(tb(e))
@@ -86,6 +91,9 @@ class IModel:
         self._hazards = hazards
 
     # Private
+
+    def _parse_multiple(self, model: Dict[str, Any]) -> bool:
+        raise NotImplementedError('_parse_multiple() method must be implemented!')
 
     def _parse(self, model: Dict[str, Any]) -> bool:
         raise NotImplementedError('_parse() method must be implemented!')
@@ -161,6 +169,9 @@ class IModel:
     def print(self):
         for _, service in self._services.items():
             service.print()
+
+    def read_multiple(self, source: Union[str, IO]) -> bool:
+        raise NotImplementedError('read_multiple() method must be implemented!')
 
     def read(self, source: Union[str, IO]) -> bool:
         raise NotImplementedError('read() method must be implemented!')

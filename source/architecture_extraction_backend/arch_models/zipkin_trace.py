@@ -10,8 +10,12 @@ from architecture_extraction_backend.arch_models.service import Service
 
 
 class ZipkinTrace(IModel):
-    def __init__(self, source: Union[str, IO, list] = None):
-        super().__init__(self.__class__.__name__, source)
+    def __init__(self, source: Union[str, IO, list] = None, multiple: bool = False):
+        super().__init__(self.__class__.__name__, source, multiple)
+
+    def _parse_multiple(self, model: List[List[Dict[str, Any]]]) -> bool:
+        multiple = [trace for trace_list in model for trace in trace_list]
+        return self._parse(multiple)
 
     def _parse(self, model: List[Dict[str, Any]]) -> bool:
         # Store ip: service_name
@@ -33,14 +37,16 @@ class ZipkinTrace(IModel):
                     source = Service(source_name)
                     source.tags = local
                     self._services[source_name] = source
-                    service_ips[local['ipv4']] = source_name
+
+                service_ips[local['ipv4']] = source_name
 
             if target_name:
                 if target_name not in self._services:
                     target = Service(target_name)
                     target.tags = remote
                     self._services[target_name] = target
-                    service_ips[remote['ipv4']] = target_name
+
+                service_ips[remote['ipv4']] = target_name
 
         # Add operations
         for span in model:
@@ -54,7 +60,7 @@ class ZipkinTrace(IModel):
                 return False
 
             operation_name = span['name']
-            operation_duration = span['duration']
+            operation_duration = span.get('duration', -1)
             operation_tags = span.get('tags', {})
             operation_annotation = span.get('annotations', {})
 
@@ -76,10 +82,16 @@ class ZipkinTrace(IModel):
                 # Callee
                 service_name = span['localEndpoint']['serviceName']
                 operation_name = span['name']
+
+                if operation_name not in self._services[service_name].operations:
+                    continue
+
                 operation = self._services[service_name].operations[operation_name]
 
                 # Caller
                 parent_id = span['parentId']
+                if parent_id not in span_ids:
+                    continue
                 parent_span = span_ids[parent_id]
                 local = parent_span['localEndpoint']
                 parent_service_name = service_ips[local['ipv4']]
@@ -89,6 +101,15 @@ class ZipkinTrace(IModel):
                 parent_operation.add_dependency(operation)
 
         return True
+
+    def read_multiple(self, source: Union[str, IO, list] = None) -> bool:
+        if isinstance(source, str):
+            return self._parse_multiple(json.load(open(source, 'r')))
+        elif isinstance(source, IO):
+            return self._parse_multiple(json.load(source))
+        elif isinstance(source, list):
+            return self._parse_multiple(source)
+        return False
 
     def read(self, source: Union[str, IO, list] = None) -> bool:
         if isinstance(source, str):

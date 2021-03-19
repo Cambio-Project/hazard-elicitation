@@ -30,7 +30,8 @@ def upload(request):
                 elif content.get('data', False):
                     model = JaegerTrace(content)
             elif isinstance(content, list):
-                model = ZipkinTrace(content)
+                multiple = True if isinstance(content[0], list) else False
+                model = ZipkinTrace(content, multiple)
 
         except BaseException as e:
             error(e)
@@ -45,7 +46,7 @@ def upload(request):
         # Create architecture
         if model:
             arch = Architecture(model)
-            export = Exporter.export_architecture(arch, 'JSON')
+            export = Exporter.export_architecture(arch, 'JSON', True)
 
             # Store architecture in DB
             try:

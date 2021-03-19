@@ -23,6 +23,8 @@ def cli():
                         help='Converts a Jager trace.')
     parser.add_argument('--zipkin', dest='zipkin', type=str, nargs=1, required=False, metavar='zipkin_json_trace',
                         help='Converts a Zipkin trace.')
+    parser.add_argument('--multiple', dest='multiple', action='store_true', required=False,
+                        help='Can be used for Zipkin or Jaeger, when multiple traces are defined.')
 
     # Validation
     parser.add_argument('-vm', '--validate-model', dest='validate_model', action='store_true',
@@ -33,8 +35,8 @@ def cli():
     # Analysis
     parser.add_argument('-am', '--analyze-model', dest='analyze_model', action='store_true',
                         help='Analyzes the model.')
-    # parser.add_argument('-aa', '--analyze-architecture', dest='analyze_architecture', action='store_true',
-    #                     help='Analyzes the architecture.')
+    parser.add_argument('-aa', '--analyze-architecture', dest='analyze_architecture', action='store_true',
+                        help='Analyzes the architecture.')
 
     # Export
     parser.add_argument('-em', '--export-model', dest='export_model', action='store_true',
@@ -43,6 +45,8 @@ def cli():
                         metavar='export_type',
                         help='Stores a d3 graph and hazards of the architecture in the specified format '
                              '(either "js" or "json").')
+    parser.add_argument('--lightweight', dest='lightweight', action='store_true', required=False,
+                        help='Exports the graph without meta information.')
 
     args = parser.parse_args()
     model = None
@@ -59,10 +63,10 @@ def cli():
         model = MiSimModel(model_file)
     elif args.jaeger:
         model_file = args.jaeger[0]
-        model = JaegerTrace(model_file)
+        model = JaegerTrace(model_file, args.multiple)
     elif args.zipkin:
         model_file = args.zipkin[0]
-        model = ZipkinTrace(model_file)
+        model = ZipkinTrace(model_file, args.multiple)
 
     if model:
         model_name = model_file[model_file.rfind('/') + 1:]
@@ -115,7 +119,7 @@ def cli():
             pretty_print = True
 
         handle = open('{}_architecture_export.{}'.format(model_name, export_type), 'w+')
-        handle.write(Exporter.export_architecture(arch, export_type, pretty_print))
+        handle.write(Exporter.export_architecture(arch, export_type, pretty_print, args.lightweight))
         handle.close()
 
 
