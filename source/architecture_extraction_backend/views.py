@@ -18,6 +18,7 @@ def upload(request):
         model = None
         file = request.FILES['file']
         content = json.load(file)
+        lightweight = False
 
         if ArchitectureModel.objects.filter(name=file).exists():
             return HttpResponse('Model does exist already. Please choose another name.', status=500)
@@ -31,6 +32,7 @@ def upload(request):
                     model = JaegerTrace(content)
             elif isinstance(content, list):
                 multiple = True if isinstance(content[0], list) else False
+                lightweight = multiple
                 model = ZipkinTrace(content, multiple)
 
         except BaseException as e:
@@ -39,14 +41,14 @@ def upload(request):
 
         # Validate
         if model:
-            validation = model.validate(True)
-            if not validation[0]:
-                return HttpResponse('Validation error: ' + '\n- ' + '\n- '.join(map(str, validation[1])), status=500)
+            success, exceptions = model.validate(True)
+            if not success:
+                return HttpResponse('Validation error: ' + '\n- ' + '\n- '.join(map(str, exceptions)), status=500)
 
         # Create architecture
         if model:
             arch = Architecture(model)
-            export = Exporter.export_architecture(arch, 'JSON', True)
+            export = Exporter.export_architecture(arch, 'JSON', lightweight)
 
             # Store architecture in DB
             try:
