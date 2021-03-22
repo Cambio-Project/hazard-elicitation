@@ -117,6 +117,8 @@ function onLoad() {
         addSampleGraph()
     }
 
+    $('[data-toggle="tooltip"]').tooltip();
+
     Config.loadConfig();
     Config.setStorage("uuid", Config.getStorage("uuid") || uuid.v4());
 

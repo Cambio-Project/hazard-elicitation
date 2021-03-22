@@ -8,8 +8,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
           integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
           crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"
-          integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg=="
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"
+          integrity="sha512-wV7Yj1alIZDqZFCUQJy85VN+qvEIly93fIQAN7iqDFCPEucLCeNFz4r35FCo9s6WrpdDQPi80xbljXB8Bjtvcg=="
           crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.2/split.min.js"
           integrity="sha512-to2k78YjoNUq8+hnJS8AwFg/nrLRFLdYYalb18SlcsFRXavCOTfBF3lNyplKkLJeB8YjKVTb1FPHGSy9sXfSdg=="
@@ -69,7 +69,7 @@
                 </div>
               </div>
 
-              <div id="tooltip" class="tooltip">
+              <div id="tooltip" class="graph-tooltip">
                 <div class="header"></div>
                 <div class="body"></div>
               </div>
@@ -82,10 +82,12 @@
           <div id="content" class="content">
 
             <ul class="nav nav-tabs bline" id="tablist" role="tablist">
-              <li class="nav-item">
+              <li class="nav-item" data-toggle="tooltip" title="Need some help? Take a look here.">
                 <a class="nav-link help" role="tab" data-toggle="tab" id="tab-help-title" href="#tab-help">Help</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item"
+                  data-toggle="tooltip"
+                  title="Let's you configure the setup of the graph and the page appearance.">
                 <a class="nav-link config active show"
                    role="tab"
                    data-toggle="tab"
@@ -108,7 +110,7 @@
 
                 <p class="bline p-2">
                   <a class="btn-link" data-toggle="collapse" href="#help-graph" role="button" aria-expanded="false">
-                    <i class="arrow"></i>Graph
+                    <i class="collapse-arrow"></i>Graph
                   </a>
                 </p>
                 <div class="collapse m-md-2" id="help-graph">
@@ -120,7 +122,7 @@
 
                 <p class="bline p-2">
                   <a class="btn-link" data-toggle="collapse" href="#help-chat" role="button" aria-expanded="false">
-                    <i class="arrow"></i>Chat
+                    <i class="collapse-arrow"></i>Chat
                   </a>
                 </p>
                 <div class="collapse m-md-2" id="help-chat">
@@ -137,7 +139,7 @@
               <div class="tab-pane fade active show" role="tabpanel" id="tab-config">
                 <p class="bline p-2">
                   <a class="btn-link" data-toggle="collapse" href="#config-graph" role="button">
-                    <i class="arrow"></i>Configure Graph
+                    <i class="collapse-arrow"></i>Configure Graph
                   </a>
                 </p>
 
@@ -147,7 +149,7 @@
 
                     <!-- Zoom and Graph -->
                     <div class="control-entry rline">
-                      <div class="row">
+                      <div class="row" data-toggle="tooltip" title="Inspect the architecture graph in different sizes.">
                         <label class="col-sm-6 col-form-label" for="graph-zoom">
                           Zoom <img alt="" src="../../static/img/zoom.png"/>
                         </label>
@@ -164,10 +166,12 @@
                       <div class="row">
                         <label class="col-sm-5 col-form-label" for="graph-selection">Trace/Model</label>
                         <select class="col-sm-5 form-control"
+                                data-toggle="tooltip"
+                                title="Select an architecture to inspect."
                                 id="graph-selection"
                                 onchange="Config.updateControl(this);">
                         </select>
-                        <a href="/upload">
+                        <a href="/upload" data-toggle="tooltip" title="Upload a Zipkin or Jaeger trace">
                           <div class="icon upload-icon"></div>
                         </a>
                       </div>
@@ -175,7 +179,7 @@
 
                     <!-- Show nodes and edges -->
                     <div class="control-entry rline">
-                      <div class="row">
+                      <div class="row" data-toggle="tooltip" title="Show or hide nodes in the architecture graph.">
                         <label class="col-sm-9 col-form-label" for="show-nodes">
                           Show nodes
                           <svg class="d-inline-block" height="1rem" width="1rem">
@@ -187,7 +191,7 @@
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row" data-toggle="tooltip" title="Show or hide edges in the architecture graph.">
                         <label class="col-sm-9 col-form-label" for="show-edges">
                           Show edges
                           <svg class="d-inline-block" height="1rem" width="1rem">
@@ -202,7 +206,9 @@
 
                     <!-- Show node and edge labels -->
                     <div class="control-entry rline">
-                      <div class="row">
+                      <div class="row"
+                           data-toggle="tooltip"
+                           title="Show or hide node labels in the architecture graph.">
                         <label class="col-sm-9 col-form-label" for="show-node-labels">
                           Show node labels <img alt="" src="../../static/img/text.png"/>
                         </label>
@@ -211,7 +217,9 @@
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row"
+                           data-toggle="tooltip"
+                           title="Show or hide edge labels in the architecture graph.">
                         <label class="col-sm-9 col-form-label" for="show-edge-labels">
                           Show edge labels <img alt="" src="../../static/img/text.png"/>
                         </label>
@@ -223,7 +231,7 @@
 
                     <!-- Sticky nodes and curvy edges -->
                     <div class="control-entry rline">
-                      <div class="row">
+                      <div class="row" data-toggle="tooltip" title="Sticky nodes can be moved fixed positions.">
                         <label class="col-sm-9 col-form-label" for="sticky-nodes">
                           Sticky nodes <img alt="" src="../../static/img/pin.png"/>
                         </label>
@@ -232,7 +240,9 @@
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row"
+                           data-toggle="tooltip"
+                           title="Curvy edges can be used to avoid overlaying edges. (Changes are only visible during the graph simulation. Move a node to see the effect.)">
                         <label class="col-sm-9 col-form-label" for="curvy-edges">
                           Curvy edges
                           <svg class="d-inline-block" height="1rem" width="1rem">
@@ -251,19 +261,25 @@
 
                     <!-- Tooltip -->
                     <div class="control-entry rline">
-                      <div class="row">
+                      <div class="row"
+                           data-toggle="tooltip"
+                           title="Show tooltips in the graph to show the names of nodes and edges.">
                         <label class="col-sm-9 col-form-label" for="use-tooltips">
-                          Tooltips <img alt="" src="../../static/img/tooltip.png"/>
+                          Graph tooltips <img alt="" src="../../static/img/tooltip.png"/>
                         </label>
                         <div class="p-1">
                           <input type="checkbox" id="use-tooltips" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
 
-                      <div class="row">
-                        <label class="col-sm-9 col-form-label"></label>
+                      <div class="row"
+                           data-toggle="tooltip"
+                           title="Show tooltips on the whole page to get more information or help.">
+                        <label class="col-sm-9 col-form-label" for="use-page-tooltips">
+                          Page tooltips <img alt="" src="../../static/img/tooltip.png"/>
+                        </label>
                         <div class="p-1">
-
+                          <input type="checkbox" id="use-page-tooltips" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
                     </div>
@@ -286,7 +302,7 @@
 
                 <!-- Dark mode -->
                 <div class="control-entry w-100 ">
-                  <div class="row">
+                  <div class="row" data-toggle="tooltip" title="The whole page turns dark.">
                     <label class="col-sm-6 col-form-label" for="dark-theme">
                       Dark Theme <span class="icon dark-mode-icon"></span>
                     </label>

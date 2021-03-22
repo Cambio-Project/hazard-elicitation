@@ -143,11 +143,15 @@ class Scenario {
     }
 
     html() {
-        let html = "";
-        const cards = ["Description", "Source", "Artifact", "Stimulus", "Environment", "Response", "Response Measure"];
-        for(const card of cards) {
-            html += this.card(card, this.json[card.toLowerCase().replaceAll(" ", "-")]);
+        let cards = "";
+        const titles = ["Description", "Source", "Artifact", "Stimulus", "Environment", "Response", "Response Measure"];
+        for(const card of titles) {
+            cards += this.card(card, this.json[card.toLowerCase().replaceAll(" ", "-")]);
         }
-        return html;
+        return "" +
+            `<div class="d-flex flex-row flex-wrap">
+              <div class=""></div>
+              ${cards}
+            </div>`.format(cards);
     }
 }

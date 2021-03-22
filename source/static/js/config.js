@@ -3,16 +3,17 @@
  */
 class Config {
     static SETTINGS = {
-        "dark-theme":       {default: false, callback: Config.setDarkTheme},
-        "graph-selection":  {default: "", callback: Config.setGraph},
-        "sticky-nodes":     {default: false, callback: Config.stickyNodes},
-        "curvy-edges":      {default: false, callback: Config.curvyEdges},
-        "use-tooltips":     {default: false, callback: Config.useTooltip},
-        "show-nodes":       {default: true, callback: Config.showNodes},
-        "show-edges":       {default: true, callback: Config.showEdges},
-        "show-node-labels": {default: true, callback: Config.showNodeLabels},
-        "show-edge-labels": {default: false, callback: Config.showEdgeLabels},
-        "graph-zoom":       {default: 1, callback: Config.zoom},
+        "dark-theme":        {default: false, callback: Config.setDarkTheme},
+        "graph-selection":   {default: "", callback: Config.setGraph},
+        "sticky-nodes":      {default: false, callback: Config.stickyNodes},
+        "curvy-edges":       {default: false, callback: Config.curvyEdges},
+        "use-tooltips":      {default: false, callback: Config.useTooltip},
+        "use-page-tooltips": {default: true, callback: Config.usePageTooltip},
+        "show-nodes":        {default: true, callback: Config.showNodes},
+        "show-edges":        {default: true, callback: Config.showEdges},
+        "show-node-labels":  {default: true, callback: Config.showNodeLabels},
+        "show-edge-labels":  {default: false, callback: Config.showEdgeLabels},
+        "graph-zoom":        {default: 1, callback: Config.zoom},
     }
 
     static print() {
@@ -60,8 +61,9 @@ class Config {
     /* Called when a control changes its value. Calls callback with the new value. */
     static updateControl(element) {
         if (element && Config.SETTINGS[element.id].callback) {
-            Config.setStorage(element.id, Config.getElement(element.id));
-            Config.SETTINGS[element.id].callback(Config.getElement(element.id));
+            const new_val = Config.getElement(element.id);
+            Config.setStorage(element.id, new_val);
+            Config.SETTINGS[element.id].callback(new_val);
         }
     }
 
@@ -95,7 +97,7 @@ class Config {
     static loadConfig() {
         for (const key of Config.SETTINGS._keys()) {
             const val = Config.getStorage(key);
-            if (val)
+            if (val !== undefined)
                 Config.setElement(key, val);
             else
                 Config.setElement(key, Config.getDefault(key));
@@ -123,7 +125,9 @@ class Config {
 
     static showEdgeLabels(show) { Graph.this.edge_labels.style("visibility", show ? "visible" : "hidden"); }
 
-    static useTooltip(use) { Graph.set("tooltip", use);}
+    static useTooltip(use) { Graph.set("tooltip", use); }
+
+    static usePageTooltip(use) { $('[data-toggle="tooltip"]').tooltip(use ? "enable" : "disable"); }
 
     static zoom(zoom) { Graph.zoom(zoom); }
 }

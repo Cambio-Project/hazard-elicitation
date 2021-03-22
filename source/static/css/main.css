@@ -207,6 +207,11 @@ input[type="checkbox"]:checked:before {
 /* Textarea */
 ::placeholder { user-select : none; }
 
+/* Tooltip */
+.tooltip {
+  z-index: 1001;
+}
+
 /* Upload */
 .upload {
   border           : 2px dashed var(--tertiary-text-color);
@@ -233,7 +238,7 @@ code {
 }
 
 /* Symbols */
-.arrow {
+.collapse-arrow {
   display      : inline-block;
   border       : solid var(--primary-text-color);
   border-width : 0 4px 4px 0;
@@ -242,10 +247,10 @@ code {
   width        : 10px;
 }
 
-[aria-expanded="true"] .arrow { transform : rotate(45deg); }
+[aria-expanded="true"] .collapse-arrow { transform : rotate(45deg); }
 
-[aria-expanded="false"] .arrow,
-[aria-expanded].collapsed .arrow { transform : rotate(-45deg); }
+[aria-expanded="false"] .collapse-arrow,
+[aria-expanded].collapsed .collapse-arrow { transform : rotate(-45deg); }
 
 /* Utility */
 .no-shadow { box-shadow : none !important; }

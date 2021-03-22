@@ -2,23 +2,23 @@ class Graph {
     static GRAPH        = null;
     static CONTEXT_MENU = null;
 
+    static PROPERTIES = {
+        sticky_nodes:      false,
+        tooltip:           false,
+        node_size:         5,
+        edge_size:         2,
+        node_label_offset: {x: 12, y: -12},
+        edge_label_offset: {x: 10, y: 15, dy: -5},
+        edge_label_font:   {size: 10, dx: 2, dy: 12},
+        curved_edges:      true,
+        edge_arrow_size:   {w: 2, h: 6},
+        zoom_range:        {min: 0.4, max: 4},
+        colors:            d3.scaleOrdinal(d3.schemeCategory10)
+    }
+
     constructor(svg, context_menu, graph) {
         Graph.GRAPH        = this;
         Graph.CONTEXT_MENU = new ContextMenu(context_menu);
-
-        this.properties = {
-            sticky_nodes:      false,
-            tooltip:           false,
-            node_size:         5,
-            edge_size:         2,
-            node_label_offset: {x: 10, y: -10},
-            edge_label_offset: {x: 10, y: 15, dy: -5},
-            edge_label_font:   {size: 10, dx: 3, dy: 5},
-            curved_edges:      true,
-            edge_arrow_size:   {w: 2, h: 6},
-            zoom_range:        {min: 0.4, max: 4},
-            colors:            d3.scaleOrdinal(d3.schemeCategory10)
-        }
 
         // HTML
         this.svg = d3.select(svg);
@@ -117,7 +117,9 @@ class Graph {
             }
         }
 
-        Config.updateControl($("#graph-zoom")[0]);
+        for (const config of ["#graph-zoom", "#sticky-nodes", "#curvy-edges", "#show-nodes", "#show-edges", "#show-node-labels", "#show-edge-labels", "#use-tooltips"]) {
+            Config.updateControl($(config)[0]);
+        }
     }
 
     static get this() { return Graph.GRAPH; }
@@ -128,9 +130,9 @@ class Graph {
 
     static set(property, value) { Graph.this.set(property, value); }
 
-    get(property) { return this.properties[property]; }
+    get(property) { return Graph.PROPERTIES[property]; }
 
-    set(property, value) { this.properties[property] = value; }
+    set(property, value) { Graph.PROPERTIES[property] = value; }
 
     minimal() {
         let result = {"nodes": {}, "edges": {}, "hazards": {}};
@@ -221,7 +223,7 @@ class Graph {
 
         this.edge_labels
             .filter(function (e) {return e.source !== e.target})
-            .attr("dy", this.properties.edge_label_offset.dy)
+            .attr("dy", Graph.PROPERTIES.edge_label_offset.dy)
             .append("textPath")
             .text(function (e) { return e.label; })
             .attr("href", function (e) { return "#e" + e.id; })
@@ -299,15 +301,17 @@ class Graph {
                 Content.this.openHazard(el.id, type);
             }
 
-            Chat.this.ws.event("e-specify-stimuli", [{
-                name:       "c-elicitation",
-                lifespan:   100,
-                parameters: {
-                    component: label.text(),
-                    artifact:  is_edge ? "Operation" : "Service",
-                    id:        el.id
-                }
-            }]);
+            if (active) {
+                Chat.this.ws.event("e-specify-stimuli", [{
+                    name:       "c-elicitation",
+                    lifespan:   100,
+                    parameters: {
+                        component: label.text(),
+                        artifact:  is_edge ? "Operation" : "Service",
+                        id:        el.id
+                    }
+                }]);
+            }
         }
     }
 
