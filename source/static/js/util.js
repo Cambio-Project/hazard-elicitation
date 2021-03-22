@@ -60,3 +60,11 @@ function isObject(what) { return typeof what === "object"; }
 function isBool(what) { return typeof what === "boolean"; }
 
 function isNumber(what) { return typeof what === "number"; }
+
+function download(content, fileName, contentType) {
+    const a    = document.createElement("a");
+    const file = new Blob([content], {type: contentType});
+    a.href     = URL.createObjectURL(file);
+    a.download = fileName;
+    a.click();
+}

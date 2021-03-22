@@ -106,7 +106,7 @@ class Content {
 
     static saveScenario(json) {
         const parsed_json = JSON.parse(JSON.stringify(json));
-        const component = parsed_json["artifact"] === "Service" ? "node" : "edge";
+        const component   = parsed_json["artifact"] === "Service" ? "node" : "edge";
         Content.this.addNewHazard(parsed_json["id"], component, parsed_json);
         Chat.this.ws.event("e-next-step");
     }
@@ -116,23 +116,38 @@ class Scenario {
     constructor(json) {
         console.debug(json);
         this.json = $.extend(true, {
-            "description": "",
-            "source": "",
-            "artifact": "",
-            "stimulus": "",
-            "environment": "",
-            "response": "",
+            "description":      "",
+            "source":           "",
+            "artifact":         "",
+            "stimulus":         "",
+            "environment":      "",
+            "response":         "",
             "response-measure": "",
         }, json);
     }
 
     export() {
+        const a             = document.createElement("a");
+        const file          = new Blob([JSON.stringify(this.json)], {type: "application/json"});
+        a.href              = URL.createObjectURL(file);
+        a.text              = "Export Scenario";
+        a.download          = "scenario.json";
+        const export_button = a.outerHTML;
+
+        return "" +
+            `<div class="scenario-section col-md-3">
+          <div class="card">
+            <div class="card-body">
+              ${export_button}
+            </div>
+          </div>
+        </div>`;
 
     }
 
     card(title, body) {
         return "" +
-        `<div class="scenario-section col-md-3">
+            `<div class="scenario-section col-md-3">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">${title}</h5>
@@ -143,9 +158,10 @@ class Scenario {
     }
 
     html() {
-        let cards = "";
+        let cards    = "";
         const titles = ["Description", "Source", "Artifact", "Stimulus", "Environment", "Response", "Response Measure"];
-        for(const card of titles) {
+        cards += this.export();
+        for (const card of titles) {
             cards += this.card(card, this.json[card.toLowerCase().replaceAll(" ", "-")]);
         }
         return "" +
