@@ -22,6 +22,13 @@ class Content {
         }
     }
 
+    closeButton(id, title) {
+        return `<span 
+          data-toggle="tooltip"
+          title="Close this tab (content will get erased)."
+          onclick="Content.this.removeTab(${id})">✕ </span>${title}`;
+    }
+
     addTab(data, class_name = "", close = false) {
         const id      = this.TAB_ID;
         const tab_id  = "tab-" + id;
@@ -29,7 +36,7 @@ class Content {
         const content = data.content || "...";
 
         const header_content = $("<a></a>")
-            .html(close ? `<span onclick="Content.this.removeTab(${id})">✕ </span>${title}` : title)
+            .html(close ? this.closeButton(id, title) : title)
             .addClass("nav-link " + class_name)
             .attr({
                 "role":        "tab",
@@ -113,34 +120,40 @@ class Content {
 }
 
 class Scenario {
+    static KEYS = ["description", "source", "artifact", "stimulus",
+                   "environment", "response", "response-measure"];
+
     constructor(json) {
-        console.debug(json);
-        this.json = $.extend(true, {
-            "description":      "",
-            "source":           "",
-            "artifact":         "",
-            "stimulus":         "",
-            "environment":      "",
-            "response":         "",
-            "response-measure": "",
-        }, json);
+        let default_scenario = {};
+        for (const key of Scenario.KEYS) { default_scenario[key] = ""; }
+        this.json = $.extend(true, default_scenario, json);
+    }
+
+    normalizeScenario(scenario) {
+        let normalized = {};
+        for (const key of Scenario.KEYS) {
+            normalized[key] = scenario[key].replaceAll(/<\/?[^>]+(>|$)/g, "");
+        }
+        return normalized;
     }
 
     export() {
+        const scenario_content = [JSON.stringify(this.normalizeScenario(this.json))];
+
         const button     = document.createElement("button");
         button.className = "btn";
         button.type      = "button";
         button.innerText = "Export scenario";
 
         const link    = document.createElement("a");
-        link.href     = URL.createObjectURL(new Blob([JSON.stringify(this.json)], {type: "application/json"}));
+        link.href     = URL.createObjectURL(new Blob(scenario_content, {type: "application/json"}));
         link.download = "scenario.json";
         link.append(button);
 
-        return this.table_entry("Export", link.outerHTML);
+        return this.tableEntry("Export", link.outerHTML);
     }
 
-    table_entry(title, body) {
+    tableEntry(title, body) {
         return "" +
             `<tr>
               <th>${title}</th>
@@ -154,17 +167,17 @@ class Scenario {
             <div class="scenario-section col-lg-6">
               <table class="table">
                 ${this.export()}
-                ${this.table_entry("Description", this.json["description"])}
-                ${this.table_entry("Source", this.json["source"])}
-                ${this.table_entry("Artifact", this.json["artifact"])}
+                ${this.tableEntry("Description", this.json["description"])}
+                ${this.tableEntry("Source", this.json["source"])}
+                ${this.tableEntry("Artifact", this.json["artifact"])}
               </table>
             </div>
             <div class="scenario-section col-lg-6">
               <table class="table">
-                ${this.table_entry("Artifact", this.json["environment"])}
-                ${this.table_entry("Stimulus", this.json["stimulus"])}
-                ${this.table_entry("Response", this.json["response"])}
-                ${this.table_entry("Response Measure", this.json["response-measure"])}
+                ${this.tableEntry("Environment", this.json["environment"])}
+                ${this.tableEntry("Stimulus", this.json["stimulus"])}
+                ${this.tableEntry("Response", this.json["response"])}
+                ${this.tableEntry("Response Measure", this.json["response-measure"])}
               </table>
             </div>
             </div>`;

@@ -54,13 +54,12 @@ class Graph {
                                .strength(-10000 - this.graph_nodes.length * 100)
                                .distanceMin(100))
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("x", d3.forceX(width / 2).strength(0.1))
-            .force("y", d3.forceY(height / 2).strength(0.1))
+            .force("x", d3.forceX(width / 2).strength(0.5))
+            .force("y", d3.forceY(height / 2).strength(0.5))
             .force("link", d3.forceLink(this.graph_edges)
                              .id(function (e) { return e.id; })
                              .iterations(3)
-                             .distance(25)
-                             )
+                             .distance(25))
             .on("tick", Graph.onTick);
 
         // Events
