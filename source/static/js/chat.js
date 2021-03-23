@@ -197,6 +197,7 @@ class Chat {
 
     static addUserMessage(message) {
         Chat.this.add(new ChatMessage(Chat.User, message));
+        Chat.this.ws.intent(message);
     }
 
     static send(e) {

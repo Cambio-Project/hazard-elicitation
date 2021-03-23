@@ -87,7 +87,7 @@
               </li>
               <li class="nav-item"
                   data-toggle="tooltip"
-                  title="Let's you configure the setup of the graph and the page appearance.">
+                  title="Configure the setup of the graph and the page appearance.">
                 <a class="nav-link config active show"
                    role="tab"
                    data-toggle="tab"
@@ -102,35 +102,36 @@
               <div class="tab-pane fade" role="tabpanel" id="tab-help">
                 <h3>Need help?</h3>
 
-                <p>
+                <div class="col-sm-5 help-container">
+                  <h4 class="bline">UI elements</h4><br>
+                  Most of the UI elements are configured with tooltips.
+                  Hover over an element to find out more about it.<br>
+                  Use the sliders to configure the size of the chat or the graph.
+                </div>
+
+                <div class="col-sm-5 help-container">
+                  <h4 class="bline">Graph</h4><br>
+                  Use <code>Right Click</code> on a node or edge to open a context menu and inspect an element.
+                  You will see meta information of a trace and names of services and operations.
+                  <button class="btn" type="button" onclick="Chat.addUserMessage('trace');">What is a tracing?</button>
+                </div>
+
+                <div class="col-sm-5 help-container">
+                  <h4 class="bline">Chat</h4><br>
+                    The chat is connected to a chatbot.
+                    Use the send button or press <code>Enter↵</code> to send a message.<br>
+                    The chatbot will guide you through the elicitation of a resilience scenario.
+                    It can answer questions and knows about tracing tools.
+                </div>
+
+                <div class="col-sm-5 help-container">
+                  <h4 class="bline">Explanations</h4><br>
                   The chatbot you see on the right is able to explain a variety of topics to you.
                   Ask the chatbot about something you want to know or click
                   <button class="btn" type="button" onclick="Chat.event('e-guide');">this</button>
-                  button. </p>
-
-                <p class="bline p-2">
-                  <a class="btn-link" data-toggle="collapse" href="#help-graph" role="button" aria-expanded="false">
-                    <i class="collapse-arrow"></i>Graph
-                  </a>
-                </p>
-                <div class="collapse m-md-2" id="help-graph">
-                  <p>Use <code>Right Click</code> on a node or edge to open a context menu and inspect an element.</p>
-                  <div class="tip-wrapper">
-                    <div class="tip tip-1"></div>
-                  </div>
-                </div>
-
-                <p class="bline p-2">
-                  <a class="btn-link" data-toggle="collapse" href="#help-chat" role="button" aria-expanded="false">
-                    <i class="collapse-arrow"></i>Chat
-                  </a>
-                </p>
-                <div class="collapse m-md-2" id="help-chat">
-                  <p class="d-inline">
-                    The chat is connected to a chatbot.
-                    Use the send button (
-                    <button type="button" class="position-relative send-button">➤</button>
-                    ) to send a message. </p>
+                  button.<br>
+                  Keywords that have a high relevance for this work are explained as a guided tour.
+                  For other keywords you will just get a regular explanation from the bot.
                 </div>
 
               </div>

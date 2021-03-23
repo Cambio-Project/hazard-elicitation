@@ -127,47 +127,46 @@ class Scenario {
     }
 
     export() {
-        const a             = document.createElement("a");
-        const file          = new Blob([JSON.stringify(this.json)], {type: "application/json"});
-        a.href              = URL.createObjectURL(file);
-        a.text              = "Export Scenario";
-        a.download          = "scenario.json";
-        const export_button = a.outerHTML;
+        const button     = document.createElement("button");
+        button.className = "btn";
+        button.type      = "button";
+        button.innerText = "Export scenario";
 
-        return "" +
-            `<div class="scenario-section col-md-3">
-          <div class="card">
-            <div class="card-body">
-              ${export_button}
-            </div>
-          </div>
-        </div>`;
+        const link    = document.createElement("a");
+        link.href     = URL.createObjectURL(new Blob([JSON.stringify(this.json)], {type: "application/json"}));
+        link.download = "scenario.json";
+        link.append(button);
 
+        return this.table_entry("Export", link.outerHTML);
     }
 
-    card(title, body) {
+    table_entry(title, body) {
         return "" +
-            `<div class="scenario-section col-md-3">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">${title}</h5>
-              <p class="card-text">${body}</p>
-            </div>
-          </div>
-        </div>`;
+            `<tr>
+              <th>${title}</th>
+              <td>${body}</td>
+            </tr>`;
     }
 
     html() {
-        let cards    = "";
-        const titles = ["Description", "Source", "Artifact", "Stimulus", "Environment", "Response", "Response Measure"];
-        cards += this.export();
-        for (const card of titles) {
-            cards += this.card(card, this.json[card.toLowerCase().replaceAll(" ", "-")]);
-        }
         return "" +
             `<div class="d-flex flex-row flex-wrap">
-              <div class=""></div>
-              ${cards}
-            </div>`.format(cards);
+            <div class="scenario-section col-lg-6">
+              <table class="table">
+                ${this.export()}
+                ${this.table_entry("Description", this.json["description"])}
+                ${this.table_entry("Source", this.json["source"])}
+                ${this.table_entry("Artifact", this.json["artifact"])}
+              </table>
+            </div>
+            <div class="scenario-section col-lg-6">
+              <table class="table">
+                ${this.table_entry("Artifact", this.json["environment"])}
+                ${this.table_entry("Stimulus", this.json["stimulus"])}
+                ${this.table_entry("Response", this.json["response"])}
+                ${this.table_entry("Response Measure", this.json["response-measure"])}
+              </table>
+            </div>
+            </div>`;
     }
 }

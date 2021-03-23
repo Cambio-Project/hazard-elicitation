@@ -16,6 +16,11 @@ class Graph {
         colors:            d3.scaleOrdinal(d3.schemeCategory10)
     }
 
+    static CONFIG_ELEMENTS = [
+        "#graph-zoom", "#sticky-nodes", "#curvy-edges", "#show-nodes", "#show-edges",
+        "#show-node-labels", "#show-edge-labels", "#use-tooltips"
+    ];
+
     constructor(svg, context_menu, graph) {
         Graph.GRAPH        = this;
         Graph.CONTEXT_MENU = new ContextMenu(context_menu);
@@ -45,11 +50,17 @@ class Graph {
         // Simulation
         this.simulation = d3
             .forceSimulation(this.graph_nodes)
-            .force("charge", d3.forceManyBody().strength(-10000))
+            .force("charge", d3.forceManyBody()
+                               .strength(-10000 - this.graph_nodes.length * 100)
+                               .distanceMin(100))
             .force("center", d3.forceCenter(width / 2, height / 2))
             .force("x", d3.forceX(width / 2).strength(0.1))
             .force("y", d3.forceY(height / 2).strength(0.1))
-            .force("link", d3.forceLink(this.graph_edges).id(function (e) { return e.id; }).distance(25).strength(1))
+            .force("link", d3.forceLink(this.graph_edges)
+                             .id(function (e) { return e.id; })
+                             .iterations(3)
+                             .distance(25)
+                             )
             .on("tick", Graph.onTick);
 
         // Events
@@ -117,7 +128,7 @@ class Graph {
             }
         }
 
-        for (const config of ["#graph-zoom", "#sticky-nodes", "#curvy-edges", "#show-nodes", "#show-edges", "#show-node-labels", "#show-edge-labels", "#use-tooltips"]) {
+        for (const config of Graph.CONFIG_ELEMENTS) {
             Config.updateControl($(config)[0]);
         }
     }
