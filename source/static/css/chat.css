@@ -60,6 +60,7 @@
   overflow-x       : hidden;
   color            : var(--secondary-text-color);
   background-color : var(--secondary-text-color-bg);
+  padding-bottom    : 1rem;
 }
 
 .chat > :first-child {
@@ -74,9 +75,9 @@
 
 /* Rich content */
 .rich-content {
-  margin : 0 auto;
-  text-align: center;
-  max-width: 75%;
+  margin     : 0 auto;
+  text-align : center;
+  max-width  : 75%;
 }
 
 .rich {

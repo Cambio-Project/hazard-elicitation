@@ -312,7 +312,7 @@ class Graph {
             }
 
             if (active) {
-                Chat.this.ws.event("e-specify-stimuli", [{
+                Chat.this.ws.event("e-specify-stimulus", [{
                     name:       "c-elicitation",
                     lifespan:   100,
                     parameters: {
