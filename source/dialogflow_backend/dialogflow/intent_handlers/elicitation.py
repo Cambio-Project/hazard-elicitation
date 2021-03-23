@@ -5,7 +5,7 @@ from asgiref.sync import sync_to_async
 from architecture_extraction_backend.models import ArchitectureModel
 from dialogflow_backend.dialogflow.response_types import *
 from dialogflow_backend.dialogflow.util import get_context, is_in_context
-from util.log import debug
+from util.log import debug, error
 from util.text.text import text
 from util.text.ids import *
 
@@ -17,7 +17,7 @@ def fetch_architectures(collection):
 
 # Architecture
 
-async def elicitation_select_architecture_handler(result) -> List[Dict]:
+async def elicitation_architecture_handler(result) -> List[Dict]:
     architectures = []
     await sync_to_async(fetch_architectures)(architectures)
 
@@ -45,13 +45,13 @@ async def elicitation_select_architecture_handler(result) -> List[Dict]:
     return [divider, question, quick_replies.__repr__()]
 
 
-async def elicitation_select_architecture_followup_handler(result) -> List[Dict]:
-    return await elicitation_select_architecture_handler(result)
+async def elicitation_architecture_followup_handler(result) -> List[Dict]:
+    return await elicitation_architecture_handler(result)
 
 
 # Component
 
-async def elicitation_select_component_handler(result) -> List[Dict]:
+async def elicitation_component_handler(result) -> List[Dict]:
     conversation = []
 
     elicitation = get_context('c-elicitation', result)
@@ -72,7 +72,8 @@ async def elicitation_select_component_handler(result) -> List[Dict]:
             return [ActionResponse.create('command', ['select-element', 'node', component_name])]
 
         # Prompt the user to try again.
-        return [TextResponse.create('Try again (not in architecture)')]
+        missing = text(INTENT_ELICITATION_COMPONENT_MISSING_TEXT)
+        return [TextResponse.create(missing.format(component_type, component_name))]
 
     # Provide the user with a selection of services and operations.
     conversation.append(FormattingResponse.create('divider'))
@@ -87,7 +88,9 @@ async def elicitation_select_component_handler(result) -> List[Dict]:
     service_replies = QuickReplyResponse()
 
     nodes = sorted(graph_context.parameters['arch']['nodes'], reverse=True)
-    for node in nodes:
+    for i, node in enumerate(nodes):
+        if i == 5:
+            break
         service_replies.add_reply(node, 'select-element', ['node', node])
 
     conversation.append(services)
@@ -98,7 +101,9 @@ async def elicitation_select_component_handler(result) -> List[Dict]:
     operation_replies = QuickReplyResponse()
 
     edges = sorted(graph_context.parameters['arch']['edges'], reverse=True)
-    for edge in edges:
+    for i, edge in enumerate(edges):
+        if i == 5:
+            break
         operation_replies.add_reply(edge, 'select-element', ['edge', edge])
 
     conversation.append(operations)
@@ -107,13 +112,13 @@ async def elicitation_select_component_handler(result) -> List[Dict]:
     return conversation
 
 
-async def elicitation_select_component_followup_handler(result) -> List[Dict]:
-    return await elicitation_select_component_handler(result)
+async def elicitation_component_followup_handler(result) -> List[Dict]:
+    return await elicitation_component_handler(result)
 
 
 # Stimuli
 
-async def elicitation_specify_stimuli_handler(result) -> List[Dict]:
+async def elicitation_stimuli_handler(result) -> List[Dict]:
     conversation = []
 
     elicitation = get_context('c-elicitation', result)
@@ -143,21 +148,27 @@ async def elicitation_specify_stimuli_handler(result) -> List[Dict]:
     return conversation
 
 
-async def elicitation_specify_stimuli_followup_handler(result) -> List[Dict]:
-    return await elicitation_specify_stimuli_handler(result)
+async def elicitation_stimuli_followup_handler(result) -> List[Dict]:
+    return await elicitation_stimuli_handler(result)
 
 
 # Response
 
-async def elicitation_specify_response_handler(result) -> List[Dict]:
+async def elicitation_response_handler(result) -> List[Dict]:
     conversation = []
 
     elicitation = get_context('c-elicitation', result)
     config_context = get_context('c-config', result)
 
-    # Response was given by quick selection. Proceed to response measure.
-    if is_in_context('response', elicitation):
-        return await elicitation_specify_response_measure_handler(result)
+    # Response was given as text.
+    if is_in_context('response', config_context):
+        return [ActionResponse.create('command', ['event', 'e-specify-response-measure', [{
+            'name':       'c-elicitation',
+            'lifespan':   100,
+            'parameters': {
+                'response': config_context['response']
+            }
+        }]])]
 
     # Provide the user with response options
     conversation.append(FormattingResponse.create('divider'))
@@ -183,83 +194,137 @@ async def elicitation_specify_response_handler(result) -> List[Dict]:
     return conversation
 
 
-async def elicitation_specify_response_followup_handler(result) -> List[Dict]:
-    return await elicitation_specify_response_handler(result)
+async def elicitation_response_followup_handler(result) -> List[Dict]:
+    return await elicitation_response_handler(result)
 
 
 # Response Measure
 
-async def elicitation_specify_response_measure_handler(result) -> List[Dict]:
+async def elicitation_response_measure_handler(result) -> List[Dict]:
     conversation = [FormattingResponse.create('divider')]
 
     elicitation = get_context('c-elicitation', result)
-    config_context = get_context('c-config', result)
 
-    artifact = elicitation.parameters['artifact']
-    option_selection = text(STIMULUS_RESPONSE_TEXTS)[artifact]['response-measures']
-
-    if is_in_context('times', config_context):
-        pass
-
-    # Normal response time is set so we need the probability of the cases.
-    if is_in_context('normal-response-time', elicitation) and not is_in_context('normal-cases', elicitation):
-        quick_reply = QuickReplyResponse()
-        for option in option_selection['normal-cases']:
-            quick_reply.add_reply(option, 'event', ['e-specify-response-measure', [{
-                'name':       'c-elicitation',
-                'lifespan':   100,
-                'parameters': {
-                    'normal-cases': option
-                }}]])
-        conversation.append(TextResponse.create(text(INTENT_ELICITATION_RESPONSE_MEASURE_NORMAL_CASES_TEXT)))
-        conversation.append(quick_reply.__repr__())
-        return conversation
-
-    # Probability of the cases is given. Recovery time is needed
-    elif is_in_context('normal-cases', elicitation) and not is_in_context('recovery-time', elicitation):
-        quick_reply = QuickReplyResponse()
-        for option in option_selection['recovery-time']:
-            quick_reply.add_reply(option, 'event', ['e-specify-response-measure', [{
-                'name':       'c-elicitation',
-                'lifespan':   100,
-                'parameters': {
-                    'recovery-time': option
-                }}]])
-        conversation.append(TextResponse.create(text(INTENT_ELICITATION_RESPONSE_MEASURE_RECOVERY_TIME_TEXT)))
-        conversation.append(quick_reply.__repr__())
-        return conversation
-
-    # All response measures are given. Proceed to save scenario.
-    elif is_in_context('recovery-time', elicitation):
-        return [ActionResponse.create('command', ['event', 'e-save-scenario'])]
-
-    # Provide the user with response options
+    # Provide the user with response time options.
     content = text(INTENT_ELICITATION_RESPONSE_MEASURE_TEXT)
     response = CardResponse.create(
         title=content['title'].format(elicitation.parameters['component']),
         text=content['text'])
     conversation.append(response)
 
+    conversation.append(ActionResponse.create('command', ['event', 'e-specify-response-measure-normal']))
+    return conversation
+
+
+# - Normal response time
+
+async def elicitation_response_measure_normal_handler(result) -> List[Dict]:
+    conversation = [FormattingResponse.create('divider')]
+    elicitation = get_context('c-elicitation', result)
+    config_context = get_context('c-config', result)
+    artifact = elicitation.parameters['artifact']
+    options = text(STIMULUS_RESPONSE_TEXTS)[artifact]['response-measures']['normal-time']
+
+    # Normal response time is set.
+    if is_in_context('normal-response-time', config_context):
+        return [ActionResponse.create('command', ['event', 'e-specify-response-measure-cases', [{
+            'name':       'c-elicitation',
+            'lifespan':   100,
+            'parameters': {
+                'normal-response-time': config_context['normal-response-time']
+            }
+        }]])]
+
+    # Cases quick responses.
     quick_reply = QuickReplyResponse()
-    for option in option_selection['normal-time']:
-        quick_reply.add_reply(option, 'event', ['e-specify-response-measure', [{
+    for option in options:
+        quick_reply.add_reply(option, 'event', ['e-specify-response-measure-cases', [{
             'name':       'c-elicitation',
             'lifespan':   100,
             'parameters': {
                 'normal-response-time': option
             }}]])
-    conversation.append(TextResponse.create(text(INTENT_ELICITATION_RESPONSE_MEASURE_NORMAL_TIME_TEXT)))
+    conversation.append(TextResponse.create(text(INTENT_ELICITATION_RESPONSE_MEASURE_NORMAL_TEXT)))
     conversation.append(quick_reply.__repr__())
-
     return conversation
 
 
-async def elicitation_specify_response_measure_times_handler(result) -> List[Dict]:
-    return await elicitation_specify_response_measure_handler(result)
+async def elicitation_response_measure_normal_followup_handler(result) -> List[Dict]:
+    return await elicitation_response_measure_normal_handler(result)
 
 
-async def elicitation_specify_response_measure_cases_handler(result) -> List[Dict]:
-    return await elicitation_specify_response_measure_handler(result)
+# - Normal response time cases
+
+async def elicitation_response_measure_cases_handler(result) -> List[Dict]:
+    conversation = [FormattingResponse.create('divider')]
+    elicitation = get_context('c-elicitation', result)
+    config_context = get_context('c-config', result)
+    artifact = elicitation.parameters['artifact']
+    options = text(STIMULUS_RESPONSE_TEXTS)[artifact]['response-measures']['normal-cases']
+
+    # Probability of the cases is given.
+    if is_in_context('normal-cases', config_context):
+        return [ActionResponse.create('command', ['event', 'e-specify-response-measure-recovery', [{
+            'name':       'c-elicitation',
+            'lifespan':   100,
+            'parameters': {
+                'normal-cases': config_context['normal-cases']
+            }
+        }]])]
+
+    # Recovery time quick responses
+    quick_reply = QuickReplyResponse()
+    for option in options:
+        quick_reply.add_reply(option, 'event', ['e-specify-response-measure-recovery', [{
+            'name':       'c-elicitation',
+            'lifespan':   100,
+            'parameters': {
+                'normal-cases': option
+            }}]])
+    conversation.append(TextResponse.create(text(INTENT_ELICITATION_RESPONSE_MEASURE_CASES_TEXT)))
+    conversation.append(quick_reply.__repr__())
+    return conversation
+
+
+async def elicitation_response_measure_cases_followup_handler(result) -> List[Dict]:
+    return await elicitation_response_measure_cases_handler(result)
+
+
+# - Recovery time
+
+async def elicitation_response_measure_recovery_handler(result) -> List[Dict]:
+    conversation = [FormattingResponse.create('divider')]
+    elicitation = get_context('c-elicitation', result)
+    config_context = get_context('c-config', result)
+    artifact = elicitation.parameters['artifact']
+    options = text(STIMULUS_RESPONSE_TEXTS)[artifact]['response-measures']['recovery-time']
+
+    # Recovery time is given.
+    if is_in_context('recovery-time', config_context):
+        return [ActionResponse.create('command', ['event', 'e-save-scenario', [{
+            'name':       'c-elicitation',
+            'lifespan':   100,
+            'parameters': {
+                'recovery-time': config_context['recovery-time']
+            }
+        }]])]
+
+    # Recovery time quick responses
+    quick_reply = QuickReplyResponse()
+    for option in options:
+        quick_reply.add_reply(option, 'event', ['e-save-scenario', [{
+            'name':       'c-elicitation',
+            'lifespan':   100,
+            'parameters': {
+                'recovery-time': option
+            }}]])
+    conversation.append(TextResponse.create(text(INTENT_ELICITATION_RESPONSE_MEASURE_RECOVERY_TEXT)))
+    conversation.append(quick_reply.__repr__())
+    return conversation
+
+
+async def elicitation_response_measure_recovery_followup_handler(result) -> List[Dict]:
+    return await elicitation_response_measure_recovery_handler(result)
 
 
 # Scenario
@@ -289,7 +354,7 @@ def get_scenario(result):
         return {
             'arch':             arch,
             'component':        component,
-            'artifact':         artifact,
+            'artifact':         "{} <b>{}</b>".format(artifact, component),
             'id':               elicitation.parameters['id'],
             'stimulus':         stimulus,
             'response':         response,
@@ -297,7 +362,7 @@ def get_scenario(result):
         }
 
     except BaseException as e:
-        debug(e)
+        error(e)
 
     return {}
 
@@ -314,7 +379,7 @@ async def elicitation_save_scenario_handler(result) -> List[Dict]:
     scenario = get_scenario(result)
     accordion = AccordionResponse.create([
         {'title': 'Architecture', 'text': scenario['arch']},
-        {'title': 'Component', 'text': '{} <b>{}</b>'.format(scenario['artifact'], scenario['component'])},
+        {'title': 'Artifact', 'text': '{} <b>{}</b>'.format(scenario['artifact'], scenario['component'])},
         {'title': 'Stimulus', 'text': scenario['stimulus']},
         {'title': 'Response', 'text': scenario['response']},
         {'title': 'Response Measure', 'text': scenario['response-measure']}
