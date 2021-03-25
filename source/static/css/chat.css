@@ -60,7 +60,7 @@
   overflow-x       : hidden;
   color            : var(--secondary-text-color);
   background-color : var(--secondary-text-color-bg);
-  padding-bottom    : 1rem;
+  padding          : 1rem 0;
 }
 
 .chat > :first-child {

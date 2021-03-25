@@ -171,6 +171,7 @@
                                 title="Select an architecture to inspect."
                                 id="graph-selection"
                                 onchange="Config.updateControl(this);">
+                          <option></option>
                         </select>
                         <a href="/upload" data-toggle="tooltip" title="Upload a Zipkin or Jaeger trace">
                           <div class="icon upload-icon"></div>
@@ -183,24 +184,24 @@
                       <div class="row" data-toggle="tooltip" title="Show or hide nodes in the architecture graph.">
                         <label class="col-sm-9 col-form-label" for="show-nodes">
                           Show nodes
-                          <svg class="d-inline-block" height="1rem" width="1rem">
-                            <circle r="0.5rem" cx="0.5rem" cy="0.5rem" fill="#05A"></circle>
+                          <svg class="d-inline-block" height="16px" width="16px">
+                            <circle r="8px" cx="8px" cy="8px" fill="#05A"></circle>
                           </svg>
                         </label>
                         <div class="p-1">
-                          <input type="checkbox" id="show-nodes" onchange="Config.updateControl(this);"/>
+                          <input type="checkbox" id="show-nodes" onchange="Config.updateControl(this);" checked/>
                         </div>
                       </div>
 
                       <div class="row" data-toggle="tooltip" title="Show or hide edges in the architecture graph.">
                         <label class="col-sm-9 col-form-label" for="show-edges">
                           Show edges
-                          <svg class="d-inline-block" height="1rem" width="1rem">
+                          <svg class="d-inline-block" height="16px" width="16px">
                             <path marker-end="url(#end)" d="M 2 15 L 8 7" stroke="#CCCCCC" stroke-width="2"></path>
                           </svg>
                         </label>
                         <div class="p-1">
-                          <input type="checkbox" id="show-edges" onchange="Config.updateControl(this);"/>
+                          <input type="checkbox" id="show-edges" onchange="Config.updateControl(this);" checked/>
                         </div>
                       </div>
                     </div>
@@ -214,7 +215,7 @@
                           Show node labels <img alt="" src="../../static/img/text.png"/>
                         </label>
                         <div class="p-1">
-                          <input type="checkbox" id="show-node-labels" onchange="Config.updateControl(this);"/>
+                          <input type="checkbox" id="show-node-labels" onchange="Config.updateControl(this);" checked/>
                         </div>
                       </div>
 
@@ -246,7 +247,7 @@
                            title="Curvy edges can be used to avoid overlaying edges. Straight edges are better for performance. (Changes are only visible during the graph simulation. Move a node to see the effect.)">
                         <label class="col-sm-9 col-form-label" for="curvy-edges">
                           Curvy edges
-                          <svg class="d-inline-block" height="1rem" width="1rem">
+                          <svg class="d-inline-block" height="16px" width="16px">
                             <path marker-end="url(#end)"
                                   d="M 2 15 A 5 11 0 0 1 10 8"
                                   fill="transparent"
