@@ -4,7 +4,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 
 from dialogflow_backend.dialogflow.client import DialogFlowClient
 from dialogflow_backend.dialogflow.response_handler import create_response
-from util.log import info, warning, error
+from util.log import warning, error, debug
 from util.tracing import add_trace
 
 
@@ -16,7 +16,7 @@ class DFWebsocket(AsyncWebsocketConsumer):
         await self.channel_layer.group_add('dialogflow', self.channel_name)
 
         await self.accept()
-        info('Accept connection.')
+        debug('Accept connection.')
 
     async def disconnect(self, close_code):
         """
@@ -24,7 +24,7 @@ class DFWebsocket(AsyncWebsocketConsumer):
         """
         await self.channel_layer.group_discard('dialogflow', self.channel_name)
 
-        info('Disconnect connection.')
+        debug('Disconnect connection.')
 
     async def receive(self, **kwargs):
         """

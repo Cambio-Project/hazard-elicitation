@@ -2,23 +2,29 @@ class Graph {
     static GRAPH        = null;
     static CONTEXT_MENU = null;
 
+    static PROPERTIES = {
+        sticky_nodes:      false,
+        tooltip:           false,
+        node_size:         5,
+        edge_size:         2,
+        node_label_offset: {x: 12, y: -12},
+        edge_label_offset: {x: 10, y: 15, dy: -5},
+        edge_label_font:   {size: 10, dx: 2, dy: 12},
+        curved_edges:      true,
+        edge_arrow_size:   {w: 2, h: 6},
+        zoom_range:        {min: 0.4, max: 4},
+        colors:            d3.scaleLog().domain([0, 100]).range(['white', 'blue'])
+        // d3.scaleOrdinal(d3.schemeCategory10)
+    }
+
+    static CONFIG_ELEMENTS = [
+        "#graph-zoom", "#sticky-nodes", "#curvy-edges", "#show-nodes", "#show-edges",
+        "#show-node-labels", "#show-edge-labels", "#use-tooltips"
+    ];
+
     constructor(svg, context_menu, graph) {
         Graph.GRAPH        = this;
         Graph.CONTEXT_MENU = new ContextMenu(context_menu);
-
-        this.properties = {
-            sticky_nodes:      false,
-            tooltip:           false,
-            node_size:         5,
-            edge_size:         2,
-            node_label_offset: {x: 10, y: -10},
-            edge_label_offset: {x: 10, y: 15, dy: -5},
-            edge_label_font:   {size: 10, dx: 3, dy: 5},
-            curved_edges:      true,
-            edge_arrow_size:   {w: 2, h: 6},
-            zoom_range:        {min: 0.4, max: 4},
-            colors:            d3.scaleOrdinal(d3.schemeCategory10)
-        }
 
         // HTML
         this.svg = d3.select(svg);
@@ -36,6 +42,9 @@ class Graph {
         const width      = this.svg.node().getBoundingClientRect().width;
         const height     = this.svg.node().getBoundingClientRect().height;
 
+        const priorities = this.graph_nodes.map(function (o) { if ("priority" in o) { return o["priority"]} });
+        Graph.set("colors", d3.scaleLinear().domain([0, Math.max(...priorities)]).range(["#DDEEFF", "#0055FF"]))
+
         this.createAnchor();
         this.createEdges();
         this.createNodes();
@@ -45,11 +54,16 @@ class Graph {
         // Simulation
         this.simulation = d3
             .forceSimulation(this.graph_nodes)
-            .force("charge", d3.forceManyBody().strength(-10000))
+            .force("charge", d3.forceManyBody()
+                               .strength(-10000 - this.graph_nodes.length * 100)
+                               .distanceMin(100))
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("x", d3.forceX(width / 2).strength(0.1))
-            .force("y", d3.forceY(height / 2).strength(0.1))
-            .force("link", d3.forceLink(this.graph_edges).id(function (e) { return e.id; }).distance(25).strength(1))
+            .force("x", d3.forceX(width / 2).strength(0.5))
+            .force("y", d3.forceY(height / 2).strength(0.5))
+            .force("link", d3.forceLink(this.graph_edges)
+                             .id(function (e) { return e.id; })
+                             .iterations(3)
+                             .distance(25))
             .on("tick", Graph.onTick);
 
         // Events
@@ -117,7 +131,9 @@ class Graph {
             }
         }
 
-        Config.updateControl($("#graph-zoom")[0]);
+        for (const config of Graph.CONFIG_ELEMENTS) {
+            Config.updateControl($(config)[0]);
+        }
     }
 
     static get this() { return Graph.GRAPH; }
@@ -128,17 +144,17 @@ class Graph {
 
     static set(property, value) { Graph.this.set(property, value); }
 
-    get(property) { return this.properties[property]; }
+    get(property) { return Graph.PROPERTIES[property]; }
 
-    set(property, value) { this.properties[property] = value; }
+    set(property, value) { Graph.PROPERTIES[property] = value; }
 
     minimal() {
         let result = {"nodes": {}, "edges": {}, "hazards": {}};
         for (const [_, val] of this.graph.nodes._entries()) {
-            result["nodes"][val.label] = val.id
+            result["nodes"][val.label] = [val.id, val.priority]
         }
         for (const [_, val] of this.graph.edges._entries()) {
-            result["edges"][val.label] = val.id
+            result["edges"][val.label] = [val.id, val.priority]
         }
         result["hazards"] = this.graph.hazards;
         return result;
@@ -195,7 +211,7 @@ class Graph {
             .append("circle")
             .attr("id", function (n) { return "n" + n.id; })
             .attr("r", this.get("node_size"))
-            .attr("fill", function (n) { return Graph.get("colors")(n.group); })
+            .attr("fill", function (n) { return Graph.get("colors")(n.priority); })
             .on("contextmenu", Graph.onContextMenu)
             .on("click", Graph.onNodeClick)
             .on("mouseover", Graph.onMouseover)
@@ -221,7 +237,7 @@ class Graph {
 
         this.edge_labels
             .filter(function (e) {return e.source !== e.target})
-            .attr("dy", this.properties.edge_label_offset.dy)
+            .attr("dy", Graph.PROPERTIES.edge_label_offset.dy)
             .append("textPath")
             .text(function (e) { return e.label; })
             .attr("href", function (e) { return "#e" + e.id; })
@@ -259,18 +275,17 @@ class Graph {
     }
 
     static getEdge(id, name) {
-        if (id !== "") return Graph.this.graph.edges._values().find(e => e.id === id);
+        if (name === undefined) return Graph.this.graph.edges._values().find(e => e.id === parseFloat(id));
         else return Graph.this.graph.edges._values().find(e => e.label === name);
     }
 
     static getNode(id, name) {
-        if (id !== "") return Graph.this.graph.nodes._values().find(e => e.id === id);
+        if (name === undefined) return Graph.this.graph.nodes._values().find(e => e.id === parseFloat(id));
         else return Graph.this.graph.nodes._values().find(e => e.label === name);
     }
 
     static getElement(type, id, name) {
-        const is_edge = type === "edge";
-        return is_edge ? Graph.getEdge(id, name) : Graph.getNode(id, name);
+        return type === "edge" ? Graph.getEdge(id, name) : Graph.getNode(id, name);
     }
 
     static selectElement(type, name, id) {
@@ -296,19 +311,21 @@ class Graph {
             element.attr("active", active);
             label.attr("active", active);
 
-            if(el.hazard_id) {
+            if (el.hazard_id) {
                 Content.this.openHazard(el.id, type);
             }
 
-            Chat.this.ws.event("e-specify-response", [{
-                name:       "c-elicitation",
-                lifespan:   100,
-                parameters: {
-                    component: label.text(),
-                    type:      type,
-                    id:        el.id
-                }
-            }]);
+            if (active) {
+                Chat.this.ws.event("e-specify-stimulus", [{
+                    name:       "c-elicitation",
+                    lifespan:   100,
+                    parameters: {
+                        component: label.text(),
+                        artifact:  is_edge ? "Operation" : "Service",
+                        id:        el.id
+                    }
+                }]);
+            }
         }
     }
 
@@ -323,6 +340,10 @@ class Graph {
                     name:       "c-graph",
                     lifespan:   100,
                     parameters: {arch: Graph.this.minimal()}
+                }, {
+                    name:       "c-hazard",
+                    lifespan:   100,
+                    parameters: {stimuli: Graph.this.graph.stimuli}
                 }]);
                 Chat.this.ws.event("e-select-component", [{
                     name:       "c-elicitation",
@@ -416,13 +437,13 @@ class Graph {
 
     static zoom(val) { Graph.this.zoom_level.scaleTo(Graph.this.svg, val); }
 
-    static onEdgeClick(e) { Graph.selectElement("edge", "", e.id); }
+    static onEdgeClick(e) { Graph.selectElement("edge", undefined, e.id); }
 
-    static onNodeClick(n) { Graph.selectElement("node", "", n.id); }
+    static onNodeClick(n) { Graph.selectElement("node", undefined, n.id); }
 
-    static onEdgeLabelClick(e) { Graph.selectElement("edge", "", e.id); }
+    static onEdgeLabelClick(e) { Graph.selectElement("edge", undefined, e.id); }
 
-    static onNodeLabelClick(n) { Graph.selectElement("node", "", n.id); }
+    static onNodeLabelClick(n) { Graph.selectElement("node", undefined, n.id); }
 
     static onContextMenu(e) {
         const coords = Graph.transformCoordinates(this, 20, 10)
@@ -475,6 +496,13 @@ class Graph {
 }
 
 class ContextMenu {
+    static TS = /\d{10,}/;
+
+    static ts(timestamp) {
+        const ns = timestamp.slice(-3)
+        return new Date(parseFloat(timestamp) / 1000).toISOString().replace("T", " ").replace("Z", "") + ns;
+    }
+
     constructor(context_menu) {
         this.context_menu = $(context_menu);
         this.body         = this.context_menu.find(".body");
@@ -483,7 +511,10 @@ class ContextMenu {
 
     createItems(data) {
         let content = "";
-        for (const [key, val] of Object.entries(data)) {
+        for (let [key, val] of Object.entries(data)) {
+            const match = ContextMenu.TS.exec(key);
+            if (match)
+                key = ContextMenu.ts(match[0]);
             if (isObject(val)) {
                 let nested = val._empty() ? "" : "<ul class='dropdown-menu'>" + this.createItems(val) + "</ul>";
                 content +=

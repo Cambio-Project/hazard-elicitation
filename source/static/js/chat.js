@@ -197,6 +197,7 @@ class Chat {
 
     static addUserMessage(message) {
         Chat.this.add(new ChatMessage(Chat.User, message));
+        Chat.this.ws.intent(message);
     }
 
     static send(e) {
@@ -364,7 +365,7 @@ class ChatAccordion extends ChatElement {
                                     aria-expanded="false"
                                     data-target="#accordion-${ChatAccordion.ID}-${index}-body" 
                                     aria-controls="accordion-${ChatAccordion.ID}-${index}-body">
-                                <i class="arrow"></i>&nbsp;&nbsp;${section.title}
+                                <i class="collapse-arrow"></i>&nbsp;&nbsp;${section.title}
                             </button>
                         </h5>
                     </div>

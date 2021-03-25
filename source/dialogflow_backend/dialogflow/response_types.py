@@ -194,7 +194,7 @@ class QuickReplyResponse(IDFResponse):
         return self._data['payload'].get('values', [])
 
     @staticmethod
-    def create(replies: Dict[str, str] = None):
+    def create(replies: List[Dict[str, str]] = None):
         response = QuickReplyResponse()
         for reply in replies:
             response.add_reply(**reply)

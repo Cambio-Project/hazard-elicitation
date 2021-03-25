@@ -71,17 +71,20 @@ class Architecture:
 
         return valid, stack
 
-    def export(self, pretty: bool = False) -> str:
-        result = {'nodes': {}, 'edges': {}, 'hazards': {}}
+    def export(self, pretty: bool = False, lightweight: bool = False) -> str:
+        result = {'nodes': {}, 'edges': {}, 'hazards': {}, 'stimuli': {}}
 
         for _, n in self._graph.nodes.items():
             result['nodes'][n.id] = {
                 'id':    n.id,
                 'label': n.label,
-                'data':  {
+                'priority': self._graph.node_priority(n)
+            }
+
+            if not lightweight:
+                result['nodes'][n.id]['data'] = {
                     'tags': self._model.services[n.label].tags
                 }
-            }
 
         for _, e in self._graph.edges.items():
             operation = self._model.services[e.source.label].operations[e.label]
@@ -90,24 +93,31 @@ class Architecture:
                 'label':  e.label,
                 'source': e.source.id,
                 'target': e.target.id,
-                'data':   {
+                'priority': result['nodes'][e.source.id]['priority'] + result['nodes'][e.target.id]['priority']
+            }
+
+            if not lightweight:
+                result['edges'][e.id]['data'] = {
                     'duration': operation.durations,
                     'logs':     operation.logs,
                     'tags':     operation.tags
                 }
-            }
 
         for hazard in self._model.hazards:
             result['hazards'][hazard.id] = {
-                'id': hazard.id,
-                'type': hazard.type,
-                'metric': hazard.metric,
+                'id':            hazard.id,
+                'type':          hazard.type,
+                'metric':        hazard.metric,
                 'property_type': hazard.prop_type,
                 'property_name': hazard.prop_name,
-                'keyword': hazard.keyword,
-                'value': hazard.value,
-                'nodes': hazard.nodes,
-                'edges': hazard.edges
+                'keyword':       hazard.keyword,
+                'value':         hazard.value,
+                'nodes':         hazard.nodes,
+                'edges':         hazard.edges
+            }
+
+        for stimulus in self._model.stimuli:
+            result['stimuli'][stimulus.id] = {
             }
 
         if pretty:

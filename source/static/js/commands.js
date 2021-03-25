@@ -1,20 +1,12 @@
 class Commands {
-    static CONFIG_COMMANDS = {
-        "set-dark-theme":            "dark-theme",
-        "set-sticky-nodes":          "sticky-nodes",
-        "set-architecture":          "graph-selection",
-        "set-zoom":                  "graph-zoom",
-        "set-node-visibility":       "show-nodes",
-        "set-edge-visibility":       "show-edges",
-        "set-node-label-visibility": "show-node-labels",
-        "set-edge-label-visibility": "show-edge-labels",
-    }
-
     static MANAGE_COMMANDS = {
         "reply": Chat.addUserMessage,
         "event": Chat.event,
-        "select-element": Graph.selectElement,
         "select-architecture": Graph.setGraph,
+        "select-element": Graph.selectElement,
+        "select-response": function() {},
+        "select-response-measure": function() {},
+        "save-scenario": Content.saveScenario,
     }
 
     static castValues(values) {
@@ -38,7 +30,7 @@ class Commands {
             }
 
             const command = values[0];
-            let args;
+            let args = [];
 
             if (values.length > 1)
                 args = Commands.castValues(values.slice(1));
@@ -46,24 +38,11 @@ class Commands {
             console.debug("Call: {}({})".format(command, args.join(",")));
 
 
-            if (command in Commands.CONFIG_COMMANDS)
-                this.configCommand(command, args);
-            else if (command in Commands.MANAGE_COMMANDS)
+            if (command in Commands.MANAGE_COMMANDS)
                 this.manageCommand(command, args);
             else
                 console.warn("Unknown command '{}'".format(command))
         }
-    }
-
-    configCommand(command, args) {
-        const el_id = Commands.CONFIG_COMMANDS[command];
-        // Use default value if no value was sent.
-        // This will use the default for every element in the argument list.
-        if(args)
-            args = args.map(el => el === "" ? Config.getDefault(el_id) : el);
-
-        Config.setElement(el_id, ...args);
-        Config.updateControl(document.getElementById(el_id));
     }
 
     manageCommand(command, args) {

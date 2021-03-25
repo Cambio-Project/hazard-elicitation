@@ -10,10 +10,12 @@ async def empty_handler(result) -> List[Dict]:
 
 
 async def fallback_handler(result) -> List[Dict]:
-    response = TextResponse.create(random_text(INTENT_FALLBACK_TEXT))
-    return [response]
+    return [TextResponse.create(random_text(INTENT_FALLBACK_TEXT))]
+
+
+async def bye_handler(result) -> List[Dict]:
+    return [TextResponse.create(random_text(INTENT_BYE_TEXT))]
 
 
 async def help_handler(result) -> List[Dict]:
-    response = TextResponse.create(random_text(INTENT_HELP_TEXT))
-    return [response]
+    return [TextResponse.create(random_text(INTENT_HELP_TEXT))]

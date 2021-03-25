@@ -6,10 +6,14 @@ def next_event(result):
     """
     context = get_context('c-elicitation', result)
     if context:
-        if 'arch' in context.parameters:
+        if is_in_context('arch', context):
             continue_event = 'e-select-component'
-        elif 'component' in context.parameters:
+        elif is_in_context('component', context):
             continue_event = 'e-specify-response'
+        elif is_in_context('response', context):
+            continue_event = 'e-specify-response-measure'
+        elif is_in_context('response-measure', context):
+            continue_event = 'e-save-scenario'
         else:
             continue_event = 'e-select-architecture'
     else:
@@ -20,8 +24,8 @@ def next_event(result):
 
 def create_context(name: str, lifespan: int, parameters: dict):
     return {
-        'name': name,
-        'lifespan': lifespan,
+        'name':       name,
+        'lifespan':   lifespan,
         'parameters': parameters
     }
 

@@ -22,6 +22,13 @@ class Content {
         }
     }
 
+    closeButton(id, title) {
+        return `<span 
+          data-toggle="tooltip"
+          title="Close this tab (content will get erased)."
+          onclick="Content.this.removeTab(${id})">✕ </span>${title}`;
+    }
+
     addTab(data, class_name = "", close = false) {
         const id      = this.TAB_ID;
         const tab_id  = "tab-" + id;
@@ -29,7 +36,7 @@ class Content {
         const content = data.content || "...";
 
         const header_content = $("<a></a>")
-            .html(close ? `<span onclick="Content.this.removeTab(${id})">✕ </span>${title}` : title)
+            .html(close ? this.closeButton(id, title) : title)
             .addClass("nav-link " + class_name)
             .attr({
                 "role":        "tab",
@@ -71,7 +78,7 @@ class Content {
         }
     }
 
-    addHazard(id, type) {
+    addHazard(id, type, data) {
         let element;
         if (type === "node") {
             element = Graph.this.graph.nodes[id];
@@ -83,54 +90,96 @@ class Content {
             $(".edges").find(`path[id="e${id}"]`).addClass("hazard");
         }
 
-        let properties = "";
-        const addEntry = function (data, indent = 0) {
-            for (const [key, val] of data._entries()) {
-                if (!isObject(val)) {
-                    const space = "&nbsp;".repeat(indent);
-                    properties += `<tr><th>${space}${key}</th><td>${val}</td></tr>`;
-                } else {
-                    properties += `<tr><th>${key}</th><td></td></tr>`;
-                    addEntry(val, indent + 2)
-                }
-            }
-        }
-        addEntry(element.data);
-
         const tab_id = this.addTab({
             "title":   "{}: {}".format(type, element.label),
-            "content": `
-              <table>
-                <tr><th>Label</th><td>${element.label}</td></tr>
-                ${properties}
-              </table>`,
+            "content": new Scenario(data).html(),
         }, "hazard", true);
         Graph.CONTEXT_MENU.hide();
-
-        $(`#tab-${tab_id}-title`).click(function () {
-            Chat.this.ws.event("e-specify-response", [{
-                name:       "c-elicitation",
-                lifespan:   100,
-                parameters: {
-                    component: element.label,
-                    type:      type,
-                    id:        element.id,
-                    hazard:    Graph.this.graph.hazards._values().find(e => e.tab_id === tab_id).id
-                }
-            }]);
-        });
 
         return tab_id;
     }
 
-    addNewHazard(id, type) {
-        const hazard_id                 = Math.max(Graph.this.graph.hazards._keys()) + 1;
-        graph.hazards[hazard_id].tab_id = this.addHazard(id, type);
+    addNewHazard(id, type, data) {
+        const hazard_id                      = Math.max(Graph.this.graph.hazards._keys()) + 1;
+        Graph.this.graph.hazards[hazard_id]  = {tab_id: this.addHazard(id, type, data)};
         Graph.getElement(type, id).hazard_id = hazard_id;
+        this.openHazard(id, type);
     }
 
     openHazard(id, type) {
         const el = Graph.getElement(type, id);
         content.show(Graph.this.graph.hazards[el.hazard_id].tab_id);
+    }
+
+    static saveScenario(json) {
+        const parsed_json = JSON.parse(JSON.stringify(json));
+        const component   = parsed_json["artifact"] === "Service" ? "node" : "edge";
+        Content.this.addNewHazard(parsed_json["id"], component, parsed_json);
+        Chat.this.ws.event("e-next-step");
+    }
+}
+
+class Scenario {
+    static KEYS = ["description", "source", "artifact", "stimulus",
+                   "environment", "response", "response-measure"];
+
+    constructor(json) {
+        let default_scenario = {};
+        for (const key of Scenario.KEYS) { default_scenario[key] = ""; }
+        this.json = $.extend(true, default_scenario, json);
+    }
+
+    normalizeScenario(scenario) {
+        let normalized = {};
+        for (const key of Scenario.KEYS) {
+            normalized[key] = scenario[key].replaceAll(/<\/?[^>]+(>|$)/g, "");
+        }
+        return normalized;
+    }
+
+    export() {
+        const scenario_content = [JSON.stringify(this.normalizeScenario(this.json))];
+
+        const button     = document.createElement("button");
+        button.className = "btn";
+        button.type      = "button";
+        button.innerText = "Export scenario";
+
+        const link    = document.createElement("a");
+        link.href     = URL.createObjectURL(new Blob(scenario_content, {type: "application/json"}));
+        link.download = "scenario.json";
+        link.append(button);
+
+        return this.tableEntry("Export", link.outerHTML);
+    }
+
+    tableEntry(title, body) {
+        return "" +
+            `<tr>
+              <th>${title}</th>
+              <td>${body}</td>
+            </tr>`;
+    }
+
+    html() {
+        return "" +
+            `<div class="d-flex flex-row flex-wrap">
+            <div class="scenario-section col-lg-6">
+              <table class="table">
+                ${this.export()}
+                ${this.tableEntry("Description", this.json["description"])}
+                ${this.tableEntry("Source", this.json["source"])}
+                ${this.tableEntry("Artifact", this.json["artifact"])}
+              </table>
+            </div>
+            <div class="scenario-section col-lg-6">
+              <table class="table">
+                ${this.tableEntry("Environment", this.json["environment"])}
+                ${this.tableEntry("Stimulus", this.json["stimulus"])}
+                ${this.tableEntry("Response", this.json["response"])}
+                ${this.tableEntry("Response Measure", this.json["response-measure"])}
+              </table>
+            </div>
+            </div>`;
     }
 }

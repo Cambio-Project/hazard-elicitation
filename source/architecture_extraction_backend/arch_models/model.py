@@ -5,6 +5,7 @@ import pandas as pd
 from architecture_extraction_backend.arch_models.hazard import Hazard, ResponseTimeDeviation, ResponseTimeSpike
 from architecture_extraction_backend.arch_models.operation import Operation
 from architecture_extraction_backend.arch_models.service import Service
+from architecture_extraction_backend.arch_models.stimulus import Stimulus
 from util.log import tb
 
 
@@ -48,15 +49,21 @@ class IModel:
     IModel provides a validation method that checks for validity of the model.
     This validation checks the semantic of the model.
     """
-    def __init__(self, model_type: str, source: Union[str, IO] = None):
+    def __init__(self, model_type: str, source: Union[str, IO] = None, multiple: bool = False):
         self._model_type = model_type
         self._services = {}
         self._valid = False
         self._hazards = []
+        self._stimuli = []
 
         if source:
             try:
-                if not self.read(source):
+                if multiple:
+                    success = self.read_multiple(source)
+                else:
+                    success = self.read(source)
+
+                if not success:
                     print('Model was not read successful')
             except BaseException as e:
                 print(tb(e))
@@ -85,7 +92,18 @@ class IModel:
     def hazards(self, hazards: List[Hazard]):
         self._hazards = hazards
 
+    @property
+    def stimuli(self) -> List[Stimulus]:
+        return self._stimuli
+
+    @stimuli.setter
+    def stimuli(self, stimuli: List[Stimulus]):
+        self._stimuli = stimuli
+
     # Private
+
+    def _parse_multiple(self, model: Dict[str, Any]) -> bool:
+        raise NotImplementedError('_parse_multiple() method must be implemented!')
 
     def _parse(self, model: Dict[str, Any]) -> bool:
         raise NotImplementedError('_parse() method must be implemented!')
@@ -161,6 +179,9 @@ class IModel:
     def print(self):
         for _, service in self._services.items():
             service.print()
+
+    def read_multiple(self, source: Union[str, IO]) -> bool:
+        raise NotImplementedError('read_multiple() method must be implemented!')
 
     def read(self, source: Union[str, IO]) -> bool:
         raise NotImplementedError('read() method must be implemented!')

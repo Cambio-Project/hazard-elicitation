@@ -1,6 +1,7 @@
 from google.api_core.exceptions import InvalidArgument
 
-from dialogflow_backend.dialogflow.intents import INTENT_HANDLERS, TextResponse, INTENT_PROCESSING_ERROR
+from dialogflow_backend.dialogflow.intents import INTENT_HANDLERS, INTENT_PROCESSING_ERROR, KB_TEXTS
+from dialogflow_backend.dialogflow.response_types import TextResponse, CardResponse
 from util.log import error, warning, debug
 from util.text.text import text
 
@@ -26,6 +27,12 @@ async def create_response(result):
     elif result.query_result.action:
         # Smalltalk intent is handled by dialogflow.
         response_data = [TextResponse.create(result.query_result.fulfillment_text)]
+    elif result.query_result.knowledge_answers:
+        # Match in knowledge base was detected.
+        kb_id = int(result.query_result.knowledge_answers.answers[0].answer)
+        kb_text = text(KB_TEXTS)
+        if 0 <= kb_id <= len(kb_text) - 1:
+            response_data = [CardResponse.create(**kb_text[kb_id])]
     else:
         warning('No intent handler found for "{}".'.format(intent))
 

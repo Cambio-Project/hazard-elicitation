@@ -63,6 +63,41 @@ class Graph:
                     return e
         return None
 
+    def node_priority(self, node: Node):
+        """
+        Give the node a priority based on the number of incoming/outgoing/self edges.
+        @param node: Node
+        @return: node priority
+        """
+        prio = 0
+        for source in self._adjacency:
+            # Outgoing edges
+            if source == node.id:
+                prio += len(self._adjacency[source]) * 2
+        for target in self._adjacency:
+            if node.id in self._adjacency[target]:
+                if target == node.id:
+                    prio -= 1
+                else:
+                    prio += 2
+        return prio
+
+    def edge_priority(self, edge: Edge):
+        """
+        Give the edge a priority based on the priority of the nodes it connects.
+        @param edge: Edge
+        @return: node priority
+        """
+        prio = 0
+        for n in self._adjacency:
+            # source
+            if n == edge.source.id:
+                prio += self.node_priority(edge.source)
+            # target
+            if n == edge.target.id:
+                prio += self.node_priority(edge.target)
+        return prio
+
     def neighbours(self, node: Node) -> List[Node]:
         return [self._nodes[n_id] for n_id in self._adjacency[node.id].keys()]
 

@@ -4,6 +4,9 @@ import platform
 from util.config import Config
 from util.path import path
 
+import mimetypes
+mimetypes.add_type("text/javascript", ".js", True)
+
 ALLOWED_HOSTS = ['*']
 BASE_DIR = path(__file__, '..', '..')
 CONFIG = Config(path(BASE_DIR, '..', 'config.json'))
@@ -25,7 +28,6 @@ TRACING = False and PLATFORM != 'Windows'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-VERSION = '0.5.0'
 
 ASGI_APPLICATION = 'hazard_elicitation.asgi.application'
 WSGI_APPLICATION = 'hazard_elicitation.wsgi.application'

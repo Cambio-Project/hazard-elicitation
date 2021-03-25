@@ -139,3 +139,11 @@
 }
 
 .upload-icon { background-image : var(--upload-image); }
+
+/* Scenario card */
+.scenario-section {
+  display: inline-block;
+  text-align: left;
+  min-width: calc(300px);
+  padding: 1rem;
+}

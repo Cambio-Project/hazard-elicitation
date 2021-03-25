@@ -158,7 +158,7 @@ text[active="true"] { fill : red; }
 .dropdown-action[name="hazard"] > a.dropdown-item::after { background-image : url("../img/hazard.png"); }
 
 /* Tooltip */
-.tooltip {
+.graph-tooltip {
   padding          : 5px 10px;
   color            : var(--tooltip-color);
   font-size        : 10pt;
@@ -172,7 +172,7 @@ text[active="true"] { fill : red; }
   transition       : 50ms;
 }
 
-.tooltip::after {
+.graph-tooltip::after {
   position   : absolute;
   bottom     : -12px;
   right      : calc(50% - 5px);

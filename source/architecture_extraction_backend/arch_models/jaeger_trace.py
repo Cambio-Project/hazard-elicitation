@@ -10,8 +10,8 @@ from architecture_extraction_backend.arch_models.service import Service
 
 
 class JaegerTrace(IModel):
-    def __init__(self, source: Union[str, IO, dict] = None):
-        super().__init__(self.__class__.__name__, source)
+    def __init__(self, source: Union[str, IO, dict] = None, multiple: bool = False):
+        super().__init__(self.__class__.__name__, source, multiple)
 
     @staticmethod
     def _parse_logs(logs) -> Dict[int, Dict[str, str]]:
@@ -20,6 +20,9 @@ class JaegerTrace(IModel):
             operation_logs[log['timestamp']] = {f['key']: f['value'] for f in log['fields']}
 
         return operation_logs
+
+    def _parse_multiple(self, model: Dict[str, Any]) -> bool:
+        return False
 
     def _parse(self, model: Dict[str, Any]) -> bool:
         # Store process_id: service_name
@@ -51,9 +54,6 @@ class JaegerTrace(IModel):
                 span_id = span['spanID']
                 span_ids[span_id] = span
                 operation_name = span['operationName']
-                operation_duration = span['duration']
-                operation_tags = span['tags']
-                operation_logs = span['logs']
 
                 service_name = process_ids[pid]
 
@@ -63,9 +63,9 @@ class JaegerTrace(IModel):
                     operation = Operation(operation_name)
                     self._services[service_name].add_operation(operation)
 
-                operation.durations[span_id] = operation_duration
-                operation.tags[span_id] = {tag['key']: tag['value'] for tag in operation_tags}
-                operation.logs[span_id] = JaegerTrace._parse_logs(operation_logs)
+                operation.durations[span_id] = span.get('duration', -1)
+                operation.tags[span_id] = {tag['key']: tag['value'] for tag in span.get('tags', {})}
+                operation.logs[span_id] = JaegerTrace._parse_logs(span.get('logs', {}))
 
             # Add dependencies
             for span in trace['spans']:
@@ -90,6 +90,15 @@ class JaegerTrace(IModel):
                         parent_operation.add_dependency(operation)
 
         return True
+
+    def read_multiple(self, source: Union[str, IO, dict] = None) -> bool:
+        if isinstance(source, str):
+            return self._parse_multiple(json.load(open(source, 'r')))
+        elif isinstance(source, IO):
+            return self._parse_multiple(json.load(source))
+        elif isinstance(source, dict):
+            return self._parse_multiple(source)
+        return False
 
     def read(self, source: Union[str, IO, dict] = None) -> bool:
         if isinstance(source, str):

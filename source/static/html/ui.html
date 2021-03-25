@@ -8,8 +8,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
           integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
           crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"
-          integrity="sha512-XKa9Hemdy1Ui3KSGgJdgMyYlUg1gM+QhL6cnlyTe2qzMCYm4nAZ1PsVerQzTTXzonUR+dmswHqgJPuwCq1MaAg=="
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"
+          integrity="sha512-wV7Yj1alIZDqZFCUQJy85VN+qvEIly93fIQAN7iqDFCPEucLCeNFz4r35FCo9s6WrpdDQPi80xbljXB8Bjtvcg=="
           crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/split.js/1.6.2/split.min.js"
           integrity="sha512-to2k78YjoNUq8+hnJS8AwFg/nrLRFLdYYalb18SlcsFRXavCOTfBF3lNyplKkLJeB8YjKVTb1FPHGSy9sXfSdg=="
@@ -20,7 +20,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"
           integrity="sha512-UNM1njAgOFUa74Z0bADwAq8gbTcqZC8Ej4xPSzpnh0l6KMevwvkBvbldF9uR++qKeJ+MOZHRjV1HZjoRvjDfNQ=="
           crossorigin="anonymous"></script>
-  
+
   <!-- Custom JS -->
   <script type="text/javascript" src="../../static/js/main.js"></script>
   <script type="text/javascript" src="../../static/js/content.js"></script>
@@ -69,7 +69,7 @@
                 </div>
               </div>
 
-              <div id="tooltip" class="tooltip">
+              <div id="tooltip" class="graph-tooltip">
                 <div class="header"></div>
                 <div class="body"></div>
               </div>
@@ -82,23 +82,17 @@
           <div id="content" class="content">
 
             <ul class="nav nav-tabs bline" id="tablist" role="tablist">
-              <li class="nav-item">
+              <li class="nav-item" data-toggle="tooltip" title="Need some help? Take a look here.">
                 <a class="nav-link help" role="tab" data-toggle="tab" id="tab-help-title" href="#tab-help">Help</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item"
+                  data-toggle="tooltip"
+                  title="Configure the setup of the graph and the page appearance.">
                 <a class="nav-link config active show"
                    role="tab"
                    data-toggle="tab"
                    id="tab-config-title"
                    href="#tab-config">Configure</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link scenario"
-                   role="tab"
-                   data-toggle="tab"
-                   id="tab-scenario-title"
-                   href="#tab-scenario"
-                   aria-selected="true">Scenario</a>
               </li>
             </ul>
 
@@ -108,58 +102,45 @@
               <div class="tab-pane fade" role="tabpanel" id="tab-help">
                 <h3>Need help?</h3>
 
-                <p class="bline p-2">
-                  <a class="btn-link" data-toggle="collapse" href="#help-graph" role="button" aria-expanded="false">
-                    <i class="arrow"></i>Graph
-                  </a>
-                </p>
-                <div class="collapse m-md-2" id="help-graph">
-                  <p>Use <code>Right Click</code> on a node or edge to open a context menu and inspect an element.</p>
-                  <div class="tip-wrapper">
-                    <div class="tip tip-1"></div>
-                  </div>
+                <div class="col-sm-5 help-container">
+                  <h4 class="bline">UI elements</h4><br>
+                  Most of the UI elements are configured with tooltips.
+                  Hover over an element to find out more about it.<br>
+                  Use the sliders to configure the size of the chat or the graph.
                 </div>
 
-                <p class="bline p-2">
-                  <a class="btn-link" data-toggle="collapse" href="#help-chat" role="button" aria-expanded="false">
-                    <i class="arrow"></i>Chat
-                  </a>
-                </p>
-                <div class="collapse m-md-2" id="help-chat">
-                  <p class="d-inline">
+                <div class="col-sm-5 help-container">
+                  <h4 class="bline">Graph</h4><br>
+                  Use <code>Right Click</code> on a node or edge to open a context menu and inspect an element.
+                  You will see meta information of a trace and names of services and operations.
+                  <button class="btn" type="button" onclick="Chat.addUserMessage('trace');">What is a tracing?</button>
+                </div>
+
+                <div class="col-sm-5 help-container">
+                  <h4 class="bline">Chat</h4><br>
                     The chat is connected to a chatbot.
-                    Use the send button (
-                    <button type="button" class="position-relative send-button">➤</button>
-                    ) to send a message. </p>
+                    Use the send button or press <code>Enter↵</code> to send a message.<br>
+                    The chatbot will guide you through the elicitation of a resilience scenario.
+                    It can answer questions and knows about tracing tools.
                 </div>
 
-                <p class="bline p-2">
-                  <a class="btn-link" data-toggle="collapse" href="#help-expert" role="button" aria-expanded="false">
-                    <i class="arrow"></i>Expert
-                  </a>
-                </p>
-                <div class="collapse m-md-2" id="help-expert">
-                  <p class="d-inline">
-                    This chatbot can understand commands and configure settings on this page.
-                    Some commands are listed here: </p>
-                  <ul>
-                    <li><code>set-dark-theme &lt;boolean&gt;</code></li>
-                    <!--<li><code>set-zoom &lt;float&gt;</code></li>-->
-                    <li><code>set-sticky-nodes &lt;boolean&gt;</code></li>
-                    <li><code>set-nodes-visibility &lt;boolean&gt;</code></li>
-                    <li><code>set-edges-visibility &lt;boolean&gt;</code></li>
-                  </ul>
-                  <p>
-                    You also might want to try out the chat history with <code>&uarr;</code> or <code>&darr;</code>.
-                  </p>
+                <div class="col-sm-5 help-container">
+                  <h4 class="bline">Explanations</h4><br>
+                  The chatbot you see on the right is able to explain a variety of topics to you.
+                  Ask the chatbot about something you want to know or click
+                  <button class="btn" type="button" onclick="Chat.event('e-guide');">this</button>
+                  button.<br>
+                  Keywords that have a high relevance for this work are explained as a guided tour.
+                  For other keywords you will just get a regular explanation from the bot.
                 </div>
+
               </div>
 
               <!-- Config -->
               <div class="tab-pane fade active show" role="tabpanel" id="tab-config">
                 <p class="bline p-2">
                   <a class="btn-link" data-toggle="collapse" href="#config-graph" role="button">
-                    <i class="arrow"></i>Configure Graph
+                    <i class="collapse-arrow"></i>Configure Graph
                   </a>
                 </p>
 
@@ -169,7 +150,7 @@
 
                     <!-- Zoom and Graph -->
                     <div class="control-entry rline">
-                      <div class="row">
+                      <div class="row" data-toggle="tooltip" title="Inspect the architecture graph in different sizes.">
                         <label class="col-sm-6 col-form-label" for="graph-zoom">
                           Zoom <img alt="" src="../../static/img/zoom.png"/>
                         </label>
@@ -186,10 +167,13 @@
                       <div class="row">
                         <label class="col-sm-5 col-form-label" for="graph-selection">Trace/Model</label>
                         <select class="col-sm-5 form-control"
+                                data-toggle="tooltip"
+                                title="Select an architecture to inspect."
                                 id="graph-selection"
                                 onchange="Config.updateControl(this);">
+                          <option></option>
                         </select>
-                        <a href="/upload">
+                        <a href="/upload" data-toggle="tooltip" title="Upload a Zipkin or Jaeger trace">
                           <div class="icon upload-icon"></div>
                         </a>
                       </div>
@@ -197,43 +181,47 @@
 
                     <!-- Show nodes and edges -->
                     <div class="control-entry rline">
-                      <div class="row">
+                      <div class="row" data-toggle="tooltip" title="Show or hide nodes in the architecture graph.">
                         <label class="col-sm-9 col-form-label" for="show-nodes">
                           Show nodes
-                          <svg class="d-inline-block" height="1rem" width="1rem">
-                            <circle r="0.5rem" cx="0.5rem" cy="0.5rem" fill="#05A"></circle>
+                          <svg class="d-inline-block" height="16px" width="16px">
+                            <circle r="8px" cx="8px" cy="8px" fill="#05A"></circle>
                           </svg>
                         </label>
                         <div class="p-1">
-                          <input type="checkbox" id="show-nodes" onchange="Config.updateControl(this);"/>
+                          <input type="checkbox" id="show-nodes" onchange="Config.updateControl(this);" checked/>
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row" data-toggle="tooltip" title="Show or hide edges in the architecture graph.">
                         <label class="col-sm-9 col-form-label" for="show-edges">
                           Show edges
-                          <svg class="d-inline-block" height="1rem" width="1rem">
+                          <svg class="d-inline-block" height="16px" width="16px">
                             <path marker-end="url(#end)" d="M 2 15 L 8 7" stroke="#CCCCCC" stroke-width="2"></path>
                           </svg>
                         </label>
                         <div class="p-1">
-                          <input type="checkbox" id="show-edges" onchange="Config.updateControl(this);"/>
+                          <input type="checkbox" id="show-edges" onchange="Config.updateControl(this);" checked/>
                         </div>
                       </div>
                     </div>
 
                     <!-- Show node and edge labels -->
                     <div class="control-entry rline">
-                      <div class="row">
+                      <div class="row"
+                           data-toggle="tooltip"
+                           title="Show or hide node labels in the architecture graph.">
                         <label class="col-sm-9 col-form-label" for="show-node-labels">
                           Show node labels <img alt="" src="../../static/img/text.png"/>
                         </label>
                         <div class="p-1">
-                          <input type="checkbox" id="show-node-labels" onchange="Config.updateControl(this);"/>
+                          <input type="checkbox" id="show-node-labels" onchange="Config.updateControl(this);" checked/>
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row"
+                           data-toggle="tooltip"
+                           title="Show or hide edge labels in the architecture graph.">
                         <label class="col-sm-9 col-form-label" for="show-edge-labels">
                           Show edge labels <img alt="" src="../../static/img/text.png"/>
                         </label>
@@ -245,7 +233,7 @@
 
                     <!-- Sticky nodes and curvy edges -->
                     <div class="control-entry rline">
-                      <div class="row">
+                      <div class="row" data-toggle="tooltip" title="Sticky nodes can be moved fixed positions.">
                         <label class="col-sm-9 col-form-label" for="sticky-nodes">
                           Sticky nodes <img alt="" src="../../static/img/pin.png"/>
                         </label>
@@ -254,10 +242,12 @@
                         </div>
                       </div>
 
-                      <div class="row">
+                      <div class="row"
+                           data-toggle="tooltip"
+                           title="Curvy edges can be used to avoid overlaying edges. Straight edges are better for performance. (Changes are only visible during the graph simulation. Move a node to see the effect.)">
                         <label class="col-sm-9 col-form-label" for="curvy-edges">
                           Curvy edges
-                          <svg class="d-inline-block" height="1rem" width="1rem">
+                          <svg class="d-inline-block" height="16px" width="16px">
                             <path marker-end="url(#end)"
                                   d="M 2 15 A 5 11 0 0 1 10 8"
                                   fill="transparent"
@@ -273,19 +263,25 @@
 
                     <!-- Tooltip -->
                     <div class="control-entry rline">
-                      <div class="row">
+                      <div class="row"
+                           data-toggle="tooltip"
+                           title="Show tooltips in the graph to show the names of nodes and edges.">
                         <label class="col-sm-9 col-form-label" for="use-tooltips">
-                          Tooltips <img alt="" src="../../static/img/tooltip.png"/>
+                          Graph tooltips <img alt="" src="../../static/img/tooltip.png"/>
                         </label>
                         <div class="p-1">
                           <input type="checkbox" id="use-tooltips" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
 
-                      <div class="row">
-                        <label class="col-sm-9 col-form-label"></label>
+                      <div class="row"
+                           data-toggle="tooltip"
+                           title="Show tooltips on the whole page to get more information or help.">
+                        <label class="col-sm-9 col-form-label" for="use-page-tooltips">
+                          Page tooltips <img alt="" src="../../static/img/tooltip.png"/>
+                        </label>
                         <div class="p-1">
-
+                          <input type="checkbox" id="use-page-tooltips" onchange="Config.updateControl(this);"/>
                         </div>
                       </div>
                     </div>
@@ -308,7 +304,7 @@
 
                 <!-- Dark mode -->
                 <div class="control-entry w-100 ">
-                  <div class="row">
+                  <div class="row" data-toggle="tooltip" title="The whole page turns dark.">
                     <label class="col-sm-6 col-form-label" for="dark-theme">
                       Dark Theme <span class="icon dark-mode-icon"></span>
                     </label>
@@ -320,58 +316,6 @@
                 </div>
 
               </div>
-
-
-              <!-- Scenario -->
-              <div class="tab-pane fade" role="tabpanel" id="tab-scenario">
-
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Description</div>
-                    <div class="p-1">The operation <code>frontend/dispatch</code> is experiencing a peek workload.</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Source</div>
-                    <div class="p-1">...</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Stimulus</div>
-                    <div class="p-1">increasing workload on the system</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Artifact</div>
-                    <div class="p-1">Service: frontend, Operation: dispatch</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Environment</div>
-                    <div class="p-1">operating</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Response</div>
-                    <div class="p-1">System workload should return to normal behaviour.</div>
-                  </div>
-                </div>
-                <div class="control-entry rline">
-                  <div class="row">
-                    <div class="col-sm-9 col-form-label">Response Measure</div>
-                    <div class="p-1">
-                      After occurrence of {maximum tolerable workload} the operation frontend/dispatch should
-                      return to optimal response time {within 5 seconds} {in 90% of cases}.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
