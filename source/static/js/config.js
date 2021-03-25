@@ -43,10 +43,12 @@ class Config {
 
     /* Sets a value to the storage. */
     static setStorage(key, value) {
-        if (isBool(value))
-            localStorage.setItem(key, value ? "true" : "false");
-        else
-            localStorage.setItem(key, "" + value);
+        if (value !== null) {
+            if (isBool(value))
+                localStorage.setItem(key, value ? "true" : "false");
+            else
+                localStorage.setItem(key, value);
+        }
     }
 
     /* Gets a value from the storage. */
@@ -62,8 +64,8 @@ class Config {
     static updateControl(element) {
         if (element && Config.SETTINGS[element.id].callback) {
             const new_val = Config.getElement(element.id);
-            Config.setStorage(element.id, new_val);
             Config.SETTINGS[element.id].callback(new_val);
+            Config.setStorage(element.id, new_val);
         }
     }
 
@@ -97,10 +99,10 @@ class Config {
     static loadConfig() {
         for (const key of Config.SETTINGS._keys()) {
             const val = Config.getStorage(key);
-            if (val !== undefined)
-                Config.setElement(key, val);
-            else
+            if (val === null)
                 Config.setElement(key, Config.getDefault(key));
+            else
+                Config.setElement(key, val);
 
             Config.updateControl(document.getElementById(key));
         }
