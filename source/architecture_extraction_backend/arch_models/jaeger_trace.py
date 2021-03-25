@@ -54,9 +54,6 @@ class JaegerTrace(IModel):
                 span_id = span['spanID']
                 span_ids[span_id] = span
                 operation_name = span['operationName']
-                operation_duration = span['duration']
-                operation_tags = span['tags']
-                operation_logs = span['logs']
 
                 service_name = process_ids[pid]
 
@@ -66,9 +63,9 @@ class JaegerTrace(IModel):
                     operation = Operation(operation_name)
                     self._services[service_name].add_operation(operation)
 
-                operation.durations[span_id] = operation_duration
-                operation.tags[span_id] = {tag['key']: tag['value'] for tag in operation_tags}
-                operation.logs[span_id] = JaegerTrace._parse_logs(operation_logs)
+                operation.durations[span_id] = span.get('duration', -1)
+                operation.tags[span_id] = {tag['key']: tag['value'] for tag in span.get('tags', {})}
+                operation.logs[span_id] = JaegerTrace._parse_logs(span.get('logs', {}))
 
             # Add dependencies
             for span in trace['spans']:

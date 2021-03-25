@@ -87,7 +87,8 @@ async def elicitation_component_handler(result) -> List[Dict]:
     services = TextResponse.create(text(INTENT_ELICITATION_COMPONENT_SERVICE_TEXT))
     service_replies = QuickReplyResponse()
 
-    nodes = sorted(graph_context.parameters['arch']['nodes'], reverse=True)
+    nodes = {k: v[1] for k, v in sorted(graph_context.parameters['arch']['nodes'].items())}
+    nodes = {k: v for k, v in sorted(nodes.items(), key=lambda o: o[1], reverse=True)}
     for i, node in enumerate(nodes):
         if i == 5:
             break
@@ -100,7 +101,8 @@ async def elicitation_component_handler(result) -> List[Dict]:
     operations = TextResponse.create(text(INTENT_ELICITATION_COMPONENT_OPERATION_TEXT))
     operation_replies = QuickReplyResponse()
 
-    edges = sorted(graph_context.parameters['arch']['edges'], reverse=True)
+    edges = {k: v[1] for k, v in sorted(graph_context.parameters['arch']['edges'].items())}
+    edges = {k: v for k, v in sorted(edges.items(), key=lambda o: o[1], reverse=True)}
     for i, edge in enumerate(edges):
         if i == 5:
             break

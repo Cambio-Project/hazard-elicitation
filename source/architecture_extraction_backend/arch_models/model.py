@@ -5,6 +5,7 @@ import pandas as pd
 from architecture_extraction_backend.arch_models.hazard import Hazard, ResponseTimeDeviation, ResponseTimeSpike
 from architecture_extraction_backend.arch_models.operation import Operation
 from architecture_extraction_backend.arch_models.service import Service
+from architecture_extraction_backend.arch_models.stimulus import Stimulus
 from util.log import tb
 
 
@@ -53,6 +54,7 @@ class IModel:
         self._services = {}
         self._valid = False
         self._hazards = []
+        self._stimuli = []
 
         if source:
             try:
@@ -89,6 +91,14 @@ class IModel:
     @hazards.setter
     def hazards(self, hazards: List[Hazard]):
         self._hazards = hazards
+
+    @property
+    def stimuli(self) -> List[Stimulus]:
+        return self._stimuli
+
+    @stimuli.setter
+    def stimuli(self, stimuli: List[Stimulus]):
+        self._stimuli = stimuli
 
     # Private
 

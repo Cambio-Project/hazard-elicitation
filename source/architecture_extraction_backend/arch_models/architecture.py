@@ -72,12 +72,13 @@ class Architecture:
         return valid, stack
 
     def export(self, pretty: bool = False, lightweight: bool = False) -> str:
-        result = {'nodes': {}, 'edges': {}, 'hazards': {}}
+        result = {'nodes': {}, 'edges': {}, 'hazards': {}, 'stimuli': {}}
 
         for _, n in self._graph.nodes.items():
             result['nodes'][n.id] = {
                 'id':    n.id,
                 'label': n.label,
+                'priority': self._graph.node_priority(n)
             }
 
             if not lightweight:
@@ -92,6 +93,7 @@ class Architecture:
                 'label':  e.label,
                 'source': e.source.id,
                 'target': e.target.id,
+                'priority': result['nodes'][e.source.id]['priority'] + result['nodes'][e.target.id]['priority']
             }
 
             if not lightweight:
@@ -112,6 +114,10 @@ class Architecture:
                 'value':         hazard.value,
                 'nodes':         hazard.nodes,
                 'edges':         hazard.edges
+            }
+
+        for stimulus in self._model.stimuli:
+            result['stimuli'][stimulus.id] = {
             }
 
         if pretty:

@@ -13,7 +13,8 @@ class Graph {
         curved_edges:      true,
         edge_arrow_size:   {w: 2, h: 6},
         zoom_range:        {min: 0.4, max: 4},
-        colors:            d3.scaleOrdinal(d3.schemeCategory10)
+        colors:            d3.scaleLog().domain([0, 100]).range(['white', 'blue'])
+        // d3.scaleOrdinal(d3.schemeCategory10)
     }
 
     static CONFIG_ELEMENTS = [
@@ -40,6 +41,9 @@ class Graph {
         this.graph_edges = graph.edges._values();
         const width      = this.svg.node().getBoundingClientRect().width;
         const height     = this.svg.node().getBoundingClientRect().height;
+
+        const priorities = this.graph_nodes.map(function (o) { if ("priority" in o) { return o["priority"]} });
+        Graph.set("colors", d3.scaleLinear().domain([0, Math.max(...priorities)]).range(["#DDEEFF", "#0055FF"]))
 
         this.createAnchor();
         this.createEdges();
@@ -147,10 +151,10 @@ class Graph {
     minimal() {
         let result = {"nodes": {}, "edges": {}, "hazards": {}};
         for (const [_, val] of this.graph.nodes._entries()) {
-            result["nodes"][val.label] = val.id
+            result["nodes"][val.label] = [val.id, val.priority]
         }
         for (const [_, val] of this.graph.edges._entries()) {
-            result["edges"][val.label] = val.id
+            result["edges"][val.label] = [val.id, val.priority]
         }
         result["hazards"] = this.graph.hazards;
         return result;
@@ -207,7 +211,7 @@ class Graph {
             .append("circle")
             .attr("id", function (n) { return "n" + n.id; })
             .attr("r", this.get("node_size"))
-            .attr("fill", function (n) { return Graph.get("colors")(n.group); })
+            .attr("fill", function (n) { return Graph.get("colors")(n.priority); })
             .on("contextmenu", Graph.onContextMenu)
             .on("click", Graph.onNodeClick)
             .on("mouseover", Graph.onMouseover)
@@ -336,6 +340,10 @@ class Graph {
                     name:       "c-graph",
                     lifespan:   100,
                     parameters: {arch: Graph.this.minimal()}
+                }, {
+                    name:       "c-hazard",
+                    lifespan:   100,
+                    parameters: {stimuli: Graph.this.graph.stimuli}
                 }]);
                 Chat.this.ws.event("e-select-component", [{
                     name:       "c-elicitation",
@@ -488,6 +496,13 @@ class Graph {
 }
 
 class ContextMenu {
+    static TS = /\d{10,}/;
+
+    static ts(timestamp) {
+        const ns = timestamp.slice(-3)
+        return new Date(parseFloat(timestamp) / 1000).toISOString().replace("T", " ").replace("Z", "") + ns;
+    }
+
     constructor(context_menu) {
         this.context_menu = $(context_menu);
         this.body         = this.context_menu.find(".body");
@@ -496,7 +511,10 @@ class ContextMenu {
 
     createItems(data) {
         let content = "";
-        for (const [key, val] of Object.entries(data)) {
+        for (let [key, val] of Object.entries(data)) {
+            const match = ContextMenu.TS.exec(key);
+            if (match)
+                key = ContextMenu.ts(match[0]);
             if (isObject(val)) {
                 let nested = val._empty() ? "" : "<ul class='dropdown-menu'>" + this.createItems(val) + "</ul>";
                 content +=
