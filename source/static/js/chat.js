@@ -15,6 +15,7 @@ class CustomWebSocket {
     onOpen(e) {
         chat.chat_input.attr("placeholder", "Type something and press enter...");
         chat.chat_input.removeAttr("disabled");
+        chat.chat_input.focus();
     }
 
     onClose(e) {

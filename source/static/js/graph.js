@@ -181,8 +181,8 @@ class Graph {
             .append("text")
             .text("priority")
             .attr("font-size", "12px")
-            .attr("x", "-80px")
-            .attr("y", "25px")
+            .attr("x", "-82px")
+            .attr("y", "30px")
             .attr("transform", "rotate(-90)");
 
         this.gradient =
@@ -369,6 +369,8 @@ class Graph {
             } else {
                 Chat.this.ws.event("e-select-component");
             }
+        } else {
+            Chat.this.ws.event("e-select-architecture");
         }
     }
 
