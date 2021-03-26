@@ -116,44 +116,6 @@ class DFWebSocket extends CustomWebSocket {
     }
 }
 
-class History {
-    constructor() {
-        this.inputs = [];
-        this.index  = 0;
-        this.max    = 10;
-    }
-
-    set(input) {
-        this.inputs.push(input);
-        if (this.inputs.length === this.max) {
-            this.inputs.shift();
-        }
-        this.index = this.inputs.length - 1;
-    }
-
-    get() {
-        if (this.inputs.length > 0) {
-            return this.inputs[this.index];
-        }
-        return "";
-    }
-
-    prev() {
-        this.index -= 1;
-        if (this.index === -1) {
-            this.index = Math.min(this.inputs.length - 1, this.max);
-        }
-    }
-
-    next() {
-        this.index += 1;
-        if (this.index === Math.min(this.inputs.length, this.max)) {
-            this.index = 0;
-        }
-    }
-}
-
-
 class Chat {
     static User = "user";
     static Bot  = "bot";
@@ -163,7 +125,6 @@ class Chat {
     constructor(chat_id, chat_input_id) {
         Chat.CHAT       = this;
         this.ws         = new DFWebSocket();
-        this.history    = new History();
         this.commands   = new Commands();
         this.chat       = $(chat_id);
         this.chat_input = $(chat_input_id);
@@ -208,22 +169,11 @@ class Chat {
 
             const text = this.value.substr(0, this.value.length - 1);
 
-            chat.history.set(text);
             chat.add(new ChatMessage(Chat.User, text));
             chat.scroll();
 
             chat.ws.intent(text);
             this.value = "";
-        } else if (e.keyCode === 38) {
-            e.preventDefault();
-
-            chat.history.prev();
-            chat.chat_input.focus().val(chat.history.get());
-        } else if (e.keyCode === 40) {
-            e.preventDefault();
-
-            chat.history.next();
-            chat.chat_input.focus().val(chat.history.get());
         }
     }
 
