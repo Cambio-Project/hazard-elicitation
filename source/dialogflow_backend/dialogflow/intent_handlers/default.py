@@ -18,4 +18,5 @@ async def bye_handler(result) -> List[Dict]:
 
 
 async def help_handler(result) -> List[Dict]:
-    return [TextResponse.create(random_text(INTENT_HELP_TEXT))]
+    return [TextResponse.create(random_text(INTENT_HELP_TEXT)),
+            ActionResponse.create('command', ['event', 'e-guide'])]
