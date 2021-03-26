@@ -13,8 +13,7 @@ class Graph {
         curved_edges:      true,
         edge_arrow_size:   {w: 2, h: 6},
         zoom_range:        {min: 0.4, max: 4},
-        colors:            d3.scaleLog().domain([0, 100]).range(['white', 'blue'])
-        // d3.scaleOrdinal(d3.schemeCategory10)
+        colors:            d3.scaleLog().domain([0, 100]).range(["white", "blue"])
     }
 
     static CONFIG_ELEMENTS = [
@@ -35,6 +34,8 @@ class Graph {
         this.anchor = this.svg.append("g");
         this.anchor.on("click", function () { Graph.ContextMenu.hide() });
 
+        this.defs = this.svg.append("svg:defs")
+
         this.graph       = graph;
         this.edge_count  = {};
         this.graph_nodes = graph.nodes._values();
@@ -42,9 +43,7 @@ class Graph {
         const width      = this.svg.node().getBoundingClientRect().width;
         const height     = this.svg.node().getBoundingClientRect().height;
 
-        const priorities = this.graph_nodes.map(function (o) { if ("priority" in o) { return o["priority"]} });
-        Graph.set("colors", d3.scaleLinear().domain([0, Math.max(...priorities)]).range(["#DDEEFF", "#0055FF"]))
-
+        this.createLegend();
         this.createAnchor();
         this.createEdges();
         this.createNodes();
@@ -162,11 +161,53 @@ class Graph {
 
     /* Init Graph */
 
+    createLegend() {
+        const [start, stop] = ["#DDEEFF", "#0055FF"]
+        const priorities    = this.graph_nodes.map(function (o) { if ("priority" in o) { return o["priority"]} });
+        Graph.set("colors", d3.scaleLinear().domain([0, Math.max(...priorities)]).range([start, stop]));
+
+        this.legend = this.svg.append("g");
+        const text_anchor     = this.legend.append("g");
+        this.legend.append("rect")
+            .attr("x", "5px")
+            .attr("y", "5px")
+            .attr("width", 10)
+            .attr("height", 100)
+            .style("fill", "url(#gradient)");
+
+        text_anchor.append("text").text("high").attr("font-size", "12px").attr("x", "20px").attr("y", "11px");
+        text_anchor.append("text").text("low").attr("font-size", "12px").attr("x", "20px").attr("y", "106px");
+        text_anchor
+            .append("text")
+            .text("priority")
+            .attr("font-size", "12px")
+            .attr("x", "-80px")
+            .attr("y", "25px")
+            .attr("transform", "rotate(-90)");
+
+        this.gradient =
+            this.defs
+                .append("linearGradient")
+                .attr("id", "gradient")
+                .attr("x1", "0")
+                .attr("x2", "0")
+                .attr("y1", "0")
+                .attr("y2", "1");
+
+        this.gradient.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", stop);
+
+        this.gradient.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", start);
+    }
+
     createAnchor() {
         const node_size  = this.get("node_size");
         const arrow_size = this.get("edge_arrow_size");
-        this.anchor
-            .append("svg:defs")
+
+        this.defs
             .selectAll("marker")
             .data(["end"])
             .enter()
@@ -325,6 +366,8 @@ class Graph {
                         id:        el.id
                     }
                 }]);
+            } else {
+                Chat.this.ws.event("e-select-component");
             }
         }
     }
