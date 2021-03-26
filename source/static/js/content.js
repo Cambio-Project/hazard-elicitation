@@ -139,6 +139,7 @@ class Scenario {
 
     export() {
         const scenario_content = [JSON.stringify(this.normalizeScenario(this.json))];
+        const archname = this.json["arch"].substr(this.json["arch"].indexOf("."));
 
         const button     = document.createElement("button");
         button.className = "btn";
@@ -147,7 +148,7 @@ class Scenario {
 
         const link    = document.createElement("a");
         link.href     = URL.createObjectURL(new Blob(scenario_content, {type: "application/json"}));
-        link.download = "scenario.json";
+        link.download = "{}_{}_scenario.json".format(archname, this.json["artifact"]);
         link.append(button);
 
         return this.tableEntry("Export", link.outerHTML);
@@ -168,14 +169,14 @@ class Scenario {
               <table class="table">
                 ${this.export()}
                 ${this.tableEntry("Description", this.json["description"])}
-                ${this.tableEntry("Source", this.json["source"])}
-                ${this.tableEntry("Artifact", this.json["artifact"])}
+                ${this.tableEntry("Artifact", "{} {}".format(this.json["artifact"], this.json["component"]))}
+                ${this.tableEntry("Stimulus", this.json["stimulus"])}
               </table>
             </div>
             <div class="scenario-section col-lg-6">
               <table class="table">
+                ${this.tableEntry("Source", this.json["source"])}
                 ${this.tableEntry("Environment", this.json["environment"])}
-                ${this.tableEntry("Stimulus", this.json["stimulus"])}
                 ${this.tableEntry("Response", this.json["response"])}
                 ${this.tableEntry("Response Measure", this.json["response-measure"])}
               </table>

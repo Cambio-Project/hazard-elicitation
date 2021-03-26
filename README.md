@@ -1,7 +1,6 @@
 # Hazard Elicitation
 
 ![Tests](https://github.com/Cambio-Project/hazard-elicitation/workflows/Tests/badge.svg)
-![Deploy](https://github.com/Cambio-Project/hazard-elicitation/workflows/Deploy/badge.svg)
 
 [Live](https://hazardelicitation.eu-gb.mybluemix.net/ui/)
 
@@ -15,13 +14,13 @@ This project consists of 3 different applications:
   - Can create a generic architecture description of services and operation as a graph
   - Can validate models and architecture
   - Can perform an automated hazard analysis
-  - Can export a visualization of the architecture and analysis
+  - Can export a visualization of the architecture and the analysis
 - Conversational Interface:
   - Provides a chatbot interface
   - Guides a user through the elicitation of resilience scenarios
 - Hazard Elicitation:
   - Provides an import of the architecture visualization and analysis
-  - Provides a resilience scenario template
+  - Provides a resilience scenario template and export
 
 ## Setup
 

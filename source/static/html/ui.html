@@ -42,7 +42,7 @@
   <link type="text/css" rel="stylesheet" href="../../static/css/chat.css">
   <link type="text/css" rel="stylesheet" href="../../static/css/graph.css">
 
-  <title>Hazard Elicitation</title>
+  <title>Resilience Scenario Elicitation</title>
 </head>
 <body>
 
@@ -118,10 +118,10 @@
 
                 <div class="col-sm-5 help-container">
                   <h4 class="bline">Chat</h4><br>
-                    The chat is connected to a chatbot.
-                    Use the send button or press <code>Enter↵</code> to send a message.<br>
-                    The chatbot will guide you through the elicitation of a resilience scenario.
-                    It can answer questions and knows about tracing tools.
+                  The chat is connected to a chatbot.
+                  Use the send button or press <code>Enter↵</code> to send a message.<br>
+                  The chatbot will guide you through the elicitation of a resilience scenario.
+                  It can answer questions and knows about tracing tools.
                 </div>
 
                 <div class="col-sm-5 help-container">
@@ -270,7 +270,7 @@
                           Graph tooltips <img alt="" src="../../static/img/tooltip.png"/>
                         </label>
                         <div class="p-1">
-                          <input type="checkbox" id="use-tooltips" onchange="Config.updateControl(this);"/>
+                          <input type="checkbox" id="use-tooltips" onchange="Config.updateControl(this);" checked/>
                         </div>
                       </div>
 
@@ -281,7 +281,7 @@
                           Page tooltips <img alt="" src="../../static/img/tooltip.png"/>
                         </label>
                         <div class="p-1">
-                          <input type="checkbox" id="use-page-tooltips" onchange="Config.updateControl(this);"/>
+                          <input type="checkbox" id="use-page-tooltips" onchange="Config.updateControl(this);" checked/>
                         </div>
                       </div>
                     </div>
@@ -330,7 +330,19 @@
                       id="user-input"
                       placeholder="One moment please..."
                       disabled></textarea>
-            <button class="send-button" type="button" id="send">&#10148;</button>
+            <button class="send-button"
+                    data-toggle="tooltip"
+                    title="Send the message in the text area to the chatbot."
+                    type="button"
+                    id="send">
+              &#10148;
+            </button>
+            <a class="reset-chat-button"
+               data-toggle="tooltip"
+               title="Clear the contents of your conversation and restart the conversation."
+               onclick="Chat.this.ws.event('e-clear');Chat.this.ws.event('e-welcome')">
+              &#x21bb;
+            </a>
           </div>
         </div>
 

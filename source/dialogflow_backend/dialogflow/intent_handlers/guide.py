@@ -6,6 +6,15 @@ from util.text.text import random_text, text
 from util.text.ids import *
 
 
+async def kb_handler(result) -> List[Dict]:
+    guide = ActionResponse.create('command', ['event', 'e-guide'])
+
+    kb_title = result.query_result.knowledge_answers.answers[0].answer
+    if kb_title in text(INTENT_GUIDE_EXPLANATIONS):
+        return [CardResponse.create(**text(INTENT_GUIDE_EXPLANATIONS)[kb_title]), guide]
+    return [guide]
+
+
 async def guide_handler(result) -> List[Dict]:
     conversation = []
 
@@ -33,7 +42,7 @@ async def guide_handler(result) -> List[Dict]:
 
     # If option is given, explain it and add further quick reply options.
     if option_value:
-        conversation.append(CardResponse.create(option_value, **text(INTENT_GUIDE_OPTIONS)[option_value]))
+        conversation.append(CardResponse.create(**text(INTENT_GUIDE_EXPLANATIONS)[option_value]))
         conversation.append(TextResponse.create(random_text(INTENT_GUIDE_CONTINUE_TEXT)))
 
     # Otherwise tell the user to ask something.

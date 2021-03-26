@@ -6,14 +6,18 @@ def next_event(result):
     """
     context = get_context('c-elicitation', result)
     if context:
-        if is_in_context('arch', context):
-            continue_event = 'e-select-component'
-        elif is_in_context('component', context):
-            continue_event = 'e-specify-response'
+        if is_in_context('description', context):
+            continue_event = 'e-save-scenario'
+        elif is_in_context('response-measure', context):
+            continue_event = 'e-specify-description'
         elif is_in_context('response', context):
             continue_event = 'e-specify-response-measure'
-        elif is_in_context('response-measure', context):
-            continue_event = 'e-save-scenario'
+        elif is_in_context('stimulus', context):
+            continue_event = 'e-specify-response'
+        elif is_in_context('artifact', context):
+            continue_event = 'e-specify-stimulus'
+        elif is_in_context('arch', context):
+            continue_event = 'e-select-component'
         else:
             continue_event = 'e-select-architecture'
     else:

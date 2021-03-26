@@ -15,7 +15,8 @@ async def welcome_handler(result) -> List[Dict]:
 
     elicitation = get_context('c-elicitation', result)
     if is_in_context('arch', elicitation):
-        quick_reply.add_reply(text(INTENT_WELCOME_RESUME_TEXT), 'event', [next_event(result)])
+        arch = elicitation.parameters['arch']
+        quick_reply.add_reply(text(INTENT_WELCOME_RESUME_TEXT), 'select-architecture', [arch])
 
     conversation.append(quick_reply.__repr__())
 
