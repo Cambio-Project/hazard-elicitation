@@ -107,7 +107,7 @@ TEXT = {
         'Artifact':     {
             'title': 'Artifact',
             'text':  str(
-                'In this context a artifact is part of the graph that is constructed during the analysis. '
+                'In this context an artifact is part of the graph that is constructed during the analysis. '
                 'One type of artifact is a node which represents a service of the systems architecture. '
                 'Another type of artifact is an edge which represents an operation of the system.'
             )},
@@ -196,24 +196,24 @@ TEXT = {
     INTENT_ELICITATION_ARCHITECTURE_TEXT:                       {
         'title': '<b>Step 1</b> - Select the <b>architecture</b>',
         'text':  str(
-            'Below you are given a list of architectures. Please select one architecture.<br><br>'
-            '<b>Hint</b>: '
-            'Please make sure to exactly match the name of the architecture in case you write to the bot.'
+            'Below you are given a list of architectures. '
+            'Please select one architecture are tell me which you would like to choose.<br>'
         )
     },
     INTENT_ELICITATION_ARCHITECTURE_FOLLOWUP_NAME:              'Elicitation-Select-Architecture-Followup',
     INTENT_ELICITATION_COMPONENT_NAME:                          'Elicitation-Select-Component',
     INTENT_ELICITATION_COMPONENT_TEXT:                          {
-        'title': '<b>Step 2</b> - Select the <b>artifact</b> from <i>{}</i>',
-        'text':  str(
-            'Please select one artifact from the following options.<br><br>'
-            '<b>Hints</b>: '
-            '<ul>'
-            '<li>You can use the graph on the left to select an artifact if you don\'t find it in the options.</li>'
-            '<li>Please make sure to exactly match the name of the artifact in case you write to the bot. '
-            'Also make sure to tell the bot if you choose a service or an operation.</li>'
-            '</ul>'
-        )
+        'title':   '<b>Step 2</b> - Select the <b>artifact</b> from <i>{}</i>',
+        'text':    'Please select one artifact from the following options.<br>',
+        'spoiler': {
+            'title': 'Hints',
+            'text':  str(
+                '<ul>'
+                '<li>You can use the graph on the left to select an artifact if you don\'t find it in the options.</li>'
+                '<li>Please make sure to exactly match the name of the artifact in case you write to the bot. '
+                'Also make sure to tell the bot if you choose a service or an operation.</li>'
+                '</ul>')
+        }
     },
     INTENT_ELICITATION_COMPONENT_MISSING_TEXT:                  'Try again {} {} is not in the architecture.',
     INTENT_ELICITATION_COMPONENT_SERVICE_TEXT:                  'Here are the <b>services</b> to choose from ...',
@@ -221,17 +221,18 @@ TEXT = {
     INTENT_ELICITATION_COMPONENT_FOLLOWUP_NAME:                 'Elicitation-Select-Component-Followup',
     INTENT_ELICITATION_STIMULUS_NAME:                           'Elicitation-Specify-Stimulus',
     INTENT_ELICITATION_STIMULUS_TEXT:                           {
-        'title': '<b>Step 3</b> - Specify the <b>stimulus</b> for {} <i>{}</i>',
-        'text':  str(
-            'What is a potential stimulus for this {}?<br><br>'
-            '<b>Hint</b>: A typical stimulus would be a "crashed service", or a "slow responding operation".'
-        )
+        'title':   '<b>Step 3</b> - Specify the <b>stimulus</b> for {} <i>{}</i>',
+        'text':    'What is a potential stimulus for this {}?<br>',
+        'spoiler': {
+            'title': 'Hint',
+            'text':  'A typical stimulus would be a "crashed service", or a "slow responding operation".'
+        }
     },
     INTENT_ELICITATION_STIMULUS_FOLLOWUP_NAME:                  'Elicitation-Specify-Stimulus-Followup',
     INTENT_ELICITATION_STIMULUS_SOURCE_NAME:                    'Elicitation-Specify-Stimulus-Source',
     INTENT_ELICITATION_STIMULUS_SOURCE_TEXT:                    str(
         'What could be the <b>source</b> of this stimulus?<br><br>'
-        '<b>Hint</b>: Typical examples for the source would be "a technical issues", "a bug", or another artifact.'
+        '<b>Hint</b>: Typical examples for the source would be "a technical issue", "a bug", or another artifact.'
     ),
     INTENT_ELICITATION_STIMULUS_SOURCE_FOLLOWUP_NAME:           'Elicitation-Specify-Stimulus-Source-Followup',
     INTENT_ELICITATION_STIMULUS_ENVIRONMENT_NAME:               'Elicitation-Specify-Stimulus-Environment',
@@ -244,17 +245,21 @@ TEXT = {
     INTENT_ELICITATION_RESPONSE_NAME:                           'Elicitation-Specify-Response',
     INTENT_ELICITATION_RESPONSE_TEXT:                           {
         'title': '<b>Step 4</b> - Specify the <b>response</b> for <i>{}</i>',
-        'text':  str(
-            'A response defines what action should be performed against the stimuli.'
-        )
+        'text':  'A response defines what action should be performed against the stimuli.',
+        'spoiler': {
+            'title': '',
+            'text': ''
+        }
     },
     INTENT_ELICITATION_RESPONSE_FOLLOWUP_NAME:                  'Elicitation-Specify-Response-Followup',
     INTENT_ELICITATION_RESPONSE_MEASURE_NAME:                   'Elicitation-Specify-Response-Measure',
     INTENT_ELICITATION_RESPONSE_MEASURE_TEXT:                   {
         'title': '<b>Step 5</b> - Specify the <b>response measure</b> for <i>{}</i>',
-        'text':  str(
-            'A response measure quantifies the response.'
-        )
+        'text':  'A response measure quantifies the response.',
+        'spoiler': {
+            'title': '',
+            'text': ''
+        }
     },
     INTENT_ELICITATION_RESPONSE_MEASURE_NORMAL_NAME:            'Elicitation-Specify-Response-Measure-Normal',
     INTENT_ELICITATION_RESPONSE_MEASURE_NORMAL_TEXT:            str(
@@ -274,7 +279,14 @@ TEXT = {
     INTENT_ELICITATION_DESCRIPTION_NAME:                        'Elicitation-Specify-Description',
     INTENT_ELICITATION_DESCRIPTION_TEXT:                        {
         'title': '<b>Step 6</b> - Add the description',
-        'text':  'A description summarizes the scenario.'
+        'text':  'A description summarizes the scenario.',
+        'spoiler': {
+            'title': 'Hint',
+            'text': str(
+                'The description gives an overview about the scenario. '
+                'This has no influence on ... but it might give other engineers a better understanding of the scenario.'
+            )
+        }
     },
     INTENT_ELICITATION_DESCRIPTION_QUICK_RESPONSE:              '{} of {} {}',
     INTENT_ELICITATION_DESCRIPTION_FOLLOWUP_NAME:               'Elicitation-Specify-Description-Followup',
@@ -297,7 +309,7 @@ TEXT = {
     INTENT_ELICITATION_SAVE_SCENARIO_SAVE_CONFIRM_TEXT:         'Yes, save the scenario. &#x2714;',
     INTENT_ELICITATION_SAVE_SCENARIO_MODIFY_OPTIONS:            {
         'e-select-component':         'Modify the artifact&#x1F9F1;',
-        'e-specify-stimuli':          'Modify the stimuli &#x26A0;',
+        'e-specify-stimuli':          'Modify the stimulus &#x26A0;',
         'e-specify-response':         'Modify the response &#x27A1;',
         'e-specify-response-measure': 'Modify the response measure &#x1F4C8;',
         'e-specify-description':      'Modify the description &#x1F4DD;'

@@ -1,3 +1,4 @@
+import uuid
 from typing import List, Dict
 
 from asgiref.sync import sync_to_async
@@ -79,9 +80,8 @@ async def elicitation_component_handler(result) -> List[Dict]:
         # Provide the user with a selection of services and operations.
         conversation.append(FormattingResponse.create('divider'))
         content = text(INTENT_ELICITATION_COMPONENT_TEXT)
-        response = CardResponse.create(
-            title=content['title'].format(elicitation.parameters['arch']),
-            text=content['text'])
+        response = CardResponse.create(title=content['title'].format(elicitation.parameters['arch']),
+                                       text=content['text'], spoiler=content['spoiler'])
         conversation.append(response)
 
         # Services
@@ -146,7 +146,7 @@ async def elicitation_stimuli_handler(result) -> List[Dict]:
         content = text(INTENT_ELICITATION_STIMULUS_TEXT)
         response = CardResponse.create(
             title=content['title'].format(artifact, elicitation.parameters['component']),
-            text=content['text'].format(artifact))
+            text=content['text'].format(artifact), spoiler=content['spoiler'])
         conversation.append(response)
 
         stimuli = text(STIMULUS_RESPONSE_TEXTS)[elicitation.parameters['artifact']]['stimuli']
@@ -539,7 +539,7 @@ async def elicitation_save_scenario_handler(result) -> List[Dict]:
         accordion = AccordionResponse.create([
             {'title': 'Description', 'text': scenario['description']},
             {'title': 'Artifact', 'text': '{} <b>{}</b>'.format(scenario['artifact'], scenario['component'])},
-            {'title': 'Stimulus', 'text':  '<i>{}</i> caused by <i>{}</i> (<i>{}</i>)'.format(
+            {'title': 'Stimulus', 'text': '<i>{}</i> caused by <i>{}</i> (<i>{}</i>)'.format(
                 scenario['stimulus'],
                 scenario['source'],
                 scenario['environment'])},

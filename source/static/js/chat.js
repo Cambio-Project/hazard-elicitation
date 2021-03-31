@@ -80,8 +80,8 @@ class DFWebSocket extends CustomWebSocket {
     dialogflow_response(data) {
         chat.removePending();
         for (const [key, val] of data._entries()) {
-            const type   = val.type;
-            let payload  = val.payload;
+            const type  = val.type;
+            let payload = val.payload;
 
             switch (type) {
                 case "empty":
@@ -101,7 +101,10 @@ class DFWebSocket extends CustomWebSocket {
                     chat.add(new ChatMessage(Chat.Bot, payload.text));
                     break;
                 case "card":
-                    chat.add(new ChatCard(payload));
+                    const card = new ChatCard(payload);
+                    chat.add(card);
+                    if (card.spoiler !== {})
+                        $(`#${card.spoiler_id}`).collapse();
                     break;
                 case "quick_reply":
                     chat.add(new ChatQuickReply(payload.values));
@@ -249,20 +252,31 @@ class ChatMessage extends ChatElement {
 }
 
 class ChatCard extends ChatElement {
+    static ID = 0;
+
     constructor(card) {
         super(Chat.Rich);
-        this.title = card.title;
-        this.text  = card.text || "";
-        this.image = card.image || null;
-        this.link  = card.link || null;
+        this.spoiler_id = ChatCard.ID;
+        this.title      = card.title;
+        this.text       = card.text || "";
+        this.image      = card.image || null;
+        this.spoiler    = card.spoiler || null;
+        this.link       = card.link || null;
+
+        ChatCard.ID += 1;
     }
 
     html() {
-        let image = this.image ? `<img class="card-img-top mb-3" src='${this.image}' alt=""/>` : "";
-        let link  = this.link ? `
+        let image   = this.image ? `<img class="card-img-top mb-3" src='${this.image}' alt=""/>` : "";
+        let link    = this.link ? `
             <a href="${this.link.url}" target="_blank">
               <button class="btn" type="button">${this.link.text}</button>
             </a>` : "";
+        let spoiler = this.spoiler ? `
+            <a class="btn-link" data-toggle="collapse" role="button" aria-expanded="false" href="#spoiler${this.spoiler_id}">
+              <i class="collapse-arrow"></i><b>${this.spoiler.title}</b>:
+            </a>
+            <div class="collapse" id="spoiler${this.spoiler_id}">${this.spoiler.text}</div>` : "";
 
         return super.html().format(`
             <div class="card ${this.actor}">
@@ -271,6 +285,7 @@ class ChatCard extends ChatElement {
                 ${image}
                 <p class="card-text">${this.text}</p>
                 ${link}
+                ${spoiler}
               </div>
             </div>`);
     }
