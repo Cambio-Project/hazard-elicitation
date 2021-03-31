@@ -31,3 +31,13 @@ async def welcome_confirm_handler(result) -> List[Dict]:
 async def welcome_decline_handler(result) -> List[Dict]:
     response = ActionResponse.create('command', ['event', 'e-guide'])
     return [response]
+
+
+async def welcome_continue_handler(result) -> List[Dict]:
+    elicitation = get_context('c-elicitation', result)
+    if is_in_context('arch', elicitation):
+        arch = elicitation.parameters['arch']
+
+        return [ActionResponse.create('command', ['select-architecture', arch])]
+    else:
+        return [ActionResponse.create('command', ['event', 'e-select-architecture'])]
