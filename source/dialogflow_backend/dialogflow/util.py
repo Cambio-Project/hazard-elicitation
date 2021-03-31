@@ -44,3 +44,12 @@ def get_context(name, result):
 
 def is_in_context(parameter, context):
     return context and parameter in context.parameters and context.parameters[parameter]
+
+
+def set_context_parameters(result, context_name, parameters):
+    for index, context in enumerate(result.query_result.output_contexts):
+        if context.name.endswith(context_name):
+            for key, value in parameters.items():
+                result.query_result.output_contexts[index].parameters[key] = value
+
+    return result

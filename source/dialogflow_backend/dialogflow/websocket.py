@@ -1,9 +1,12 @@
 import json
 
+from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+from architecture_extraction_backend.models.study import InteractionModel
 from dialogflow_backend.dialogflow.client import DialogFlowClient
 from dialogflow_backend.dialogflow.response_handler import create_response
+from hazard_elicitation.settings import COLLECT_STUDY
 from util.log import warning, error, debug
 from util.tracing import add_trace
 
@@ -59,6 +62,9 @@ class DFWebsocket(AsyncWebsocketConsumer):
         @param uuid:        UUID created on client.
         """
         try:
+            if COLLECT_STUDY:
+                await sync_to_async(InteractionModel.objects.create)(session_id=uuid, content=data, actor="User")
+
             await self.response_handler(DialogFlowClient.detect_intent(data, contexts, uuid))
         except Exception as e:
             error('Something went wrong during text input processing: {}'.format(e))
@@ -72,6 +78,9 @@ class DFWebsocket(AsyncWebsocketConsumer):
         @param uuid:        UUID created on client.
         """
         try:
+            if COLLECT_STUDY:
+                await sync_to_async(InteractionModel.objects.create)(session_id=uuid, content=data, actor="User")
+
             await self.response_handler(DialogFlowClient.detect_event(data, contexts, uuid))
         except Exception as e:
             error('Something went wrong during event input processing: {}'.format(e))
@@ -83,6 +92,13 @@ class DFWebsocket(AsyncWebsocketConsumer):
         @param result:  DF result of intent detection.
         """
         response_data = await create_response(result)
+
+        if COLLECT_STUDY:
+            session_name = result.query_result.output_contexts[0].name
+            session = session_name[session_name.find('sessions') + 9:session_name.rfind('/contexts')]
+            text = result.query_result.intent.display_name
+
+            await sync_to_async(InteractionModel.objects.create)(session_id=session, content=text, actor="Bot")
 
         await self.send(json.dumps({
             'type': 'dialogflow_response',
