@@ -171,13 +171,15 @@ class Chat {
         if (e.keyCode === 13) {
             e.preventDefault();
 
-            const text = this.value.substr(0, this.value.length - 1);
+            const text = this.value.substr(0, this.value.length - 1).replaceAll("\n", "");
 
-            chat.add(new ChatMessage(Chat.User, text));
-            chat.scroll();
+            if (text.length > 0) {
+                chat.add(new ChatMessage(Chat.User, text));
+                chat.scroll();
 
-            chat.ws.intent(text);
-            this.value = "";
+                chat.ws.intent(text);
+                this.value = "";
+            }
         }
     }
 

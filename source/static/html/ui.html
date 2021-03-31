@@ -285,7 +285,7 @@
                       </div>
                     </div>
 
-                    <!-- Simulation -->
+                    <!-- Simulation
                     <div class="control-entry rline text-center">
                       <div class="row">
                         <p class="col-sm-12 col-form-label">Graph Simulation</p>
@@ -297,6 +297,7 @@
                         <button class="btn" type="button" onclick="Graph.resumeSimulation();">Resume</button>
                       </div>
                     </div>
+                    -->
 
                   </div>
                 </div>
@@ -336,11 +337,10 @@
                     id="send">
               &#10148;
             </button>
-            <a class="reset-chat-button"
-               data-toggle="tooltip"
+            <a class="reset-chat-button" data-toggle="tooltip"
                title="Clear the contents of your conversation and restart the conversation."
                onclick="Chat.this.ws.event('e-clear');Chat.this.ws.event('e-welcome')">
-              &#x21bb;
+              <span style="color: red; font-weight: bolder">&#x21bb;</span>
             </a>
           </div>
         </div>
