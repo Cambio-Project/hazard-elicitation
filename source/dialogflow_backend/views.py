@@ -42,11 +42,15 @@ def export_study(request):
                     .filter(session_id=session_id) \
                     .values('date', 'actor', 'content'):
                 lines += '{},{},{}\n'.format(obj['date'], obj['actor'], obj['content'])
-            archive.writestr(session_id + '.csv', ''.join(lines).encode('utf-8'))
+            archive.writestr(session_id + '_interaction.csv', ''.join(lines).encode('utf-8'))
 
             # Save scenarios for each participant
-            for obj in ScenarioModel.objects.all():
-                archive.writestr(obj.id, obj.content)
+            lines = []
+            for obj in ScenarioModel.objects \
+                    .filter(session_id=session_id) \
+                    .values('date', 'actor', 'content'):
+                lines += '{},{}\n'.format(obj['date'], obj['content'])
+            archive.writestr(session_id + '_scenario.csv', ''.join(lines).encode('utf-8'))
 
         response['Content-Disposition'] = 'attachment; filename={}'.format('study.zip')
         return response
