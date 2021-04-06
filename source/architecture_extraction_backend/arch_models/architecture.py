@@ -76,8 +76,8 @@ class Architecture:
 
         for _, n in self._graph.nodes.items():
             result['nodes'][n.id] = {
-                'id':    n.id,
-                'label': n.label,
+                'id':       n.id,
+                'label':    n.label,
                 'priority': self._graph.node_priority(n)
             }
 
@@ -89,10 +89,10 @@ class Architecture:
         for _, e in self._graph.edges.items():
             operation = self._model.services[e.source.label].operations[e.label]
             result['edges'][e.id] = {
-                'id':     e.id,
-                'label':  e.label,
-                'source': e.source.id,
-                'target': e.target.id,
+                'id':       e.id,
+                'label':    e.label,
+                'source':   e.source.id,
+                'target':   e.target.id,
                 'priority': result['nodes'][e.source.id]['priority'] + result['nodes'][e.target.id]['priority']
             }
 
@@ -103,22 +103,27 @@ class Architecture:
                     'tags':     operation.tags
                 }
 
-        for hazard in self._model.hazards:
-            result['hazards'][hazard.id] = {
-                'id':            hazard.id,
-                'type':          hazard.type,
-                'metric':        hazard.metric,
-                'property_type': hazard.prop_type,
-                'property_name': hazard.prop_name,
-                'keyword':       hazard.keyword,
-                'value':         hazard.value,
-                'nodes':         hazard.nodes,
-                'edges':         hazard.edges
-            }
+        # Unused: would create existing hazards at the start of the elicitation.
+        # for hazard in self._model.hazards:
+        #     result['hazards'][hazard.id] = {
+        #         'id':            hazard.id,
+        #         'type':          hazard.type,
+        #         'metric':        hazard.metric,
+        #         'property_type': hazard.prop_type,
+        #         'property_name': hazard.prop_name,
+        #         'keyword':       hazard.keyword,
+        #         'value':         hazard.value,
+        #         'nodes':         hazard.nodes,
+        #         'edges':         hazard.edges
+        #     }
 
-        for stimulus in self._model.stimuli:
-            result['stimuli'][stimulus.id] = {
-            }
+        for hazard in self._model.hazards:
+            if hazard.type not in result['analysis']:
+                result['analysis'][hazard.type] = {
+                    'property_type': hazard.prop_type,
+                    'metric':        hazard.metric,
+                    'keyword':       hazard.keyword
+                }
 
         if pretty:
             return json.dumps(result, indent=2)

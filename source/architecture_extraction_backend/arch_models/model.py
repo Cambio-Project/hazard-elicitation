@@ -2,10 +2,9 @@ from typing import Union, Dict, Tuple, List, Any
 from typing.io import IO
 import pandas as pd
 
-from architecture_extraction_backend.arch_models.hazard import Hazard, ResponseTimeDeviation, ResponseTimeSpike
+from architecture_extraction_backend.arch_models.hazard import *
 from architecture_extraction_backend.arch_models.operation import Operation
 from architecture_extraction_backend.arch_models.service import Service
-from architecture_extraction_backend.arch_models.stimulus import Stimulus
 from util.log import tb
 
 
@@ -92,14 +91,6 @@ class IModel:
     def hazards(self, hazards: List[Hazard]):
         self._hazards = hazards
 
-    @property
-    def stimuli(self) -> List[Stimulus]:
-        return self._stimuli
-
-    @stimuli.setter
-    def stimuli(self, stimuli: List[Stimulus]):
-        self._stimuli = stimuli
-
     # Private
 
     def _parse_multiple(self, model: Dict[str, Any]) -> bool:
@@ -148,13 +139,14 @@ class IModel:
         self._valid = valid
         return valid, stack
 
-    def analyze(self) -> List[Hazard]:
-        stack = []
+    def analyze(self) -> Dict[str, List[Hazard]]:
+        stack = {}
 
         try:
             for _, service in self._services.items():
                 for _, operation in service.operations.items():
                     series = pd.Series(operation.durations.values())
+                    stack[operation.name] = []
 
                     # Filter outliers by 3 times standard deviation
                     filtered = series[~((series-series.mean()).abs() > series.std() * ResponseTimeSpike.DEVIATION_FACTOR)]
@@ -162,14 +154,24 @@ class IModel:
 
                     # Min and Max response times differ by at least 50%
                     if diff > ResponseTimeDeviation.DEVIATION_INTERVAL:
-                        stack.append(ResponseTimeDeviation(operation, diff))
+                        stack[operation.name].append(ResponseTimeDeviation(operation, diff))
 
                     # At least one outlier detected
                     if len(filtered) < len(series):
                         # Spike workload
                         deviation = filtered.max() - series.max()
                         if deviation > 0:
-                            stack.append(ResponseTimeSpike(operation, deviation))
+                            stack[operation.name].append(ResponseTimeSpike(operation, deviation))
+
+            for _, service in self._services.items():
+                for _, operation in service.operations.items():
+                    if operation.name in stack:
+                        if len(stack[operation.name]) > 0:
+                            for hazard in stack[operation.name]:
+                                if isinstance(hazard, ResponseTimeSpike):
+                                    stack[service.name].append(ServiceFailure(service))
+                                elif isinstance(hazard, ResponseTimeDeviation):
+                                    stack[service.name].append(DecreasedServicePerformance(service))
 
             return stack
         except BaseException as e:

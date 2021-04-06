@@ -166,8 +166,8 @@ class Graph {
         const priorities    = this.graph_nodes.map(function (o) { if ("priority" in o) { return o["priority"]} });
         Graph.set("colors", d3.scaleLinear().domain([0, Math.max(...priorities)]).range([start, stop]));
 
-        this.legend = this.svg.append("g");
-        const text_anchor     = this.legend.append("g");
+        this.legend       = this.svg.append("g");
+        const text_anchor = this.legend.append("g").attr("class", "node-labels");
         this.legend.append("rect")
             .attr("x", "5px")
             .attr("y", "5px")
@@ -386,9 +386,9 @@ class Graph {
                     lifespan:   100,
                     parameters: {arch: Graph.this.minimal()}
                 }, {
-                    name:       "c-hazard",
+                    name:       "c-analysis",
                     lifespan:   100,
-                    parameters: {stimuli: Graph.this.graph.stimuli}
+                    parameters: {analysis: Graph.this.graph.analysis}
                 }]);
                 Chat.this.ws.event("e-select-component", [{
                     name:       "c-elicitation",

@@ -39,11 +39,15 @@ def upload(request):
             error(e)
             return HttpResponse('Processing error: Model could not be read.', status=500)
 
-        # Validate
         if model:
+
+            # Validate
             success, exceptions = model.validate(True)
             if not success:
                 return HttpResponse('Validation error: ' + '\n- ' + '\n- '.join(map(str, exceptions)), status=500)
+
+            # Analyze
+            model.analyze()
 
         # Create architecture
         if model:
