@@ -122,6 +122,30 @@ TEXT = {
             'text':  str(
                 'A stimulus is responsible for the deviation from the normal behaviour of a software system.'
             )},
+        'Source':     {
+            'title': 'Source',
+            'text':  str(
+                'The source describes the occurrence of the stimulus.'
+            )},
+        'Environment':     {
+            'title': 'Environment',
+            'text':  str(
+                'The environment represents the state that the system is when the stimulus arises.'
+            )},
+        'Response':     {
+            'title': 'Response',
+            'text':  str(
+                'A response specifies the behaviour the system when the stimulus arises.'
+            )},
+        'Response Measure':     {
+            'title': 'Response Measure',
+            'text':  str(
+                'The response measure quantifies the response. '
+                'There are two measures that are used in the response measure. '
+                'One describes the normal operating window of a service/operation. '
+                'The other describes the recovery time until the service/operation returns to the normal '
+                'operation window.'
+            )},
         'Tracing':      {
             'title': 'Tracing',
             'link':  {
