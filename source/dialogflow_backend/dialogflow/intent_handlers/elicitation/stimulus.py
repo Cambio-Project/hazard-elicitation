@@ -3,12 +3,10 @@ from typing import List, Dict
 from google.protobuf.struct_pb2 import ListValue
 
 from dialogflow_backend.dialogflow.intent_handlers.elicitation.component import elicitation_component_handler
-from dialogflow_backend.dialogflow.response_types import FormattingResponse, ActionResponse, CardResponse, \
-    QuickReplyResponse, TextResponse
+from dialogflow_backend.dialogflow.response_types import *
 from dialogflow_backend.dialogflow.util import get_context, is_in_context, set_context_parameters
 from util.log import error
-from util.text.ids import INTENT_ELICITATION_STIMULUS_TEXT, STIMULUS_RESPONSE_TEXTS, \
-    INTENT_ELICITATION_STIMULUS_SOURCE_TEXT, INTENT_ELICITATION_STIMULUS_ENVIRONMENT_TEXT
+from util.text.ids import *
 from util.text.text import text, random_selection
 
 
@@ -18,6 +16,7 @@ async def elicitation_stimuli_handler(result) -> List[Dict]:
 
         elicitation = get_context('c-elicitation', result)
         config_context = get_context('c-config', result)
+        analysis_context = get_context('c-analysis', result)
 
         if is_in_context('stimulus', config_context):
             stimulus = config_context.parameters['stimulus']
@@ -77,6 +76,7 @@ async def elicitation_stimuli_source_handler(result) -> List[Dict]:
     try:
         conversation = [FormattingResponse.create('divider')]
 
+        elicitation = get_context('c-elicitation', result)
         config_context = get_context('c-config', result)
 
         if is_in_context('source', config_context):
@@ -94,7 +94,11 @@ async def elicitation_stimuli_source_handler(result) -> List[Dict]:
                 }
             }]])]
 
-        conversation.append(TextResponse.create(text(INTENT_ELICITATION_STIMULUS_SOURCE_TEXT)))
+        content = text(INTENT_ELICITATION_STIMULUS_SOURCE_TEXT)
+        conversation.append(CardResponse.create(
+            title=content['title'].format(elicitation.parameters['stimulus']),
+            text=content['text'], spoiler=content['spoiler']
+        ))
 
         return conversation
 
@@ -118,6 +122,7 @@ async def elicitation_stimuli_environment_handler(result) -> List[Dict]:
     try:
         conversation = [FormattingResponse.create('divider')]
 
+        elicitation = get_context('c-elicitation', result)
         config_context = get_context('c-config', result)
 
         if is_in_context('environment', config_context):
@@ -135,7 +140,10 @@ async def elicitation_stimuli_environment_handler(result) -> List[Dict]:
                 }
             }]])]
 
-        conversation.append(TextResponse.create(text(INTENT_ELICITATION_STIMULUS_ENVIRONMENT_TEXT)))
+        content = text(INTENT_ELICITATION_STIMULUS_ENVIRONMENT_TEXT)
+        conversation.append(CardResponse.create(
+            title=content['title'].format(elicitation.parameters['stimulus']),
+            text=content['text'], spoiler=content['spoiler']))
 
         return conversation
 
