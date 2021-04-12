@@ -162,7 +162,7 @@ class Graph {
     /* Init Graph */
 
     createLegend() {
-        const [start, stop] = ["#DDEEFF", "#0055FF"]
+        const [start, stop] = ["#DDEEFF", "#0077DD"]
         const priorities    = this.graph_nodes.map(function (o) { if ("priority" in o) { return o["priority"]} });
         Graph.set("colors", d3.scaleLinear().domain([0, Math.max(...priorities)]).range([start, stop]));
 
@@ -232,6 +232,7 @@ class Graph {
             .enter()
             .append("path")
             .attr("id", function (e) { return "e" + e.id; })
+            .attr("stroke", function (e) { return Graph.get("colors")(e.priority); })
             .attr("marker-end", "url(#end)")
             .attr("d", "M 0 0 L 0 0")
             .on("contextmenu", Graph.onContextMenu)

@@ -41,7 +41,8 @@
 .arrowhead { fill : var(--arrowhead-color); }
 
 .nodes {
-  stroke-width : 0;
+  stroke       : var(--primary-text-color);
+  stroke-width : 1px;
   transition   : 300ms;
 }
 
