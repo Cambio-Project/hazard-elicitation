@@ -11,6 +11,7 @@ class Graph {
         edge_label_offset: {x: 10, y: 15, dy: -5},
         edge_label_font:   {size: 10, dx: 2, dy: 12},
         curved_edges:      true,
+        legend_size:       {dx: 5, dy: 10,w: 10, h: 140, font: 16},
         edge_arrow_size:   {w: 2, h: 6},
         zoom_range:        {min: 0.4, max: 4},
         colors:            d3.scaleLog().domain([0, 100]).range(["white", "blue"])
@@ -165,24 +166,36 @@ class Graph {
         const [start, stop] = ["#DDEEFF", "#0077DD"]
         const priorities    = this.graph_nodes.map(function (o) { if ("priority" in o) { return o["priority"]} });
         Graph.set("colors", d3.scaleLinear().domain([0, Math.max(...priorities)]).range([start, stop]));
+        const sizes = Graph.get("legend_size");
 
         this.legend       = this.svg.append("g");
         const text_anchor = this.legend.append("g").attr("class", "node-labels");
         this.legend.append("rect")
-            .attr("x", "5px")
-            .attr("y", "5px")
-            .attr("width", 10)
-            .attr("height", 100)
+            .attr("x", sizes.dx + "px")
+            .attr("y", sizes.dy + "px")
+            .attr("width", sizes.w)
+            .attr("height", sizes.h)
             .style("fill", "url(#gradient)");
 
-        text_anchor.append("text").text("high").attr("font-size", "12px").attr("x", "20px").attr("y", "11px");
-        text_anchor.append("text").text("low").attr("font-size", "12px").attr("x", "20px").attr("y", "106px");
+        text_anchor
+            .append("text")
+            .text("high")
+            .attr("font-size", sizes.font + "px")
+            .attr("x", (sizes.w + 10) + "px")
+            .attr("y", (sizes.font / 2 + sizes.dy) + "px");
+
+        text_anchor
+            .append("text").text("low")
+            .attr("font-size", sizes.font + "px")
+            .attr("x", (sizes.w + 10) + "px")
+            .attr("y", (sizes.font / 2 + sizes.h + sizes.dy) + "px");
+
         text_anchor
             .append("text")
             .text("priority")
-            .attr("font-size", "12px")
-            .attr("x", "-82px")
-            .attr("y", "30px")
+            .attr("font-size", sizes.font + "px")
+            .attr("x", -(sizes.h / 2 + 2.5 * sizes.font) + "px")
+            .attr("y", (sizes.w * 2 + 10) + "px")
             .attr("transform", "rotate(-90)");
 
         this.gradient =
