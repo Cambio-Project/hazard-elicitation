@@ -83,7 +83,7 @@ TEXT = {
         'Architecture', 'Analysis', 'Artifact', 'Description', 'Stimulus', 'Tracing'
     ],
     INTENT_GUIDE_EXPLANATIONS:                             {
-        'Architecture': {
+        'Architecture':     {
             'title': 'Architecture',
             'text':  str(
                 'An architecture is constructed from the result of a '
@@ -97,47 +97,47 @@ TEXT = {
             },
             'image': 'static/img/guide/arch.png'
         },
-        'Analysis':     {
+        'Analysis':         {
             'title': 'Analysis',
             'text':  str(
                 'In the analysis of a trace services and operations are identified. '
                 'The relationships between these services and operations is visualized as graph. '
                 'You can see the constructed graph on the left.'
             )},
-        'Artifact':     {
+        'Artifact':         {
             'title': 'Artifact',
             'text':  str(
                 'In this context an artifact is part of the graph that is constructed during the analysis. '
                 'One type of artifact is a node which represents a service of the systems architecture. '
                 'Another type of artifact is an edge which represents an operation of the system.'
             )},
-        'Description':  {
+        'Description':      {
             'title': 'Description',
             'text':  str(
                 'A description in the context of resilience scenarios summarizes the content of the whole '
                 'scenario in one short sentence.'
             )},
-        'Stimulus':     {
+        'Stimulus':         {
             'title': 'Stimulus',
             'text':  str(
                 'A stimulus is responsible for the deviation from the normal behaviour of a software system.'
             )},
-        'Source':     {
+        'Source':           {
             'title': 'Source',
             'text':  str(
                 'The source describes the occurrence of the stimulus.'
             )},
-        'Environment':     {
+        'Environment':      {
             'title': 'Environment',
             'text':  str(
                 'The environment represents the state that the system is when the stimulus arises.'
             )},
-        'Response':     {
+        'Response':         {
             'title': 'Response',
             'text':  str(
                 'A response specifies the behaviour the system when the stimulus arises.'
             )},
-        'Response Measure':     {
+        'Response Measure': {
             'title': 'Response Measure',
             'text':  str(
                 'The response measure quantifies the response. '
@@ -146,7 +146,7 @@ TEXT = {
                 'The other describes the recovery time until the service/operation returns to the normal '
                 'operation window.'
             )},
-        'Tracing':      {
+        'Tracing':          {
             'title': 'Tracing',
             'link':  {
                 'text': 'Learn more about tracing',
@@ -159,7 +159,7 @@ TEXT = {
                 'experienced system administrators or technical-support personnel and by software monitoring tools to '
                 'diagnose common problems with software. Tracing is a cross-cutting concern.'
             )},
-        'Zipkin':       {
+        'Zipkin':           {
             'title': 'Zipkin',
             'link':  {
                 'text': 'Learn more about zipkin',
@@ -168,7 +168,7 @@ TEXT = {
                 'Zipkin is a distributed tracing system. It helps gather timing data needed to troubleshoot latency '
                 'problems in service architectures. Features include both the collection and lookup of this data.'
             )},
-        'Jaeger':       {
+        'Jaeger':           {
             'title': 'Jaeger',
             'link':  {
                 'text': 'Learn more about jaeger',
@@ -258,18 +258,27 @@ TEXT = {
     INTENT_ELICITATION_STIMULUS_FOLLOWUP_NAME:             'Elicitation-Specify-Stimulus-Followup',
     INTENT_ELICITATION_STIMULUS_DEFAULT_NAME:              'Elicitation-Specify-Stimulus-Default',
     INTENT_ELICITATION_STIMULUS_SOURCE_NAME:               'Elicitation-Specify-Stimulus-Source',
-    INTENT_ELICITATION_STIMULUS_SOURCE_TEXT:               str(
-        'What could be the <b>source</b> of this stimulus?<br><br>'
-        '<b>Hint</b>: Typical examples for the source would be "a technical issue", "a bug", or another artifact.'
-    ),
+    INTENT_ELICITATION_STIMULUS_SOURCE_TEXT:               {
+        'title':   '<b>Step 3.1</b> - Specify the <b>source</b> of the stimulus <i>{}</i>',
+        'text':    'What could be the <b>source</b> of this stimulus?<br>',
+        'spoiler': {
+            'title': 'Hint',
+            'text':  'Typical examples for the source would be "a technical issue", "a bug", or another artifact.'
+        }
+    },
     INTENT_ELICITATION_STIMULUS_SOURCE_FOLLOWUP_NAME:      'Elicitation-Specify-Stimulus-Source-Followup',
     INTENT_ELICITATION_STIMULUS_SOURCE_DEFAULT_NAME:       'Elicitation-Specify-Stimulus-Source-Default',
     INTENT_ELICITATION_STIMULUS_ENVIRONMENT_NAME:          'Elicitation-Specify-Stimulus-Environment',
-    INTENT_ELICITATION_STIMULUS_ENVIRONMENT_TEXT:          str(
-        'What would be the <b>environment</b> of the system at the time the stimulus occurs?<br><br>'
-        '<b>Hint</b>: The situation in which the system is in can be used as a synonym for the environment. Typical '
-        'examples for the environment would be "during startup", "during normal operation", or "at high workload".'
-    ),
+    INTENT_ELICITATION_STIMULUS_ENVIRONMENT_TEXT:          {
+        'title':   '<b>Step 3.2</b> - Specify the <b>environment</b> of the stimulus <i>{}</i>',
+        'text':    'What would be the <b>environment</b> of the system at the time the stimulus occurs?<br>',
+        'spoiler': {
+            'title': 'Hint',
+            'text':  str(
+                'The situation in which the system is in can be used as a synonym for the environment. Typical examples'
+                ' for the environment would be "during startup", "during normal operation", or "at high workload".')
+        }
+    },
     INTENT_ELICITATION_STIMULUS_ENVIRONMENT_FOLLOWUP_NAME: 'Elicitation-Specify-Stimulus-Environment-Followup',
     INTENT_ELICITATION_STIMULUS_ENVIRONMENT_DEFAULT_NAME:  'Elicitation-Specify-Stimulus-Environment-Default',
     INTENT_ELICITATION_RESPONSE_NAME:                      'Elicitation-Specify-Response',
@@ -277,7 +286,7 @@ TEXT = {
         'title':   '<b>Step 4</b> - Specify the <b>response</b> for <i>{}</i>',
         'text':    'A response defines what action should be performed against the stimuli.',
         'spoiler': {
-            'title': '',
+            'title': 'Hint',
             'text':  ''
         }
     },

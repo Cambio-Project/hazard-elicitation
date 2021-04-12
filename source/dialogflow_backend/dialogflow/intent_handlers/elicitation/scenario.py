@@ -1,9 +1,13 @@
 from typing import List, Dict
 
+from asgiref.sync import sync_to_async
+
+from architecture_extraction_backend.models.study import ScenarioModel
 from dialogflow_backend.dialogflow.intent_handlers.elicitation.description import elicitation_description_handler
 from dialogflow_backend.dialogflow.response_types import FormattingResponse, CardResponse, TextResponse, \
     AccordionResponse, QuickReplyResponse, ActionResponse
 from dialogflow_backend.dialogflow.util import get_context
+from hazard_elicitation.settings import COLLECT_STUDY
 from util.log import error
 from util.text.ids import INTENT_ELICITATION_SUMMARY_OPERATION_MEASURE_TEXT, INTENT_ELICITATION_SAVE_SCENARIO_TEXT, \
     INTENT_ELICITATION_SAVE_SCENARIO_CONTINUE_TEXT, INTENT_ELICITATION_SAVE_SCENARIO_SAVE_TEXT, \
@@ -87,6 +91,12 @@ async def elicitation_save_scenario_handler(result) -> List[Dict]:
             quick_replies.add_reply(option, 'event', [event])
         quick_replies.add_reply(text(INTENT_ELICITATION_SAVE_SCENARIO_SAVE_CONFIRM_TEXT), 'save-scenario', [scenario])
         conversation.append(quick_replies.__repr__())
+
+        if COLLECT_STUDY:
+            session_name = result.query_result.output_contexts[0].name
+            session = session_name[session_name.find('sessions') + 9:session_name.rfind('/contexts')]
+
+            await sync_to_async(ScenarioModel.objects.create)(session_id=session, content=scenario)
 
         return conversation
 

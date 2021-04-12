@@ -48,7 +48,7 @@ def export_study(request):
             lines = []
             for obj in ScenarioModel.objects \
                     .filter(session_id=session_id) \
-                    .values('date', 'actor', 'content'):
+                    .values('date', 'content'):
                 lines += '{},{}\n'.format(obj['date'], obj['content'])
             archive.writestr(session_id + '_scenario.csv', ''.join(lines).encode('utf-8'))
 
