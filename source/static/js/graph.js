@@ -12,6 +12,7 @@ class Graph {
         edge_label_font:   {size: 10, dx: 2, dy: 12},
         curved_edges:      true,
         legend_size:       {dx: 5, dy: 10,w: 10, h: 140, font: 16},
+        legend_colors:     ["#DDEEFF", "#0088DD"],
         edge_arrow_size:   {w: 2, h: 6},
         zoom_range:        {min: 0.4, max: 4},
         colors:            d3.scaleLog().domain([0, 100]).range(["white", "blue"])
@@ -163,7 +164,7 @@ class Graph {
     /* Init Graph */
 
     createLegend() {
-        const [start, stop] = ["#DDEEFF", "#0077DD"]
+        const [start, stop] = Graph.get("legend_colors");
         const priorities    = this.graph_nodes.map(function (o) { if ("priority" in o) { return o["priority"]} });
         Graph.set("colors", d3.scaleLinear().domain([0, Math.max(...priorities)]).range([start, stop]));
         const sizes = Graph.get("legend_size");
@@ -194,7 +195,7 @@ class Graph {
             .append("text")
             .text("priority")
             .attr("font-size", sizes.font + "px")
-            .attr("x", -(sizes.h / 2 + 2.5 * sizes.font) + "px")
+            .attr("x", -(sizes.h / 2 + 2.9 * sizes.font) + "px")
             .attr("y", (sizes.w * 2 + 10) + "px")
             .attr("transform", "rotate(-90)");
 
