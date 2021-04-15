@@ -13,6 +13,15 @@ TEXT = {
                 'Decreased service performance',
                 'Service failure'
             ],
+            'sources':           [
+                'a technical issue',
+                'deployment error',
+                'a software bug'
+            ],
+            'environments':      [
+                'during deployment',
+                'at normal operation'
+            ],
             'responses':         [
                 'Service should return to normal performance',
                 'Service should restart'
@@ -20,7 +29,7 @@ TEXT = {
             'response-measures': {
                 'normal-time':   ['>10s', '10s', '5s', '3s', '1s', '500ms', '300ms', '100ms', '50ms', '30ms', '10ms',
                                   '<10ms'],
-                'normal-cases':  ['99.99%', '99.9%', '99%', '98%', '97%', '96%', '95%'],
+                'normal-cases':  ['100%', '99.99%', '99.9%', '99%', '98%', '97%', '96%', '95%', '<95%'],
                 'recovery-time': ['>1h', '1h', '45min', '30min', '15min', '5min', '3min', '1min', '30s', '15s', '10s',
                                   '1s', '<1s']
             }},
@@ -29,13 +38,22 @@ TEXT = {
                 'Spike response times',
                 'Response time deviations'
             ],
+            'sources':           [
+                'a technical issue',
+                'deployment error',
+                'a software bug'
+            ],
+            'environments':      [
+                'during deployment',
+                'at normal operation'
+            ],
             'responses':         [
-                'Response times should return to normal.'
+                'Response times should return to normal values.'
             ],
             'response-measures': {
                 'normal-time':   ['>10s', '10s', '5s', '3s', '1s', '500ms', '300ms', '100ms', '50ms', '30ms', '10ms',
                                   '<10ms'],
-                'normal-cases':  ['99.99%', '99.9%', '99%', '98%', '97%', '96%', '95%'],
+                'normal-cases':  ['100%', '99.99%', '99.9%', '99%', '98%', '97%', '96%', '95%', '<95%'],
                 'recovery-time': ['5min', '3min', '1min', '30s', '15s', '10s', '1s']
             }},
     },
@@ -64,6 +82,12 @@ TEXT = {
         'Okay then! Have a nice day.',
         'Thanks for participating! See you &#x1F44B;'
     ],
+    INTENT_BYE_QUESTIONNAIRE:                              str(
+        'If you are participating in the study and have finished the study tasks please follow this link '
+        'to the Google Forms questionnaire:<br>'
+        '<a href="https://docs.google.com/forms/d/e/1FAIpQLSdjMUaYhlVL9ryzBOmulNk1zti2-8-6fjYtUZ-lGOOghY2B2g/'
+        'viewform?entry.1314988225={}" target="_blank">'
+        '<button type="button" class="btn m-md-1">To the survey</button></a>'),
     INTENT_HELP_NAME:                                      'Default-Help',
     INTENT_HELP_TEXT:                                      [
         str('Hang on, help is on it\'s way!<br><br>'
@@ -236,8 +260,8 @@ TEXT = {
             'text':  str(
                 '<ul>'
                 '<li>You can use the graph on the left to select an artifact if you don\'t find it in the options.</li>'
-                '<li>Please make sure to exactly match the name of the artifact in case you write to the bot. '
-                'Also make sure to tell the bot if you choose a service or an operation.</li>'
+                '<li>Please make sure to match the name of the artifact to a certain extend in case you write to the '
+                'bot. Also, telling the bot if the artifact is a service or an operation usually helps.</li>'
                 '</ul>')
         }
     },
@@ -308,7 +332,10 @@ TEXT = {
     INTENT_ELICITATION_MEASURE_NORMAL_FOLLOWUP_NAME:       'Elicitation-Specify-Response-Measure-Normal-Followup',
     INTENT_ELICITATION_MEASURE_NORMAL_DEFAULT_NAME:        'Elicitation-Specify-Response-Measure-Normal-Default',
     INTENT_ELICITATION_MEASURE_CASES_NAME:                 'Elicitation-Specify-Response-Measure-Cases',
-    INTENT_ELICITATION_MEASURE_CASES_TEXT:                 str(
+    INTENT_ELICITATION_MEASURE_CASES_SERVICE_TEXT:         str(
+        'What is the <b>optimal</b> availability of the service?'
+    ),
+    INTENT_ELICITATION_MEASURE_CASES_OPERATION_TEXT:       str(
         'In <b>how many cases</b> should this hold?'
     ),
     INTENT_ELICITATION_MEASURE_CASES_FOLLOWUP_NAME:        'Elicitation-Specify-Response-Measure-Cases-Followup',
@@ -340,7 +367,8 @@ TEXT = {
         'text':  'The resilience scenario has now all necessary parameters configured.'
     },
     INTENT_ELICITATION_SUMMARY_SERVICE_MEASURE_TEXT:       str(
-        # TODO
+        'Normal availability is <b>{}</b>.<br>'
+        'Within <b>{}</b> after occurrence of the stimuli the service should return to optimal behaviour.'
     ),
     INTENT_ELICITATION_SUMMARY_OPERATION_MEASURE_TEXT:     str(
         'Normal response time is <b>{}</b> (holds in <b>{}</b> of cases).<br>'
@@ -353,7 +381,7 @@ TEXT = {
     INTENT_ELICITATION_SAVE_SCENARIO_SAVE_CONFIRM_TEXT:    'Yes, save the scenario. &#x2714;',
     INTENT_ELICITATION_SAVE_SCENARIO_MODIFY_OPTIONS:       {
         'e-select-component':         'Modify the artifact&#x1F9F1;',
-        'e-specify-stimuli':          'Modify the stimulus &#x26A0;',
+        'e-specify-stimulus':         'Modify the stimulus &#x26A0;',
         'e-specify-response':         'Modify the response &#x27A1;',
         'e-specify-response-measure': 'Modify the response measure &#x1F4C8;',
         'e-specify-description':      'Modify the description &#x1F4DD;'
