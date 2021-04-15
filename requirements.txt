@@ -2,7 +2,7 @@ asgiref==3.2.10
 channels==3.0.3
 daphne==3.0.1
 dialogflow==1.1.0
-Django==3.1.6
+Django==3.1.7
 djangorestframework==3.12.2
 google-api-core==1.24.1
 google-auth==1.24.0
@@ -12,10 +12,6 @@ grpcio-tools
 gunicorn==20.0.4
 jaeger==0.6.0
 jaeger-client==3.13.0
-opentelemetry-api==0.11b0
-opentelemetry-ext-jaeger==0.11b1
-opentelemetry-ext-zipkin==0.11b1
-opentelemetry-sdk==0.11b0
 opentracing==1.2.2
 pandas==1.2.2
 requests==2.25.1
