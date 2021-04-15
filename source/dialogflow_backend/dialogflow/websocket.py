@@ -6,6 +6,8 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from architecture_extraction_backend.models.study import InteractionModel
 from dialogflow_backend.dialogflow.client import DialogFlowClient
 from dialogflow_backend.dialogflow.response_handler import create_response
+from dialogflow_backend.dialogflow.response_types import ActionResponse
+from dialogflow_backend.dialogflow.util import next_event
 from hazard_elicitation.settings import COLLECT_STUDY
 from util.log import warning, error, debug
 from util.tracing import add_trace
@@ -61,13 +63,18 @@ class DFWebsocket(AsyncWebsocketConsumer):
         @param contexts:    List of contexts.
         @param uuid:        UUID created on client.
         """
+        result = None
+
         try:
             if COLLECT_STUDY:
                 await sync_to_async(InteractionModel.objects.create)(session_id=uuid, content=data, actor="User")
 
-            await self.response_handler(DialogFlowClient.detect_intent(data, contexts, uuid))
+            result = DialogFlowClient.detect_intent(data, contexts, uuid)
+
+            await self.response_handler(result)
         except Exception as e:
             error('Something went wrong during text input processing: {}'.format(e))
+            return [ActionResponse.create('command', ['event', next_event(result)])]
 
     @add_trace(True)
     async def dialogflow_event_input(self, data: str, contexts: list, uuid: str):
@@ -77,13 +84,18 @@ class DFWebsocket(AsyncWebsocketConsumer):
         @param contexts:    List of contexts.
         @param uuid:        UUID created on client.
         """
+        result = None
+
         try:
             if COLLECT_STUDY:
                 await sync_to_async(InteractionModel.objects.create)(session_id=uuid, content=data, actor="User")
 
-            await self.response_handler(DialogFlowClient.detect_event(data, contexts, uuid))
+            result = DialogFlowClient.detect_event(data, contexts, uuid)
+
+            await self.response_handler(result)
         except Exception as e:
             error('Something went wrong during event input processing: {}'.format(e))
+            return [ActionResponse.create('command', ['event', next_event(result)])]
 
     @add_trace(True)
     async def response_handler(self, result):
