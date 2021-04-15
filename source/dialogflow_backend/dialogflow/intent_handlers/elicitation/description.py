@@ -5,7 +5,7 @@ from google.protobuf.struct_pb2 import ListValue
 from dialogflow_backend.dialogflow.intent_handlers.elicitation.response import elicitation_response_handler
 from dialogflow_backend.dialogflow.response_types import FormattingResponse, ActionResponse, QuickReplyResponse, \
     CardResponse
-from dialogflow_backend.dialogflow.util import get_context, is_in_context, set_context_parameters
+from dialogflow_backend.dialogflow.util import get_context, is_in_context, set_context_parameters, next_event
 from util.log import error
 from util.text.ids import INTENT_ELICITATION_DESCRIPTION_QUICK_RESPONSE, INTENT_ELICITATION_DESCRIPTION_TEXT
 from util.text.text import text
@@ -24,7 +24,7 @@ async def elicitation_description_handler(result) -> List[Dict]:
             else:
                 description = config_context.parameters['description']
 
-            return [ActionResponse.create('command', ['event', 'e-save-scenario', [{
+            return [ActionResponse.create('command', ['event', next_event(result), [{
                 'name':       'c-elicitation',
                 'lifespan':   100,
                 'parameters': {

@@ -4,7 +4,7 @@ from google.protobuf.struct_pb2 import ListValue
 
 from dialogflow_backend.dialogflow.intent_handlers.elicitation.component import elicitation_component_handler
 from dialogflow_backend.dialogflow.response_types import *
-from dialogflow_backend.dialogflow.util import get_context, is_in_context, set_context_parameters
+from dialogflow_backend.dialogflow.util import get_context, is_in_context, set_context_parameters, next_event
 from util.log import error
 from util.text.ids import *
 from util.text.text import text, random_selection
@@ -25,7 +25,7 @@ async def elicitation_stimuli_handler(result) -> List[Dict]:
             else:
                 stimulus = config_context.parameters['stimulus']
 
-            return [ActionResponse.create('command', ['event', 'e-specify-stimulus-source', [{
+            return [ActionResponse.create('command', ['event', next_event(result), [{
                 'name':       'c-elicitation',
                 'lifespan':   100,
                 'parameters': {
@@ -86,7 +86,7 @@ async def elicitation_stimuli_source_handler(result) -> List[Dict]:
             else:
                 source = config_context.parameters['source']
 
-            return [ActionResponse.create('command', ['event', 'e-specify-stimulus-environment', [{
+            return [ActionResponse.create('command', ['event', next_event(result), [{
                 'name':       'c-elicitation',
                 'lifespan':   100,
                 'parameters': {
@@ -99,6 +99,18 @@ async def elicitation_stimuli_source_handler(result) -> List[Dict]:
             title=content['title'].format(elicitation.parameters['stimulus']),
             text=content['text'], spoiler=content['spoiler']
         ))
+
+        sources = text(STIMULUS_RESPONSE_TEXTS)[elicitation.parameters['artifact']]['sources']
+
+        quick_reply = QuickReplyResponse()
+        for option in sources:
+            quick_reply.add_reply(option, 'event', ['e-specify-stimulus-environment', [{
+                'name':       'c-elicitation',
+                'lifespan':   100,
+                'parameters': {
+                    'source': option
+                }}]])
+        conversation.append(quick_reply.__repr__())
 
         return conversation
 
@@ -132,7 +144,7 @@ async def elicitation_stimuli_environment_handler(result) -> List[Dict]:
             else:
                 environment = config_context.parameters['environment']
 
-            return [ActionResponse.create('command', ['event', 'e-specify-response', [{
+            return [ActionResponse.create('command', ['event', next_event(result), [{
                 'name':       'c-elicitation',
                 'lifespan':   100,
                 'parameters': {
@@ -144,6 +156,18 @@ async def elicitation_stimuli_environment_handler(result) -> List[Dict]:
         conversation.append(CardResponse.create(
             title=content['title'].format(elicitation.parameters['stimulus']),
             text=content['text'], spoiler=content['spoiler']))
+
+        environments = text(STIMULUS_RESPONSE_TEXTS)[elicitation.parameters['artifact']]['environments']
+
+        quick_reply = QuickReplyResponse()
+        for option in environments:
+            quick_reply.add_reply(option, 'event', ['e-specify-response', [{
+                'name':       'c-elicitation',
+                'lifespan':   100,
+                'parameters': {
+                    'environment': option
+                }}]])
+        conversation.append(quick_reply.__repr__())
 
         return conversation
 

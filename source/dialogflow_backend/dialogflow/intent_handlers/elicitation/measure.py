@@ -3,11 +3,9 @@ from typing import List, Dict
 from dialogflow_backend.dialogflow.intent_handlers.elicitation.response import elicitation_response_handler
 from dialogflow_backend.dialogflow.response_types import FormattingResponse, CardResponse, ActionResponse, \
     QuickReplyResponse, TextResponse
-from dialogflow_backend.dialogflow.util import get_context, is_in_context, set_context_parameters
+from dialogflow_backend.dialogflow.util import get_context, is_in_context, set_context_parameters, next_event
 from util.log import error
-from util.text.ids import INTENT_ELICITATION_MEASURE_TEXT, STIMULUS_RESPONSE_TEXTS, \
-    INTENT_ELICITATION_MEASURE_NORMAL_TEXT, INTENT_ELICITATION_MEASURE_CASES_TEXT, \
-    INTENT_ELICITATION_MEASURE_RECOVERY_TEXT
+from util.text.ids import *
 from util.text.text import text, random_selection
 
 
@@ -24,7 +22,11 @@ async def elicitation_measure_handler(result) -> List[Dict]:
             text=content['text'])
         conversation.append(response)
 
-        conversation.append(ActionResponse.create('command', ['event', 'e-specify-response-measure-normal']))
+        artifact = elicitation.parameters['artifact']
+        if artifact == 'Operation':
+            conversation.append(ActionResponse.create('command', ['event', 'e-specify-response-measure-normal']))
+        else:
+            conversation.append(ActionResponse.create('command', ['event', 'e-specify-response-measure-cases']))
         return conversation
 
     except Exception as e:
@@ -44,11 +46,19 @@ async def elicitation_measure_normal_handler(result) -> List[Dict]:
         if is_in_context('normal-response-time', config_context):
             amount = config_context.parameters['normal-response-time']['amount']
             unit = config_context.parameters['normal-response-time']['unit']
-            return [ActionResponse.create('command', ['event', 'e-specify-response-measure-cases', [{
+            return [ActionResponse.create('command', ['event', next_event(result), [{
                 'name':       'c-elicitation',
                 'lifespan':   100,
                 'parameters': {
                     'normal-response-time': f'{amount} {unit}'
+                }
+            }]])]
+        elif is_in_context('duration', config_context):
+            return [ActionResponse.create('command', ['event', next_event(result), [{
+                'name':       'c-elicitation',
+                'lifespan':   100,
+                'parameters': {
+                    'normal-response-time': config_context.parameters['duration']
                 }
             }]])]
 
@@ -97,7 +107,7 @@ async def elicitation_measure_cases_handler(result) -> List[Dict]:
         if is_in_context('normal-cases', config_context):
             cases = config_context.parameters['normal-cases']
             percent = '%' if '%' not in cases else ''
-            return [ActionResponse.create('command', ['event', 'e-specify-response-measure-recovery', [{
+            return [ActionResponse.create('command', ['event', next_event(result), [{
                 'name':       'c-elicitation',
                 'lifespan':   100,
                 'parameters': {
@@ -114,7 +124,10 @@ async def elicitation_measure_cases_handler(result) -> List[Dict]:
                 'parameters': {
                     'normal-cases': option
                 }}]])
-        conversation.append(TextResponse.create(text(INTENT_ELICITATION_MEASURE_CASES_TEXT)))
+        if artifact == 'Service':
+            conversation.append(TextResponse.create(text(INTENT_ELICITATION_MEASURE_CASES_SERVICE_TEXT)))
+        else:
+            conversation.append(TextResponse.create(text(INTENT_ELICITATION_MEASURE_CASES_OPERATION_TEXT)))
         conversation.append(quick_reply.__repr__())
         return conversation
 
@@ -148,7 +161,7 @@ async def elicitation_measure_recovery_handler(result) -> List[Dict]:
         if is_in_context('recovery-time', config_context):
             amount = config_context.parameters['recovery-time']['amount']
             unit = config_context.parameters['recovery-time']['unit']
-            return [ActionResponse.create('command', ['event', 'e-specify-description', [{
+            return [ActionResponse.create('command', ['event', next_event(result), [{
                 'name':       'c-elicitation',
                 'lifespan':   100,
                 'parameters': {

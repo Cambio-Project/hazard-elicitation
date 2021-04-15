@@ -1,9 +1,11 @@
 from typing import List, Dict
 
+from google.protobuf.struct_pb2 import ListValue
+
 from dialogflow_backend.dialogflow.intent_handlers.elicitation.stimulus import elicitation_stimuli_handler
 from dialogflow_backend.dialogflow.response_types import ActionResponse, FormattingResponse, CardResponse, \
     QuickReplyResponse
-from dialogflow_backend.dialogflow.util import get_context, is_in_context, set_context_parameters
+from dialogflow_backend.dialogflow.util import get_context, is_in_context, set_context_parameters, next_event
 from util.log import error
 from util.text.ids import INTENT_ELICITATION_RESPONSE_TEXT, STIMULUS_RESPONSE_TEXTS
 from util.text.text import text, random_selection
@@ -18,11 +20,16 @@ async def elicitation_response_handler(result) -> List[Dict]:
 
         # Response was given as text.
         if is_in_context('response', config_context):
-            return [ActionResponse.create('command', ['event', 'e-specify-response-measure', [{
+            response = config_context.parameters['response']
+            if isinstance(response, (list, ListValue)):
+                response = ' '.join(config_context.parameters['response'])
+            else:
+                response = config_context.parameters['response']
+            return [ActionResponse.create('command', ['event', next_event(result), [{
                 'name':       'c-elicitation',
                 'lifespan':   100,
                 'parameters': {
-                    'response': config_context.parameters['response']
+                    'response': response
                 }
             }]])]
 
