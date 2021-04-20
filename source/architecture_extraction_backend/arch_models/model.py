@@ -52,7 +52,7 @@ class IModel:
         self._model_type = model_type
         self._services = {}
         self._valid = False
-        self._hazards = []
+        self._hazards = {}
         self._stimuli = []
 
         if source:
@@ -84,11 +84,11 @@ class IModel:
         return self._valid
 
     @property
-    def hazards(self) -> List[Hazard]:
+    def hazards(self) -> Dict[str, List[Hazard]]:
         return self._hazards
 
     @hazards.setter
-    def hazards(self, hazards: List[Hazard]):
+    def hazards(self, hazards: Dict[str, List[Hazard]]):
         self._hazards = hazards
 
     # Private

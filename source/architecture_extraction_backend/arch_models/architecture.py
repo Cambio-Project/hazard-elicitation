@@ -19,7 +19,6 @@ class Architecture:
     def __init__(self, model: IModel):
         self._model = model
         self._graph = Graph()
-        self._hazards = []
 
         self._build_graph()
 
@@ -72,7 +71,7 @@ class Architecture:
         return valid, stack
 
     def export(self, pretty: bool = False, lightweight: bool = False) -> str:
-        result = {'nodes': {}, 'edges': {}, 'hazards': {}, 'stimuli': {}}
+        result = {'nodes': {}, 'edges': {}, 'analysis': {}}
 
         for _, n in self._graph.nodes.items():
             result['nodes'][n.id] = {
@@ -117,13 +116,16 @@ class Architecture:
         #         'edges':         hazard.edges
         #     }
 
-        for hazard in self._model.hazards:
-            if hazard.type not in result['analysis']:
-                result['analysis'][hazard.type] = {
-                    'property_type': hazard.prop_type,
-                    'metric':        hazard.metric,
-                    'keyword':       hazard.keyword
-                }
+        for name, hazardlist in self._model.hazards.items():
+            for hazard in hazardlist:
+                if hazard.type not in result['analysis']:
+                    result['analysis'][hazard.type] = {
+                        'property_type': hazard.prop_type,
+                        'property_name': hazard.prop_name,
+                        'metric':        hazard.metric,
+                        'keyword':       hazard.keyword,
+                        'value':         hazard.value
+                    }
 
         if pretty:
             return json.dumps(result, indent=2)
