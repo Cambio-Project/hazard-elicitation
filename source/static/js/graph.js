@@ -118,17 +118,17 @@ class Graph {
         // Hazards
         const na = $(".nodes");
         const ea = $(".edges");
-        for (const hazard of graph.hazards._values()) {
+        for (const hazard of graph.analysis._values()) {
             for (const nid of hazard.nodes) {
                 na.find('[id="n{}"]'.format(nid)).attr("class", "hazard")
                 graph.nodes[nid].hazard_id      = hazard.id;
-                graph.hazards[hazard.id].tab_id = content.addHazard(nid, "node");
+                graph.analysis[hazard.id].tab_id = content.addHazard(nid, "node");
             }
 
             for (const eid of hazard.edges) {
                 ea.find('[id="e{}"]'.format(eid)).attr("class", "hazard")
                 graph.edges[eid].hazard_id      = hazard.id;
-                graph.hazards[hazard.id].tab_id = content.addHazard(eid, "edge");
+                graph.analysis[hazard.id].tab_id = content.addHazard(eid, "edge");
             }
         }
 
@@ -150,14 +150,14 @@ class Graph {
     set(property, value) { Graph.PROPERTIES[property] = value; }
 
     minimal() {
-        let result = {"nodes": {}, "edges": {}, "hazards": {}};
+        let result = {"nodes": {}, "edges": {}, "analysis": {}};
         for (const [_, val] of this.graph.nodes._entries()) {
             result["nodes"][val.label] = [val.id, val.priority]
         }
         for (const [_, val] of this.graph.edges._entries()) {
             result["edges"][val.label] = [val.id, val.priority]
         }
-        result["hazards"] = this.graph.hazards;
+        result["analysis"] = this.graph.analysis;
         return result;
     }
 

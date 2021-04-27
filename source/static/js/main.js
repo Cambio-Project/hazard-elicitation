@@ -54,7 +54,7 @@ function onLoad() {
     populateArchitectures();
 
     content = new Content("#content");
-    graph   = new Graph("#graph", "#context-menu", {nodes: {}, edges: {}, hazards: {}});
+    graph   = new Graph("#graph", "#context-menu", {nodes: {}, edges: {}, analysis: {}});
     chat    = new Chat("#chat", "#user-input");
 
     $('[data-toggle="tooltip"]').tooltip();
