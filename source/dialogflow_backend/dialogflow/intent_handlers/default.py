@@ -14,7 +14,13 @@ async def fallback_handler(result) -> List[Dict]:
 
 
 async def bye_handler(result) -> List[Dict]:
-    return [TextResponse.create(random_text(INTENT_BYE_TEXT))]
+    session_name = result.query_result.output_contexts[0].name
+    session = session_name[session_name.find('sessions') + 9:session_name.rfind('/contexts')]
+
+    return [
+        TextResponse.create(random_text(INTENT_BYE_TEXT)),
+        TextResponse.create(text(INTENT_BYE_QUESTIONNAIRE).format(session))
+    ]
 
 
 async def help_handler(result) -> List[Dict]:

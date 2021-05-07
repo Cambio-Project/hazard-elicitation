@@ -135,7 +135,7 @@ class TextResponse(IDFResponse):
     @text.setter
     def text(self, text: str):
         self._data['payload']['text'] = text
-        
+
 
 class CardResponse(IDFResponse):
     def __init__(self, data: Dict = None):
@@ -143,11 +143,13 @@ class CardResponse(IDFResponse):
         self._data['type'] = 'card'
 
     @staticmethod
-    def create(title: str = '', text: str = '', image: str = '', link: Dict[str, str] = None):
+    def create(title: str = '', text: str = '', image: str = '',
+               spoiler: Dict[str, str] = None, link: Dict[str, str] = None):
         response = CardResponse()
         response.title = title
         response.text = text
         response.image = image
+        response.spoiler = spoiler
         response.link = link
         return response.__repr__()
 
@@ -158,7 +160,7 @@ class CardResponse(IDFResponse):
     @title.setter
     def title(self, title: str):
         self._data['payload']['title'] = title
-    
+
     @property
     def text(self) -> str:
         return self._data['payload']['text']
@@ -174,6 +176,14 @@ class CardResponse(IDFResponse):
     @image.setter
     def image(self, image: str):
         self._data['payload']['image'] = image
+
+    @property
+    def spoiler(self) -> Dict[str, str]:
+        return self._data['payload']['spoiler']
+
+    @spoiler.setter
+    def spoiler(self, spolier: Dict[str, str]):
+        self._data['payload']['spoiler'] = spolier
 
     @property
     def link(self) -> Dict[str, str]:
@@ -210,7 +220,7 @@ class QuickReplyResponse(IDFResponse):
 
     def add_reply(self, text: str, action: str, values: List):
         self._data['payload']['values'].append({
-            'text': text,
+            'text':   text,
             'action': action,
             'values': values
         })
@@ -243,5 +253,5 @@ class AccordionResponse(IDFResponse):
     def add_pane(self, title: str, text: str):
         self._data['payload']['values'].append({
             'title': title,
-            'text': text
+            'text':  text
         })

@@ -100,15 +100,15 @@ class Content {
     }
 
     addNewHazard(id, type, data) {
-        const hazard_id                      = Math.max(Graph.this.graph.hazards._keys()) + 1;
-        Graph.this.graph.hazards[hazard_id]  = {tab_id: this.addHazard(id, type, data)};
+        const hazard_id = Math.max(Graph.this.graph.analysis._keys()) + 1;
+        Graph.this.graph.analysis[hazard_id]  = {tab_id: this.addHazard(id, type, data)};
         Graph.getElement(type, id).hazard_id = hazard_id;
         this.openHazard(id, type);
     }
 
     openHazard(id, type) {
         const el = Graph.getElement(type, id);
-        content.show(Graph.this.graph.hazards[el.hazard_id].tab_id);
+        content.show(Graph.this.graph.analysis[el.hazard_id].tab_id);
     }
 
     static saveScenario(json) {

@@ -123,6 +123,24 @@ class ServiceHazard(Hazard):
         self._property_type = Property.SERVICE
 
 
+class ServiceFailure(ServiceHazard):
+    def __init__(self, service: Service):
+        super().__init__(service)
+
+        self._type = 'Service Failure'
+        self._metric = Metric.THROUGHPUT
+        self._keyword = Keyword.NO
+
+
+class DecreasedServicePerformance(ServiceHazard):
+    def __init__(self, service: Service):
+        super().__init__(service)
+
+        self._type = 'Decreased Service Performance'
+        self._metric = Metric.THROUGHPUT
+        self._keyword = Keyword.LESS
+
+
 class OperationHazard(Hazard):
     def __init__(self, operation: Operation):
         super().__init__(operation)

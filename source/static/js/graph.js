@@ -11,6 +11,8 @@ class Graph {
         edge_label_offset: {x: 10, y: 15, dy: -5},
         edge_label_font:   {size: 10, dx: 2, dy: 12},
         curved_edges:      true,
+        legend_size:       {dx: 5, dy: 10,w: 10, h: 140, font: 16},
+        legend_colors:     ["#DDEEFF", "#0088DD"],
         edge_arrow_size:   {w: 2, h: 6},
         zoom_range:        {min: 0.4, max: 4},
         colors:            d3.scaleLog().domain([0, 100]).range(["white", "blue"])
@@ -116,17 +118,17 @@ class Graph {
         // Hazards
         const na = $(".nodes");
         const ea = $(".edges");
-        for (const hazard of graph.hazards._values()) {
+        for (const hazard of graph.analysis._values()) {
             for (const nid of hazard.nodes) {
                 na.find('[id="n{}"]'.format(nid)).attr("class", "hazard")
                 graph.nodes[nid].hazard_id      = hazard.id;
-                graph.hazards[hazard.id].tab_id = content.addHazard(nid, "node");
+                graph.analysis[hazard.id].tab_id = content.addHazard(nid, "node");
             }
 
             for (const eid of hazard.edges) {
                 ea.find('[id="e{}"]'.format(eid)).attr("class", "hazard")
                 graph.edges[eid].hazard_id      = hazard.id;
-                graph.hazards[hazard.id].tab_id = content.addHazard(eid, "edge");
+                graph.analysis[hazard.id].tab_id = content.addHazard(eid, "edge");
             }
         }
 
@@ -148,41 +150,53 @@ class Graph {
     set(property, value) { Graph.PROPERTIES[property] = value; }
 
     minimal() {
-        let result = {"nodes": {}, "edges": {}, "hazards": {}};
+        let result = {"nodes": {}, "edges": {}, "analysis": {}};
         for (const [_, val] of this.graph.nodes._entries()) {
             result["nodes"][val.label] = [val.id, val.priority]
         }
         for (const [_, val] of this.graph.edges._entries()) {
             result["edges"][val.label] = [val.id, val.priority]
         }
-        result["hazards"] = this.graph.hazards;
+        result["analysis"] = this.graph.analysis;
         return result;
     }
 
     /* Init Graph */
 
     createLegend() {
-        const [start, stop] = ["#DDEEFF", "#0055FF"]
+        const [start, stop] = Graph.get("legend_colors");
         const priorities    = this.graph_nodes.map(function (o) { if ("priority" in o) { return o["priority"]} });
         Graph.set("colors", d3.scaleLinear().domain([0, Math.max(...priorities)]).range([start, stop]));
+        const sizes = Graph.get("legend_size");
 
-        this.legend = this.svg.append("g");
-        const text_anchor     = this.legend.append("g");
+        this.legend       = this.svg.append("g");
+        const text_anchor = this.legend.append("g").attr("class", "node-labels");
         this.legend.append("rect")
-            .attr("x", "5px")
-            .attr("y", "5px")
-            .attr("width", 10)
-            .attr("height", 100)
+            .attr("x", sizes.dx + "px")
+            .attr("y", sizes.dy + "px")
+            .attr("width", sizes.w)
+            .attr("height", sizes.h)
             .style("fill", "url(#gradient)");
 
-        text_anchor.append("text").text("high").attr("font-size", "12px").attr("x", "20px").attr("y", "11px");
-        text_anchor.append("text").text("low").attr("font-size", "12px").attr("x", "20px").attr("y", "106px");
+        text_anchor
+            .append("text")
+            .text("high")
+            .attr("font-size", sizes.font + "px")
+            .attr("x", (sizes.w + 10) + "px")
+            .attr("y", (sizes.font / 2 + sizes.dy) + "px");
+
+        text_anchor
+            .append("text").text("low")
+            .attr("font-size", sizes.font + "px")
+            .attr("x", (sizes.w + 10) + "px")
+            .attr("y", (sizes.font / 2 + sizes.h + sizes.dy) + "px");
+
         text_anchor
             .append("text")
             .text("priority")
-            .attr("font-size", "12px")
-            .attr("x", "-82px")
-            .attr("y", "30px")
+            .attr("font-size", sizes.font + "px")
+            .attr("x", -(sizes.h / 2 + 2.9 * sizes.font) + "px")
+            .attr("y", (sizes.w * 2 + 10) + "px")
             .attr("transform", "rotate(-90)");
 
         this.gradient =
@@ -232,6 +246,7 @@ class Graph {
             .enter()
             .append("path")
             .attr("id", function (e) { return "e" + e.id; })
+            .attr("stroke", function (e) { return Graph.get("colors")(e.priority); })
             .attr("marker-end", "url(#end)")
             .attr("d", "M 0 0 L 0 0")
             .on("contextmenu", Graph.onContextMenu)
@@ -386,9 +401,9 @@ class Graph {
                     lifespan:   100,
                     parameters: {arch: Graph.this.minimal()}
                 }, {
-                    name:       "c-hazard",
+                    name:       "c-analysis",
                     lifespan:   100,
-                    parameters: {stimuli: Graph.this.graph.stimuli}
+                    parameters: {analysis: Graph.this.graph.analysis}
                 }]);
                 Chat.this.ws.event("e-select-component", [{
                     name:       "c-elicitation",

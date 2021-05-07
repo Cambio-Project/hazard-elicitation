@@ -9,7 +9,7 @@ from architecture_extraction_backend.arch_models.misim_model import MiSimModel
 from architecture_extraction_backend.arch_models.zipkin_trace import ZipkinTrace
 from architecture_extraction_backend.controllers.analyzer import Analyzer
 from architecture_extraction_backend.controllers.exporter import Exporter
-from architecture_extraction_backend.models import ArchitectureModel
+from architecture_extraction_backend.models.architecture import ArchitectureModel
 from util.log import error
 
 
@@ -39,11 +39,15 @@ def upload(request):
             error(e)
             return HttpResponse('Processing error: Model could not be read.', status=500)
 
-        # Validate
         if model:
+
+            # Validate
             success, exceptions = model.validate(True)
             if not success:
                 return HttpResponse('Validation error: ' + '\n- ' + '\n- '.join(map(str, exceptions)), status=500)
+
+            # Analyze
+            model.analyze()
 
         # Create architecture
         if model:
