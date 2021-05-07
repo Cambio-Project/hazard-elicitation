@@ -10,7 +10,6 @@ google-cloud-dialogflow==2.0.0
 grpcio
 grpcio-tools
 gunicorn==20.0.4
-jaeger==0.6.0
 jaeger-client==3.13.0
 opentracing==1.2.2
 pandas==1.2.2
