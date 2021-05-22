@@ -1,5 +1,7 @@
 # Hazard Elicitation
 
+[![DOI](https://zenodo.org/badge/329960258.svg)](https://zenodo.org/badge/latestdoi/329960258)
+
 ![Tests](https://github.com/Cambio-Project/hazard-elicitation/workflows/Tests/badge.svg)
 
 [Live](https://hazardelicitation.eu-gb.mybluemix.net/ui/)
