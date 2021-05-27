@@ -7,26 +7,23 @@
 
 1. Create a Google account and sign-in [here](https://dialogflow.cloud.google.com/#/login).
 2. Create a Google Cloud project on [this](https://cloud.google.com/) page using the Cloud Console.
-
-<img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/wiki/images/dialogflow/dialogflow.png" width="200px"/>
-
 3. In the Dialogflow UI navigate to `Create a new agent` in the left panel.
 
-<img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/wiki/images/dialogflow/dialogflow_create.png" width="200px"/>   
+<img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/images/dialogflow/dialogflow_create.png" width="200px"/>   
 
 4. Fill in the details and choose a Google Cloud project (you will need the project name later).
 5. Navigate to the agents settings and choose `Export and Import`.
    
-   <img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/wiki/images/dialogflow/dialogflow_settings.png" width="200px"/>
+   <img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/images/dialogflow/dialogflow_settings.png" width="200px"/>
    
    - choose `Restore from zip`
 
-    <img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/wiki/images/dialogflow/dialogflow_restore.png" width="200px"/>     
+    <img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/images/dialogflow/dialogflow_restore.png" width="200px"/>     
 
    - place the Hazard Dialogflow agent into the drag & drop area.
 
-    <img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/wiki/images/dialogflow/dialogflow_upload.png" width="200px"/>    
-    <img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/wiki/images/dialogflow/dialogflow_uploaded_intents.png" width="200px"/>    
+    <img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/images/dialogflow/dialogflow_upload.png" width="200px"/>    
+    <img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/images/dialogflow/dialogflow_uploaded_intents.png" width="200px"/>    
 
 6. Fill the Google Cloud project name into the `keys.json` file.
 7. Generate Google Cloud credentials ([here](https://cloud.google.com/docs/authentication/getting-started) is a detailed HOWTO).
