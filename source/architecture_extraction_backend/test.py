@@ -19,8 +19,8 @@ class TestGraph(unittest.TestCase):
         self.assertEqual(node2.label, 'test')
 
     def test_edge(self):
-        node1 = Node()
-        node2 = Node('test')
+        node1 = Node(_id=0)
+        node2 = Node('test', 1)
         edge1 = Edge(node1, node2)
         edge2 = Edge(node1, node1, 'operation')
 
@@ -32,8 +32,8 @@ class TestGraph(unittest.TestCase):
         self.assertEqual(edge2.source, edge2.target)
 
     def test_graph(self):
-        node1 = Node()
-        node2 = Node()
+        node1 = Node('A', 0)
+        node2 = Node('B', 1)
         edge1 = Edge(node1, node2)
 
         graph = Graph()
@@ -48,7 +48,8 @@ class TestGraph(unittest.TestCase):
 
     def test_check_cycles(self):
         G = Graph()
-        a, b, c, d, e, f, g = Node('A'), Node('B'), Node('C'), Node('D'), Node('E'), Node('F'), Node('G')
+        a, b, c, d, e, f, g = \
+            Node('A', 0), Node('B', 1), Node('C', 2), Node('D', 3), Node('E', 4), Node('F', 5), Node('G', 6)
 
         N = [a, b, c, d, e, f, g]
 
