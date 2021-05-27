@@ -27,7 +27,7 @@ class Architecture:
 
         # Add nodes
         for _, s in self._model.services.items():
-            self._graph.add_node(Node(s.name))
+            self._graph.add_node(Node(s.name, s.id))
 
         # Add edges
         for _, s in self._model.services.items():

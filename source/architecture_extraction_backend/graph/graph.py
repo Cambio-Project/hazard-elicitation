@@ -105,8 +105,6 @@ class Graph:
         if node.id in self._nodes:
             return
 
-        node.id = self._node_id
-        self._node_id += 1
         self._nodes[node.id] = node
 
         self._adjacency[node.id] = {}
