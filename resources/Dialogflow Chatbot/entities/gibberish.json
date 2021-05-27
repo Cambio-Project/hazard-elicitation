@@ -1,0 +1,9 @@
+{
+  "id": "0abf21e4-d081-40d6-adf5-ecc66445c477",
+  "name": "gibberish",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": true,
+  "allowFuzzyExtraction": false
+}

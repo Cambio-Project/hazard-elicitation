@@ -1,0 +1,20 @@
+[
+  {
+    "value": "@sys.number ms",
+    "synonyms": [
+      "@sys.number ms"
+    ]
+  },
+  {
+    "value": "@sys.number milliseconds",
+    "synonyms": [
+      "@sys.number milliseconds"
+    ]
+  },
+  {
+    "value": "@sys.number",
+    "synonyms": [
+      "@sys.number"
+    ]
+  }
+]

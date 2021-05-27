@@ -1,0 +1,64 @@
+{
+  "id": "890d2d94-73f3-470f-8343-de0a7765321a",
+  "name": "Elicitation-Select-Architecture",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "",
+      "affectedContexts": [
+        {
+          "name": "c-elicitation",
+          "lifespan": 100
+        },
+        {
+          "name": "Elicitation-Select-Architecture-followup",
+          "lifespan": 5
+        },
+        {
+          "name": "c-config",
+          "lifespan": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "ddc1192b-eaa4-4c69-97b4-5276d8d189a9",
+          "name": "keyword-architecture",
+          "required": false,
+          "dataType": "@keyword-architecture",
+          "value": "$keyword-architecture",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "e-select-architecture"
+    }
+  ],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

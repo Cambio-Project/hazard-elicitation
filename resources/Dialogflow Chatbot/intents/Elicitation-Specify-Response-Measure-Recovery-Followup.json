@@ -1,0 +1,57 @@
+{
+  "id": "e0d2de98-4b39-41d3-9bee-2b8207358c53",
+  "parentId": "ba224c4a-d785-46c8-ba75-149c6709bac4",
+  "rootParentId": "ba224c4a-d785-46c8-ba75-149c6709bac4",
+  "name": "Elicitation-Specify-Response-Measure-Recovery-Followup",
+  "auto": true,
+  "contexts": [
+    "c-elicitation",
+    "Elicitation-Specify-Response-Measure-Recovery-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "Elicitation-Specify-Response-Measure-Recovery.Elicitation-Specify-Response-Measure-Recovery-custom",
+      "affectedContexts": [
+        {
+          "name": "c-config",
+          "lifespan": 1
+        }
+      ],
+      "parameters": [
+        {
+          "id": "961656a1-a5ea-4220-b8e4-c4f6df5bd900",
+          "name": "recovery-time",
+          "required": false,
+          "dataType": "@sys.duration",
+          "value": "$recovery-time",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 1000000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

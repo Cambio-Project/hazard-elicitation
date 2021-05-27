@@ -1,0 +1,9 @@
+{
+  "id": "d62c7cc3-f74e-47e9-8093-c12f18f84693",
+  "name": "guide-option",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": true,
+  "allowFuzzyExtraction": true
+}

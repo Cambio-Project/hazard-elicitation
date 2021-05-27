@@ -1,0 +1,42 @@
+{
+  "id": "38cc0514-7b57-41ec-9eba-c5b72f16ddf1",
+  "parentId": "e6d72d7b-05cd-40dc-bc6e-418b0f552962",
+  "rootParentId": "e6d72d7b-05cd-40dc-bc6e-418b0f552962",
+  "name": "Elicitation-Specify-Stimulus-Source-Default",
+  "auto": true,
+  "contexts": [
+    "c-elicitation",
+    "Elicitation-Specify-Stimulus-Source-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "Elicitation-Specify-Stimulus-Source.Elicitation-Specify-Stimulus-Source-custom",
+      "affectedContexts": [
+        {
+          "name": "c-config",
+          "lifespan": 1
+        }
+      ],
+      "parameters": [],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 1000000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

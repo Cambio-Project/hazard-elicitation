@@ -1,0 +1,44 @@
+[
+  {
+    "value": "service",
+    "synonyms": [
+      "service",
+      "Service"
+    ]
+  },
+  {
+    "value": "node",
+    "synonyms": [
+      "node",
+      "Node"
+    ]
+  },
+  {
+    "value": "operation",
+    "synonyms": [
+      "operation",
+      "Operation"
+    ]
+  },
+  {
+    "value": "edge",
+    "synonyms": [
+      "edge",
+      "Edge"
+    ]
+  },
+  {
+    "value": "component",
+    "synonyms": [
+      "component",
+      "Component"
+    ]
+  },
+  {
+    "value": "artifact",
+    "synonyms": [
+      "artifact",
+      "Artifact"
+    ]
+  }
+]

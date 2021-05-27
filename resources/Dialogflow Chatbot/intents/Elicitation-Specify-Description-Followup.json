@@ -1,0 +1,57 @@
+{
+  "id": "9f85e41d-cf4e-468b-a2d1-1e7c7376bc9f",
+  "parentId": "bc8c0c3f-3282-4197-a56d-33d4e3e43b68",
+  "rootParentId": "bc8c0c3f-3282-4197-a56d-33d4e3e43b68",
+  "name": "Elicitation-Specify-Description-Followup",
+  "auto": true,
+  "contexts": [
+    "c-elicitation",
+    "Elicitation-Specify-Description-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "Elicitation-Specify-Description.Elicitation-Specify-Description-custom",
+      "affectedContexts": [
+        {
+          "name": "c-config",
+          "lifespan": 1
+        }
+      ],
+      "parameters": [
+        {
+          "id": "f8a605e4-19d6-48cd-b794-472e17079557",
+          "name": "description",
+          "required": false,
+          "dataType": "@string",
+          "value": "$description",
+          "defaultValue": "",
+          "isList": true,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 1000000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

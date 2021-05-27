@@ -1,0 +1,64 @@
+{
+  "id": "d75b27b9-6af1-48e8-b804-e30806c69272",
+  "name": "Default-Guide",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "",
+      "affectedContexts": [
+        {
+          "name": "c-guide",
+          "lifespan": 5
+        },
+        {
+          "name": "Default-Guide-followup",
+          "lifespan": 1
+        },
+        {
+          "name": "c-guide-option",
+          "lifespan": 1
+        }
+      ],
+      "parameters": [
+        {
+          "id": "845d7468-06de-4db7-b88a-6b1f69f8feb0",
+          "name": "option",
+          "required": false,
+          "dataType": "@guide-option",
+          "value": "$option",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "e-guide"
+    }
+  ],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

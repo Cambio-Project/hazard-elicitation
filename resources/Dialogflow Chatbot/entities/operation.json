@@ -1,0 +1,9 @@
+{
+  "id": "ab15af27-b2bc-44ce-92af-382ff3811bb5",
+  "name": "operation",
+  "isOverridable": true,
+  "isEnum": true,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": false
+}

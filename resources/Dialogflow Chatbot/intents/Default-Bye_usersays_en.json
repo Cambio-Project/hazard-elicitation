@@ -1,0 +1,48 @@
+[
+  {
+    "id": "2d96bc2c-5d88-49f2-b41a-64444f9baabb",
+    "data": [
+      {
+        "text": "See",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      },
+      {
+        "text": " you",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "50dbfd26-0b00-4542-a7e4-c7244200507f",
+    "data": [
+      {
+        "text": "Auvoir",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "d55a5bd9-ad20-499d-85ac-f9bdc1eb5af8",
+    "data": [
+      {
+        "text": "Bye",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

@@ -1,0 +1,38 @@
+{
+  "id": "30d49b29-649c-4a57-9321-5203f280947a",
+  "parentId": "d75b27b9-6af1-48e8-b804-e30806c69272",
+  "rootParentId": "d75b27b9-6af1-48e8-b804-e30806c69272",
+  "name": "Default-Guide-Confirm",
+  "auto": true,
+  "contexts": [
+    "c-guide",
+    "c-guide-option",
+    "Default-Guide-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "Default-Guide.Default-Guide-yes",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 750000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

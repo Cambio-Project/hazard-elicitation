@@ -1,0 +1,64 @@
+{
+  "id": "933a9787-94d3-436e-a1ce-0c66ca551d2d",
+  "name": "Elicitation-Select-Component",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "",
+      "affectedContexts": [
+        {
+          "name": "c-elicitation",
+          "lifespan": 100
+        },
+        {
+          "name": "Elicitation-Select-Component-followup",
+          "lifespan": 5
+        },
+        {
+          "name": "c-config",
+          "lifespan": 0
+        }
+      ],
+      "parameters": [
+        {
+          "id": "0ad97071-3f56-487e-81df-26d48b1e0959",
+          "name": "keyword-component",
+          "required": false,
+          "dataType": "@keyword-component",
+          "value": "$keyword-component",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "e-select-component"
+    }
+  ],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

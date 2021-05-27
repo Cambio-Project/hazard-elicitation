@@ -1,0 +1,9 @@
+{
+  "id": "461c8f4b-ffec-421b-8e17-b21eb0c8dea5",
+  "name": "service-synonyms",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": false
+}

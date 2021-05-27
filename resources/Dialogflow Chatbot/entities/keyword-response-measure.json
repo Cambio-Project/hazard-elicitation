@@ -1,0 +1,9 @@
+{
+  "id": "aa9842e4-85a2-4ceb-ab1d-889be4708fd2",
+  "name": "keyword-response-measure",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

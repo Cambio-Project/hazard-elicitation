@@ -1,0 +1,28 @@
+[
+  {
+    "id": "c8e742ed-fda1-494b-8564-2b072ec051b5",
+    "data": [
+      {
+        "text": "blub",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "f937c4e3-6212-45da-b65c-b4d874a05926",
+    "data": [
+      {
+        "text": "bla",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

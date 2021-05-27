@@ -1,0 +1,62 @@
+[
+  {
+    "id": "be5ab4da-ccaf-4558-8705-72f5f2ddf16f",
+    "data": [
+      {
+        "text": "a restart is performed at least 4 times",
+        "meta": "@string",
+        "alias": "stimulus",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "3cfccfbb-d722-46c3-9507-19f20156f6d6",
+    "data": [
+      {
+        "text": "the user gets notified by the monitoring system",
+        "meta": "@string",
+        "alias": "stimulus",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "ec17b55e-3f31-4745-9224-1c8b72dc40dd",
+    "data": [
+      {
+        "text": "the response time should return to the optimum",
+        "meta": "@string",
+        "alias": "stimulus",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "208a6699-3d30-44e0-b870-b947adc63795",
+    "data": [
+      {
+        "text": "the service is restarted",
+        "meta": "@string",
+        "alias": "stimulus",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 1,
+    "lang": "en",
+    "updated": 0
+  }
+]

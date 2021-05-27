@@ -1,0 +1,64 @@
+{
+  "id": "e6d72d7b-05cd-40dc-bc6e-418b0f552962",
+  "name": "Elicitation-Specify-Stimulus-Source",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "",
+      "affectedContexts": [
+        {
+          "name": "c-elicitation",
+          "lifespan": 100
+        },
+        {
+          "name": "c-config",
+          "lifespan": 0
+        },
+        {
+          "name": "Elicitation-Specify-Stimulus-Source-followup",
+          "lifespan": 5
+        }
+      ],
+      "parameters": [
+        {
+          "id": "01182e96-303a-47d9-aa33-8256128f9d87",
+          "name": "keyword-stimulus-source",
+          "required": false,
+          "dataType": "@keyword-stimulus-source",
+          "value": "$keyword-stimulus-source",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "e-specify-stimulus-source"
+    }
+  ],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

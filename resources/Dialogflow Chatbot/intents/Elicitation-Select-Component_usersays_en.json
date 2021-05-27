@@ -1,0 +1,353 @@
+[
+  {
+    "id": "3ad726c8-90d7-4c94-9935-650cf3c2db52",
+    "data": [
+      {
+        "text": "change ",
+        "userDefined": false
+      },
+      {
+        "text": "artifact",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "19db28eb-c984-4c62-8971-83ff10eda574",
+    "data": [
+      {
+        "text": "modify ",
+        "userDefined": false
+      },
+      {
+        "text": "artifact",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "5b6d27f7-f7be-4927-96a0-bfab89fcf053",
+    "data": [
+      {
+        "text": "modify the ",
+        "userDefined": false
+      },
+      {
+        "text": "artifact",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "2ef66fe8-7ce0-418d-8252-bde4b3cff1da",
+    "data": [
+      {
+        "text": "choose another ",
+        "userDefined": false
+      },
+      {
+        "text": "artifact",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "4cc5c7c9-6b66-4b11-a305-58479e2a531c",
+    "data": [
+      {
+        "text": "exchange the ",
+        "userDefined": false
+      },
+      {
+        "text": "edge",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "c25eba3d-fffd-4811-8fd4-001f8a2deba7",
+    "data": [
+      {
+        "text": "change the ",
+        "userDefined": false
+      },
+      {
+        "text": "node",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "710c2db6-ea6c-4f36-9527-8cbbff0ee384",
+    "data": [
+      {
+        "text": "modify the ",
+        "userDefined": false
+      },
+      {
+        "text": "operation",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "2c5b975a-199b-44c6-81f6-a969bb2073d6",
+    "data": [
+      {
+        "text": "modify the ",
+        "userDefined": false
+      },
+      {
+        "text": "service",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "f9809f76-bd9b-471c-875d-9c1f8c887291",
+    "data": [
+      {
+        "text": "configure ",
+        "userDefined": false
+      },
+      {
+        "text": "artifact",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "aaaf2b97-b6f6-4cb1-8981-070d5014c3e7",
+    "data": [
+      {
+        "text": "choose ",
+        "userDefined": false
+      },
+      {
+        "text": "artifact",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "de60a2ca-7752-4512-911e-38bcfd5e9812",
+    "data": [
+      {
+        "text": "select ",
+        "userDefined": false
+      },
+      {
+        "text": "artifact",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "ed56ee13-71fa-476e-bc7b-15e5fadfd341",
+    "data": [
+      {
+        "text": "component",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "34092489-8339-433d-9144-8ca952625133",
+    "data": [
+      {
+        "text": "step 2",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "24359cb3-a941-44cf-adfa-ba106184cadd",
+    "data": [
+      {
+        "text": "configure ",
+        "userDefined": false
+      },
+      {
+        "text": "component",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "0724ab73-454a-43e4-957b-b607ef4c39d4",
+    "data": [
+      {
+        "text": "set ",
+        "userDefined": false
+      },
+      {
+        "text": "component",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "2e777820-a303-4cb6-a1d1-758e2ca4a4ae",
+    "data": [
+      {
+        "text": "choose ",
+        "userDefined": false
+      },
+      {
+        "text": "component",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "aa8a9bde-546a-44e6-b110-66039cda5c5c",
+    "data": [
+      {
+        "text": "select ",
+        "userDefined": false
+      },
+      {
+        "text": "component",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "8d313cf0-a427-43fa-97dc-7e34012a59a0",
+    "data": [
+      {
+        "text": "Let me select a ",
+        "userDefined": false
+      },
+      {
+        "text": "component",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "d8b31ee4-8c5a-4e72-b793-df0c0f7d9afc",
+    "data": [
+      {
+        "text": "I want to choose a ",
+        "userDefined": false
+      },
+      {
+        "text": "component",
+        "meta": "@keyword-component",
+        "alias": "keyword-component",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

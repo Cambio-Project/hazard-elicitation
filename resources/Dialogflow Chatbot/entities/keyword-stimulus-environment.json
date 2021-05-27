@@ -1,0 +1,9 @@
+{
+  "id": "7dd9a9a1-2251-4d7a-8423-2bc5657d54b6",
+  "name": "keyword-stimulus-environment",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

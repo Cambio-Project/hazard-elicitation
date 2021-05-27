@@ -1,0 +1,137 @@
+[
+  {
+    "id": "a375fb0d-fbc8-4d47-8cd5-16542d1a9c76",
+    "data": [
+      {
+        "text": "Create a waiting room for customers",
+        "meta": "@string",
+        "alias": "response",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "85e2308c-6b1b-4de5-82cb-21e1d39e8ee7",
+    "data": [
+      {
+        "text": "a new instance should be started",
+        "meta": "@string",
+        "alias": "response",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "5de310c6-3ffd-4af6-adfb-c1569207e9b8",
+    "data": [
+      {
+        "text": "the deployment should start again",
+        "meta": "@string",
+        "alias": "response",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "bbac5982-befc-4d38-9813-9e8f3b6bd6e3",
+    "data": [
+      {
+        "text": "the developer must get notified",
+        "meta": "@string",
+        "alias": "response",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "6fbe2f3f-98c1-4082-b87d-0f8d97081512",
+    "data": [
+      {
+        "text": "Service should restart",
+        "meta": "@string",
+        "alias": "response",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "be7d108e-ee3c-446a-aee1-06590ce741a6",
+    "data": [
+      {
+        "text": "Service should return to normal performance",
+        "meta": "@string",
+        "alias": "response",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "9daffd2a-f25c-4a76-9ea2-412e55b75971",
+    "data": [
+      {
+        "text": "The response times should return to normal values",
+        "meta": "@string",
+        "alias": "response",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "ebe34545-a9f7-4d23-b3c5-9766423a806e",
+    "data": [
+      {
+        "text": "The operation should return to the optimal response time.",
+        "meta": "@string",
+        "alias": "response",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "8c165260-33c7-4f16-9c27-c306eb28d96c",
+    "data": [
+      {
+        "text": "The service must recover from its failure.",
+        "meta": "@string",
+        "alias": "response",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

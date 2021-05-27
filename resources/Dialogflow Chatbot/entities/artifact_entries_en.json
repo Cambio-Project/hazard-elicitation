@@ -1,0 +1,819 @@
+[
+  {
+    "value": "customer",
+    "synonyms": [
+      "customer",
+      "Customer"
+    ]
+  },
+  {
+    "value": "driver",
+    "synonyms": [
+      "driver",
+      "Driver"
+    ]
+  },
+  {
+    "value": "frontend",
+    "synonyms": [
+      "frontend",
+      "Frontend"
+    ]
+  },
+  {
+    "value": "mysql",
+    "synonyms": [
+      "mysql",
+      "MySQL",
+      "Mysql"
+    ]
+  },
+  {
+    "value": "redis",
+    "synonyms": [
+      "redis",
+      "Redis"
+    ]
+  },
+  {
+    "value": "GetDriver",
+    "synonyms": [
+      "GetDriver"
+    ]
+  },
+  {
+    "value": "FindDriverIDs",
+    "synonyms": [
+      "FindDriverIDs"
+    ]
+  },
+  {
+    "value": "GetDispatch",
+    "synonyms": [
+      "GetDispatch"
+    ]
+  },
+  {
+    "value": "GetCustomer",
+    "synonyms": [
+      "GetCustomer"
+    ]
+  },
+  {
+    "value": "GetRoute",
+    "synonyms": [
+      "GetRoute"
+    ]
+  },
+  {
+    "value": "SQLSelect",
+    "synonyms": [
+      "SQLSelect"
+    ]
+  },
+  {
+    "value": "ts-price-service",
+    "synonyms": [
+      "ts-price-service",
+      "price-service",
+      "price"
+    ]
+  },
+  {
+    "value": "ts-basic-service",
+    "synonyms": [
+      "ts-basic-service",
+      "basic-service",
+      "basic"
+    ]
+  },
+  {
+    "value": "ts-train-service",
+    "synonyms": [
+      "ts-train-service",
+      "train-service",
+      "train"
+    ]
+  },
+  {
+    "value": "ts-route-service",
+    "synonyms": [
+      "ts-route-service",
+      "route-service",
+      "route"
+    ]
+  },
+  {
+    "value": "ts-travel-service",
+    "synonyms": [
+      "ts-travel-service",
+      "travel-service",
+      "travel"
+    ]
+  },
+  {
+    "value": "ts-seat-service",
+    "synonyms": [
+      "ts-seat-service",
+      "seat-service",
+      "seat"
+    ]
+  },
+  {
+    "value": "ts-config-service",
+    "synonyms": [
+      "ts-config-service",
+      "config-service",
+      "config"
+    ]
+  },
+  {
+    "value": "ts-ticketinfo-service",
+    "synonyms": [
+      "ts-ticketinfo-service",
+      "ticketinfor-service",
+      "ticketinfo"
+    ]
+  },
+  {
+    "value": "ts-station-service",
+    "synonyms": [
+      "ts-station-service",
+      "station-service",
+      "station"
+    ]
+  },
+  {
+    "value": "ts-security-service",
+    "synonyms": [
+      "ts-security-service",
+      "security-service",
+      "security"
+    ]
+  },
+  {
+    "value": "ts-order-service",
+    "synonyms": [
+      "ts-order-service",
+      "order-service",
+      "order"
+    ]
+  },
+  {
+    "value": "ts-assurance-service",
+    "synonyms": [
+      "ts-assurance-service",
+      "assurance-service",
+      "assurance"
+    ]
+  },
+  {
+    "value": "ts-preserve-service",
+    "synonyms": [
+      "ts-preserve-service",
+      "preserve-service"
+    ]
+  },
+  {
+    "value": "ts-food-service",
+    "synonyms": [
+      "ts-food-service",
+      "food-service",
+      "food"
+    ]
+  },
+  {
+    "value": "ts-contacts-service",
+    "synonyms": [
+      "ts-contacts-service",
+      "contacts-service",
+      "contacts"
+    ]
+  },
+  {
+    "value": "ts-user-service",
+    "synonyms": [
+      "ts-user-service",
+      "user-service",
+      "user"
+    ]
+  },
+  {
+    "value": "ts-notfication-service",
+    "synonyms": [
+      "ts-notfication-service",
+      "notification-service",
+      "notifaction"
+    ]
+  },
+  {
+    "value": "ts-order-other-service",
+    "synonyms": [
+      "ts-order-other-service",
+      "order-other-service",
+      "other"
+    ]
+  },
+  {
+    "value": "securityInfoCheck",
+    "synonyms": [
+      "securityInfoCheck",
+      "securityInfo",
+      "infoCheck"
+    ]
+  },
+  {
+    "value": "check",
+    "synonyms": [
+      "check"
+    ]
+  },
+  {
+    "value": "createNewAssurance",
+    "synonyms": [
+      "createNewAssurance",
+      "newAssurance",
+      "createAssurance"
+    ]
+  },
+  {
+    "value": "preserve_success",
+    "synonyms": [
+      "preserve_success"
+    ]
+  },
+  {
+    "value": "getUserById",
+    "synonyms": [
+      "getUserById"
+    ]
+  },
+  {
+    "value": "preserve",
+    "synonyms": [
+      "preserve"
+    ]
+  },
+  {
+    "value": "getContactsByContactsId",
+    "synonyms": [
+      "getContactsByContactsId",
+      "getContacts"
+    ]
+  },
+  {
+    "value": "createFoodOrder",
+    "synonyms": [
+      "createFoodOrder",
+      "foodOrder",
+      "newFoodOrder"
+    ]
+  },
+  {
+    "value": "createNewOrder",
+    "synonyms": [
+      "createNewOrder",
+      "newOrder"
+    ]
+  },
+  {
+    "value": "calculateSoldTicket",
+    "synonyms": [
+      "calculateSoldTicket",
+      "calculateTicket"
+    ]
+  },
+  {
+    "value": "getTicketListByDateAndTripId",
+    "synonyms": [
+      "getTicketListByDateAndTripId",
+      "getTicketList"
+    ]
+  },
+  {
+    "value": "retrieve",
+    "synonyms": [
+      "retrieve"
+    ]
+  },
+  {
+    "value": "getLeftTicketOfInterval",
+    "synonyms": [
+      "getLeftTicketOfInterval"
+    ]
+  },
+  {
+    "value": "getRouteByTripId",
+    "synonyms": [
+      "getRouteByTripId"
+    ]
+  },
+  {
+    "value": "queryById",
+    "synonyms": [
+      "queryById"
+    ]
+  },
+  {
+    "value": "queryForTravel",
+    "synonyms": [
+      "queryForTravel"
+    ]
+  },
+  {
+    "value": "queryForStationId",
+    "synonyms": [
+      "queryForStationId"
+    ]
+  },
+  {
+    "value": "query",
+    "synonyms": [
+      "query"
+    ]
+  },
+  {
+    "value": "bezuege",
+    "synonyms": [
+      "bezuege",
+      "bezüge",
+      "Bezüge",
+      "Bezuege"
+    ]
+  },
+  {
+    "value": "berechnung",
+    "synonyms": [
+      "berechnung",
+      "Berechnung"
+    ]
+  },
+  {
+    "value": "lohnsteueranmeldung",
+    "synonyms": [
+      "lohnsteueranmeldung",
+      "Lohnsteueranmeldung"
+    ]
+  },
+  {
+    "value": "zeiten",
+    "synonyms": [
+      "zeiten",
+      "Zeiten"
+    ]
+  },
+  {
+    "value": "broker",
+    "synonyms": [
+      "broker",
+      "Broker"
+    ]
+  },
+  {
+    "value": "kafka",
+    "synonyms": [
+      "kafka",
+      "Kafka"
+    ]
+  },
+  {
+    "value": "audittrace",
+    "synonyms": [
+      "audittrace",
+      "Audittrace",
+      "Audit trace"
+    ]
+  },
+  {
+    "value": "lohnsteuerabzugsmerkmale",
+    "synonyms": [
+      "lohnsteuerabzugsmerkmale",
+      "Lohnsteuerabzug Merkmal",
+      "Lohnsteuer Merkmal"
+    ]
+  },
+  {
+    "value": "loon-api-gateway",
+    "synonyms": [
+      "loon-api-gateway",
+      "Loon API Gateway",
+      "API Gateway",
+      "Gateway"
+    ]
+  },
+  {
+    "value": "zahlungen",
+    "synonyms": [
+      "zahlungen",
+      "Zahlungen"
+    ]
+  },
+  {
+    "value": "sozialversicherung",
+    "synonyms": [
+      "sozialversicherung",
+      "Sozial Versicherung"
+    ]
+  },
+  {
+    "value": "steuer",
+    "synonyms": [
+      "steuer",
+      "Steuer"
+    ]
+  },
+  {
+    "value": "beschaeftigungsbetriebe",
+    "synonyms": [
+      "beschaeftigungsbetriebe",
+      "Beschäftigungsbetriebe",
+      "Beschäftigungs Betrieb"
+    ]
+  },
+  {
+    "value": "abfrage-sv-nr",
+    "synonyms": [
+      "abfrage-sv-nr",
+      "Abfrage SV NR"
+    ]
+  },
+  {
+    "value": "dsbd",
+    "synonyms": [
+      "dsbd",
+      "DSBD"
+    ]
+  },
+  {
+    "value": "get /api/v1/unternehmen/{betriebid}/audit",
+    "synonyms": [
+      "get /api/v1/unternehmen/{betriebid}/audit",
+      "audit"
+    ]
+  },
+  {
+    "value": "get /api/v1/unternehmen/{betriebid}/authors",
+    "synonyms": [
+      "get /api/v1/unternehmen/{betriebid}/authors",
+      "authors"
+    ]
+  },
+  {
+    "value": "put /api/v1/unternehmen/{betriebid}/auditconfiguration",
+    "synonyms": [
+      "put /api/v1/unternehmen/{betriebid}/auditconfiguration",
+      "auditconfiguration"
+    ]
+  },
+  {
+    "value": "get /api/v1/licensedproducts",
+    "synonyms": [
+      "get /api/v1/licensedproducts",
+      "licensedproducts"
+    ]
+  },
+  {
+    "value": "get /trusted-api/v2/ob-mapping/betrieb-uuid-to-ob/{betriebid}",
+    "synonyms": [
+      "get /trusted-api/v2/ob-mapping/betrieb-uuid-to-ob/{betriebid}",
+      "betrieb-uuid-to-ob"
+    ]
+  },
+  {
+    "value": "get /user-api/v2/betriebe/{betriebid}/mitarbeiter",
+    "synonyms": [
+      "get /user-api/v2/betriebe/{betriebid}/mitarbeiter",
+      "user-api mitarbeiter"
+    ]
+  },
+  {
+    "value": "get /trusted-api/v2/betriebe/{betriebid}/mitarbeiter",
+    "synonyms": [
+      "get /trusted-api/v2/betriebe/{betriebid}/mitarbeiter",
+      "trusted-api mitarbeiter"
+    ]
+  },
+  {
+    "value": "get /user-api/v2/betriebe/{betriebid}/bebuchbarer-zeitraum",
+    "synonyms": [
+      "get /user-api/v2/betriebe/{betriebid}/bebuchbarer-zeitraum",
+      "bebuchbarer-zeitraum"
+    ]
+  },
+  {
+    "value": "get /user-api/v2/ordnungsbegriffe-fuer-user/nuki2/bnr",
+    "synonyms": [
+      "get /user-api/v2/ordnungsbegriffe-fuer-user/nuki2/bnr",
+      "bnr"
+    ]
+  },
+  {
+    "value": "get /user-api/v2/betriebe/{betriebid}",
+    "synonyms": [
+      "get /user-api/v2/betriebe/{betriebid}"
+    ]
+  },
+  {
+    "value": "get /user-api/v2/betriebe",
+    "synonyms": [
+      "get /user-api/v2/betriebe",
+      "betriebe"
+    ]
+  },
+  {
+    "value": "get /trusted-api/v2/betriebe-snapshot/{betriebid}",
+    "synonyms": [
+      "get /trusted-api/v2/betriebe-snapshot/{betriebid}",
+      "betriebe-snapshot"
+    ]
+  },
+  {
+    "value": "put /trusted-api/v2/betriebe-update-abrechnungsmonat",
+    "synonyms": [
+      "put /trusted-api/v2/betriebe-update-abrechnungsmonat",
+      "betriebe-update-abrechnungsmonat"
+    ]
+  },
+  {
+    "value": "get /trusted-api/v2/mitarbeiter/{mitarbeiterid}",
+    "synonyms": [
+      "get /trusted-api/v2/mitarbeiter/{mitarbeiterid}"
+    ]
+  },
+  {
+    "value": "get /trusted-api/v2/mitarbeiter-snapshot/{mitarbeiterid}",
+    "synonyms": [
+      "get /trusted-api/v2/mitarbeiter-snapshot/{mitarbeiterid}"
+    ]
+  },
+  {
+    "value": "get /trusted-api/v2/betriebe/{betriebid}/mitarbeiter",
+    "synonyms": [
+      "get /trusted-api/v2/betriebe/{betriebid}/mitarbeiter"
+    ]
+  },
+  {
+    "value": "get /trusted-api/v2/ob-mapping/mitarbeiter-uuid-to-ob/{mitarbeiterid}",
+    "synonyms": [
+      "get /trusted-api/v2/ob-mapping/mitarbeiter-uuid-to-ob/{mitarbeiterid}"
+    ]
+  },
+  {
+    "value": "get /trusted-api/v2/betriebe/{betriebid}",
+    "synonyms": [
+      "get /trusted-api/v2/betriebe/{betriebid}"
+    ]
+  },
+  {
+    "value": "get /user-api/v2/betriebe/{betriebid}/mitarbeiter/{mitarbeiterid}",
+    "synonyms": [
+      "get /user-api/v2/betriebe/{betriebid}/mitarbeiter/{mitarbeiterid}"
+    ]
+  },
+  {
+    "value": "put /user-api/v2/betriebe/{betriebid}/mitarbeiter/{mitarbeiterid}",
+    "synonyms": [
+      "put /user-api/v2/betriebe/{betriebid}/mitarbeiter/{mitarbeiterid}"
+    ]
+  },
+  {
+    "value": "get /api/v1/unternehmen/{unternehmenid}/abrechnungsinformationen",
+    "synonyms": [
+      "get /api/v1/unternehmen/{unternehmenid}/abrechnungsinformationen"
+    ]
+  },
+  {
+    "value": "send",
+    "synonyms": [
+      "send"
+    ]
+  },
+  {
+    "value": "post /api/v1/unternehmen/{unternehmenid}/freigabe",
+    "synonyms": [
+      "post /api/v1/unternehmen/{unternehmenid}/freigabe"
+    ]
+  },
+  {
+    "value": "get-ergebnisdaten",
+    "synonyms": [
+      "get-ergebnisdaten"
+    ]
+  },
+  {
+    "value": "get",
+    "synonyms": [
+      "get"
+    ]
+  },
+  {
+    "value": "put",
+    "synonyms": [
+      "put"
+    ]
+  },
+  {
+    "value": "post",
+    "synonyms": [
+      "post"
+    ]
+  },
+  {
+    "value": "applicationtaskexecutor",
+    "synonyms": [
+      "applicationtaskexecutor"
+    ]
+  },
+  {
+    "value": "post /api/v1/unternehmen/{unternehmenid}/ergebnisdaten",
+    "synonyms": [
+      "post /api/v1/unternehmen/{unternehmenid}/ergebnisdaten"
+    ]
+  },
+  {
+    "value": "post /api/v1/mitarbeiter/{mitarbeiterid}/ergebnisdaten",
+    "synonyms": [
+      "post /api/v1/mitarbeiter/{mitarbeiterid}/ergebnisdaten"
+    ]
+  },
+  {
+    "value": "put /api/v1/unternehmen/{betriebid}/abrechnungsinformationen/kollabstatus",
+    "synonyms": [
+      "put /api/v1/unternehmen/{betriebid}/abrechnungsinformationen/kollabstatus"
+    ]
+  },
+  {
+    "value": "get /api/v1/validation/rules",
+    "synonyms": [
+      "get /api/v1/validation/rules"
+    ]
+  },
+  {
+    "value": "get /api/v1/validation/messages/{language}",
+    "synonyms": [
+      "get /api/v1/validation/messages/{language}"
+    ]
+  },
+  {
+    "value": "put /api/v3/internal/mitarbeiter/{mitarbeiterid}/ergebnisdaten",
+    "synonyms": [
+      "put /api/v3/internal/mitarbeiter/{mitarbeiterid}/ergebnisdaten"
+    ]
+  },
+  {
+    "value": "get /api/v3/internal/mitarbeiter/{mitarbeiterid}/ergebnisdaten",
+    "synonyms": [
+      "get /api/v3/internal/mitarbeiter/{mitarbeiterid}/ergebnisdaten"
+    ]
+  },
+  {
+    "value": "post /api/v3/mitarbeiter/{mitarbeiterid}/stammdaten/bezuege",
+    "synonyms": [
+      "post /api/v3/mitarbeiter/{mitarbeiterid}/stammdaten/bezuege"
+    ]
+  },
+  {
+    "value": "get /api/v3/mitarbeiter/{mitarbeiterid}/stammdaten/bezuege",
+    "synonyms": [
+      "get /api/v3/mitarbeiter/{mitarbeiterid}/stammdaten/bezuege"
+    ]
+  },
+  {
+    "value": "get /api/v1/internal/mitarbeiter/{mitarbeiterid}/anwesenheiten/month/{month}",
+    "synonyms": [
+      "get /api/v1/internal/mitarbeiter/{mitarbeiterid}/anwesenheiten/month/{month}"
+    ]
+  },
+  {
+    "value": "get /api/v1/mitarbeiter/{mitarbeiterid}/ergebnisdaten",
+    "synonyms": [
+      "get /api/v1/mitarbeiter/{mitarbeiterid}/ergebnisdaten"
+    ]
+  },
+  {
+    "value": "get /api/v1/mitarbeiter/{mitarbeiterid}/beschaeftigungsverhaeltnis",
+    "synonyms": [
+      "get /api/v1/mitarbeiter/{mitarbeiterid}/beschaeftigungsverhaeltnis"
+    ]
+  },
+  {
+    "value": "get /api/v1/mitarbeiter/{mitarbeiterid}/anwesenheiten/year/{year}",
+    "synonyms": [
+      "get /api/v1/mitarbeiter/{mitarbeiterid}/anwesenheiten/year/{year}"
+    ]
+  },
+  {
+    "value": "get /api/v1/mitarbeiter/{mitarbeiterid}/anwesenheiten/month/{month}",
+    "synonyms": [
+      "get /api/v1/mitarbeiter/{mitarbeiterid}/anwesenheiten/month/{month}"
+    ]
+  },
+  {
+    "value": "put /api/v1/mitarbeiter/{mitarbeiterid}/anwesenheiten/month/{month}",
+    "synonyms": [
+      "put /api/v1/mitarbeiter/{mitarbeiterid}/anwesenheiten/month/{month}"
+    ]
+  },
+  {
+    "value": "get /api/v1/mitarbeiter/{mitarbeiterid}/abwesenheiten",
+    "synonyms": [
+      "get /api/v1/mitarbeiter/{mitarbeiterid}/abwesenheiten"
+    ]
+  },
+  {
+    "value": "get /api/v1/holidays",
+    "synonyms": [
+      "get /api/v1/holidays"
+    ]
+  },
+  {
+    "value": "post /api/v1/mitarbeiter/{mitarbeiterid}/beschaeftigungsverhaeltnis",
+    "synonyms": [
+      "post /api/v1/mitarbeiter/{mitarbeiterid}/beschaeftigungsverhaeltnis"
+    ]
+  },
+  {
+    "value": "poll",
+    "synonyms": [
+      "poll"
+    ]
+  },
+  {
+    "value": "handle",
+    "synonyms": [
+      "handle"
+    ]
+  },
+  {
+    "value": "get /api/v1/internal/mitarbeiter/{mitarbeiterid}/stammdaten",
+    "synonyms": [
+      "get /api/v1/internal/mitarbeiter/{mitarbeiterid}/stammdaten"
+    ]
+  },
+  {
+    "value": "put /api/v1/internal/mitarbeiter/{mitarbeiterid}/ergebnisdaten",
+    "synonyms": [
+      "put /api/v1/internal/mitarbeiter/{mitarbeiterid}/ergebnisdaten"
+    ]
+  },
+  {
+    "value": "get /api/v1/mitarbeiter/{mitarbeiterid}/stammdaten",
+    "synonyms": [
+      "get /api/v1/mitarbeiter/{mitarbeiterid}/stammdaten"
+    ]
+  },
+  {
+    "value": "get /api/v1/internal/mitarbeiter/{mitarbeiterid}/ergebnisdaten",
+    "synonyms": [
+      "get /api/v1/internal/mitarbeiter/{mitarbeiterid}/ergebnisdaten"
+    ]
+  },
+  {
+    "value": "get /api/v1/standards",
+    "synonyms": [
+      "get /api/v1/standards"
+    ]
+  },
+  {
+    "value": "put /api/v1/mitarbeiter/{mitarbeiterid}/stammdaten",
+    "synonyms": [
+      "put /api/v1/mitarbeiter/{mitarbeiterid}/stammdaten"
+    ]
+  },
+  {
+    "value": "get /api/v1/unternehmen/{unternehmenid}/stammdaten",
+    "synonyms": [
+      "get /api/v1/unternehmen/{unternehmenid}/stammdaten"
+    ]
+  },
+  {
+    "value": "post /api/v1/internal/vorschau/{beschaeftigungsbetriebid}/ergebnisdaten",
+    "synonyms": [
+      "post /api/v1/internal/vorschau/{beschaeftigungsbetriebid}/ergebnisdaten"
+    ]
+  },
+  {
+    "value": "get /api/v1/mitarbeiter/{mitarbeiterid}/elstam-status",
+    "synonyms": [
+      "get /api/v1/mitarbeiter/{mitarbeiterid}/elstam-status"
+    ]
+  },
+  {
+    "value": "get /api/v1/mitarbeiter/{mitarbeiterid}/avnr-uebermittlungsstatus",
+    "synonyms": [
+      "get /api/v1/mitarbeiter/{mitarbeiterid}/avnr-uebermittlungsstatus"
+    ]
+  },
+  {
+    "value": "get /api/v1/zahlungswunsch/{unternehmensid}/abrechnungsmonat/{abrechnungsmonat}",
+    "synonyms": [
+      "get /api/v1/zahlungswunsch/{unternehmensid}/abrechnungsmonat/{abrechnungsmonat}"
+    ]
+  },
+  {
+    "value": "get /api/v1/unternehmen/{unternehmensid}/bankaccount",
+    "synonyms": [
+      "get /api/v1/unternehmen/{unternehmensid}/bankaccount"
+    ]
+  }
+]

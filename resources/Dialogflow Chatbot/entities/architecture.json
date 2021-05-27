@@ -1,0 +1,9 @@
+{
+  "id": "88b5cc6f-c0d7-4509-9eaf-1bf03ad7e2c1",
+  "name": "architecture",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

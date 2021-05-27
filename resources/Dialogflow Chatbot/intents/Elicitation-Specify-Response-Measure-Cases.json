@@ -1,0 +1,64 @@
+{
+  "id": "77300c77-2746-4966-9510-470b263cdd86",
+  "name": "Elicitation-Specify-Response-Measure-Cases",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "",
+      "affectedContexts": [
+        {
+          "name": "c-elicitation",
+          "lifespan": 100
+        },
+        {
+          "name": "c-config",
+          "lifespan": 0
+        },
+        {
+          "name": "Elicitation-Specify-Response-Measure-Cases-followup",
+          "lifespan": 5
+        }
+      ],
+      "parameters": [
+        {
+          "id": "6c8352cc-5a72-40e3-bc70-479a0b05e56e",
+          "name": "keyword-response-measure-cases",
+          "required": false,
+          "dataType": "@keyword-response-measure-cases",
+          "value": "$keyword-response-measure-cases",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "e-specify-response-measure-cases"
+    }
+  ],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

@@ -1,0 +1,152 @@
+[
+  {
+    "id": "c53ecb8a-85a7-4f2e-b539-4a5445b9cfcb",
+    "data": [
+      {
+        "text": "not during the calculation period",
+        "meta": "@string",
+        "alias": "environment",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "0f82bd33-5ffe-436b-a06f-6e3802e3ffea",
+    "data": [
+      {
+        "text": "not at the start of the system",
+        "meta": "@string",
+        "alias": "environment",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "b167ce3d-f667-4a2d-b0d5-44d78412a077",
+    "data": [
+      {
+        "text": "during the calculation period",
+        "meta": "@string",
+        "alias": "environment",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "c2d065f5-3e30-4f82-91d0-5948e1ae2873",
+    "data": [
+      {
+        "text": "not during normal operation hours",
+        "meta": "@string",
+        "alias": "environment",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "7538f6b3-621a-4966-a2c9-931099d29ad8",
+    "data": [
+      {
+        "text": "while the service is at shutdown",
+        "meta": "@string",
+        "alias": "environment",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "248dcbc8-7432-4e51-aaca-12de20b9007a",
+    "data": [
+      {
+        "text": "at the end of the lifetime",
+        "meta": "@string",
+        "alias": "environment",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "a21cd95f-00ef-47cb-80d3-b6d6d6d9c212",
+    "data": [
+      {
+        "text": "at the startup of the service",
+        "meta": "@string",
+        "alias": "environment",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "43c81e5d-204d-4c86-9684-98c151df71d7",
+    "data": [
+      {
+        "text": "during deployment",
+        "meta": "@string",
+        "alias": "environment",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "bfdf23d5-9c4f-4e7a-8f72-5a4bf81ee958",
+    "data": [
+      {
+        "text": "at the restart of the service",
+        "meta": "@string",
+        "alias": "environment",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "25d4966b-f73a-4933-9469-23c7d79ed8c3",
+    "data": [
+      {
+        "text": "during the calculation of user wage",
+        "meta": "@string",
+        "alias": "environment",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

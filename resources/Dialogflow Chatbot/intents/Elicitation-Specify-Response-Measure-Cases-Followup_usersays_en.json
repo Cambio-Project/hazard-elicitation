@@ -1,0 +1,122 @@
+[
+  {
+    "id": "6990a8ab-0213-4f2a-8006-c58b4915707e",
+    "data": [
+      {
+        "text": "55.45 %",
+        "meta": "@sys.percentage",
+        "alias": "normal-cases",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "0c2020d9-8007-4d03-9154-3fec6dcec33c",
+    "data": [
+      {
+        "text": "0.987 %",
+        "meta": "@sys.percentage",
+        "alias": "normal-cases",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "1dd24271-2d4e-4852-903b-990419529906",
+    "data": [
+      {
+        "text": "99.123",
+        "meta": "@sys.percentage",
+        "alias": "normal-cases",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "b517163a-e597-4a39-a0a8-4a0a68d6f2f9",
+    "data": [
+      {
+        "text": "99",
+        "meta": "@sys.percentage",
+        "alias": "normal-cases",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "b8946681-f077-4189-b942-130a79a04fc4",
+    "data": [
+      {
+        "text": "97.789%",
+        "meta": "@sys.percentage",
+        "alias": "normal-cases",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "e93b41d8-8ef5-4b23-96fc-fb7d0a85f346",
+    "data": [
+      {
+        "text": "95%",
+        "meta": "@sys.percentage",
+        "alias": "normal-cases",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "e6fc1fb0-678c-4ffc-b9f8-d366e60dfa45",
+    "data": [
+      {
+        "text": "99.99%",
+        "meta": "@sys.percentage",
+        "alias": "normal-cases",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "ce4f959c-70f1-4197-82d5-ae9fc607283d",
+    "data": [
+      {
+        "text": "90%",
+        "meta": "@sys.percentage",
+        "alias": "normal-cases",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

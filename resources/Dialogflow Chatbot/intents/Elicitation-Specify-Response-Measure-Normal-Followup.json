@@ -1,0 +1,71 @@
+{
+  "id": "66817c31-decd-4fdb-83ad-ae83c0ac6e82",
+  "parentId": "d462f6e3-5685-42e0-9c34-17358cfefc69",
+  "rootParentId": "d462f6e3-5685-42e0-9c34-17358cfefc69",
+  "name": "Elicitation-Specify-Response-Measure-Normal-Followup",
+  "auto": true,
+  "contexts": [
+    "c-elicitation",
+    "Elicitation-Specify-Response-Measure-Normal-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "Elicitation-Specify-Response-Measure-Normal.Elicitation-Specify-Response-Measure-Normal-custom",
+      "affectedContexts": [
+        {
+          "name": "c-config",
+          "lifespan": 1
+        }
+      ],
+      "parameters": [
+        {
+          "id": "24b61c2f-c31d-435d-933e-41c34415fa73",
+          "name": "normal-response-time",
+          "required": false,
+          "dataType": "@sys.duration",
+          "value": "$normal-response-time",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        },
+        {
+          "id": "b38161d7-aad6-41bf-b17f-bed314db6ca4",
+          "name": "duration",
+          "required": false,
+          "dataType": "@duration",
+          "value": "$duration",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 1000000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

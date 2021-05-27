@@ -1,0 +1,28 @@
+[
+  {
+    "value": "Architecture",
+    "synonyms": [
+      "architecture",
+      "arch",
+      "architectures"
+    ]
+  },
+  {
+    "value": "Analysis",
+    "synonyms": [
+      "analysis",
+      "analyze",
+      "analyse"
+    ]
+  },
+  {
+    "value": "Artifact",
+    "synonyms": [
+      "Artifact",
+      "artifact",
+      "component",
+      "components",
+      "artifacts"
+    ]
+  }
+]

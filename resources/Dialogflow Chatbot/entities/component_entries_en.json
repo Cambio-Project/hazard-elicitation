@@ -1,0 +1,20 @@
+[
+  {
+    "value": "service",
+    "synonyms": [
+      "service",
+      "Service",
+      "node",
+      "Node"
+    ]
+  },
+  {
+    "value": "operation",
+    "synonyms": [
+      "operation",
+      "Operation",
+      "edge",
+      "Edge"
+    ]
+  }
+]

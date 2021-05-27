@@ -1,0 +1,51 @@
+{
+  "id": "bd57b33d-babd-4808-8626-3a7d3633c270",
+  "parentId": "d75b27b9-6af1-48e8-b804-e30806c69272",
+  "rootParentId": "d75b27b9-6af1-48e8-b804-e30806c69272",
+  "name": "Default-Guide-Option",
+  "auto": true,
+  "contexts": [
+    "Default-Guide-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "Default-Guide.Default-Guide-custom",
+      "affectedContexts": [],
+      "parameters": [
+        {
+          "id": "44d2b4a0-96c1-4eae-a626-772b0ea0a9ee",
+          "name": "option",
+          "required": false,
+          "dataType": "@guide-option",
+          "value": "$option",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 1000000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

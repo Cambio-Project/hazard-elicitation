@@ -1,0 +1,57 @@
+{
+  "id": "efaf00d7-81d3-49c8-b40a-6f60722917ac",
+  "parentId": "bba78b56-643e-47a3-9255-9b8be68f139c",
+  "rootParentId": "bba78b56-643e-47a3-9255-9b8be68f139c",
+  "name": "Elicitation-Specify-Stimulus-Environment-Followup",
+  "auto": true,
+  "contexts": [
+    "c-elicitation",
+    "Elicitation-Specify-Stimulus-Environment-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "Elicitation-Specify-Stimulus-Environment.Elicitation-Specify-Stimulus-Environment-custom",
+      "affectedContexts": [
+        {
+          "name": "c-config",
+          "lifespan": 1
+        }
+      ],
+      "parameters": [
+        {
+          "id": "5780218e-1f41-49fc-ae6d-3167ae3fa134",
+          "name": "environment",
+          "required": false,
+          "dataType": "@string",
+          "value": "$environment",
+          "defaultValue": "",
+          "isList": true,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 1000000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

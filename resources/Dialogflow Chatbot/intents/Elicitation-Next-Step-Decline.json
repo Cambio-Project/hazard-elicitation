@@ -1,0 +1,37 @@
+{
+  "id": "f3a5a8fd-5832-49cb-8d75-3a3cc27c1b1c",
+  "parentId": "502dd44e-ec05-4d2b-b81b-41d37c7a9f31",
+  "rootParentId": "502dd44e-ec05-4d2b-b81b-41d37c7a9f31",
+  "name": "Elicitation-Next-Step-Decline",
+  "auto": true,
+  "contexts": [
+    "e-elicitation",
+    "Elicitation-Next-Step-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "Elicitation-Next-Step.Elicitation-Next-Step-no",
+      "affectedContexts": [],
+      "parameters": [],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 750000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}
