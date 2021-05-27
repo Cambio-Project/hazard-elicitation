@@ -7,6 +7,7 @@
 
 1. Create a Google account and sign-in [here](https://dialogflow.cloud.google.com/#/login).
 2. Create a Google Cloud project on [this](https://cloud.google.com/) page using the Cloud Console.
+
 <img src="https://github.com/Cambio-Project/hazard-elicitation/blob/master/docs/wiki/images/dialogflow/dialogflow.png" width="200px"/>
 
 3. In the Dialogflow UI navigate to `Create a new agent` in the left panel.
