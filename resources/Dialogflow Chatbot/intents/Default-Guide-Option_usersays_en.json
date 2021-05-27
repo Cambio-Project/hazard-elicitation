@@ -1,0 +1,143 @@
+[
+  {
+    "id": "af8f0ace-6753-4c5f-bee9-9892038e96f7",
+    "data": [
+      {
+        "text": "artifact",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "a8021934-6644-4874-b2eb-07bdab0c9064",
+    "data": [
+      {
+        "text": "expand on the ",
+        "userDefined": false
+      },
+      {
+        "text": "architectures",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "558f6e8f-934f-45f8-b7b8-6d6c579cc84b",
+    "data": [
+      {
+        "text": "explain ",
+        "userDefined": false
+      },
+      {
+        "text": "architecture",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "6c58883a-6013-41e2-82a8-f01f0cc9a6f1",
+    "data": [
+      {
+        "text": "i",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      },
+      {
+        "text": " want to know more about ",
+        "userDefined": false
+      },
+      {
+        "text": "components",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "509dcc99-149b-4701-ba06-cba87c838499",
+    "data": [
+      {
+        "text": "tell me about the ",
+        "userDefined": false
+      },
+      {
+        "text": "analysis",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "3d65e7a2-eb88-4750-bb8a-a3b9bcf96268",
+    "data": [
+      {
+        "text": "component",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 1,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "6abdc467-7f59-4018-b940-9631751cc732",
+    "data": [
+      {
+        "text": "analysis",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "23bab969-2558-41e7-98d7-19a8024220b7",
+    "data": [
+      {
+        "text": "architecture",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

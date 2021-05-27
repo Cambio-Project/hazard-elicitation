@@ -1,0 +1,26 @@
+[
+  {
+    "value": "@operation-synonyms:",
+    "synonyms": [
+      "@operation-synonyms:"
+    ]
+  },
+  {
+    "value": "@string-camel:",
+    "synonyms": [
+      "@string-camel:"
+    ]
+  },
+  {
+    "value": "operation @string-camel:",
+    "synonyms": [
+      "operation @string-camel:"
+    ]
+  },
+  {
+    "value": "operation @operation-synonyms:",
+    "synonyms": [
+      "operation @operation-synonyms:"
+    ]
+  }
+]

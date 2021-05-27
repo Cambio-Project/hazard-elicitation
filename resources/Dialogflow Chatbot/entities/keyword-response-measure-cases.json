@@ -1,0 +1,9 @@
+{
+  "id": "28d3f1f9-5a65-4f2e-9ef3-454c35e3f4b4",
+  "name": "keyword-response-measure-cases",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

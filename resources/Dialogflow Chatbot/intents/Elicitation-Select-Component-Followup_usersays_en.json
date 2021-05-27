@@ -1,0 +1,267 @@
+[
+  {
+    "id": "eb76a3ee-dd96-4913-87d8-9c0b07b8a6f7",
+    "data": [
+      {
+        "text": "operation",
+        "meta": "@component",
+        "alias": "component-type",
+        "userDefined": false
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "retrieve",
+        "meta": "@artifact",
+        "alias": "component-name",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "54912ac4-8e4a-4580-aaf7-738be25b1585",
+    "data": [
+      {
+        "text": "queryForStationId",
+        "meta": "@artifact",
+        "alias": "component-name",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "1379ec40-c880-44a7-8d24-57721b620b4e",
+    "data": [
+      {
+        "text": "ts-station-service",
+        "meta": "@artifact",
+        "alias": "component-name",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "9f0f6037-3be6-40a4-94f5-6389220cb67a",
+    "data": [
+      {
+        "text": "service",
+        "meta": "@component",
+        "alias": "component-type",
+        "userDefined": false
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "ts-train-service",
+        "meta": "@artifact",
+        "alias": "component-name",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "e3e43f0f-d5f0-41ac-b3ad-54925bea9718",
+    "data": [
+      {
+        "text": "operation",
+        "meta": "@component",
+        "alias": "component-type",
+        "userDefined": false
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "getUser",
+        "meta": "@artifact",
+        "alias": "component-name",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "5aad1e74-962f-41fe-93eb-dd6eca70cc05",
+    "data": [
+      {
+        "text": "services",
+        "meta": "@component",
+        "alias": "component-type",
+        "userDefined": false
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "customer",
+        "meta": "@artifact",
+        "alias": "component-name",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "bc201e4e-87a0-408e-a2e1-fc996d5a6e1e",
+    "data": [
+      {
+        "text": "set ",
+        "userDefined": false
+      },
+      {
+        "text": "edge",
+        "meta": "@component",
+        "alias": "component-type",
+        "userDefined": true
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "query",
+        "meta": "@artifact",
+        "alias": "component-name",
+        "userDefined": true
+      },
+      {
+        "text": " as ",
+        "userDefined": false
+      },
+      {
+        "text": "component",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "edd8a003-b0e5-4a4a-a7ca-beddd296a89c",
+    "data": [
+      {
+        "text": "use",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "node",
+        "meta": "@component",
+        "alias": "component-type",
+        "userDefined": true
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "frontend",
+        "meta": "@artifact",
+        "alias": "component-name",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "22367078-876d-49d7-b78e-87f4f06ff953",
+    "data": [
+      {
+        "text": "choose ",
+        "userDefined": false
+      },
+      {
+        "text": "operation",
+        "meta": "@component",
+        "alias": "component-type",
+        "userDefined": true
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "getFrontend",
+        "meta": "@artifact",
+        "alias": "component-name",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "e6983ff0-48fe-41c0-932d-8a53a15c91db",
+    "data": [
+      {
+        "text": "select",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "service",
+        "meta": "@component",
+        "alias": "component-type",
+        "userDefined": true
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "redis",
+        "meta": "@artifact",
+        "alias": "component-name",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

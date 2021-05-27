@@ -1,0 +1,172 @@
+[
+  {
+    "id": "c5038c13-8860-4d6e-a4e0-c1029afdf0bb",
+    "data": [
+      {
+        "text": "modify the ",
+        "userDefined": false
+      },
+      {
+        "text": "architecture",
+        "meta": "@keyword-architecture",
+        "alias": "keyword-architecture",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "fe01b773-6dc2-4c3e-824d-6d9102b9535f",
+    "data": [
+      {
+        "text": "I want to select the ",
+        "userDefined": false
+      },
+      {
+        "text": "architecture",
+        "meta": "@keyword-architecture",
+        "alias": "keyword-architecture",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "21bd7775-1d04-43e2-9b21-a1b9577d1241",
+    "data": [
+      {
+        "text": "choose ",
+        "userDefined": false
+      },
+      {
+        "text": "architecture",
+        "meta": "@keyword-architecture",
+        "alias": "keyword-architecture",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "0726cd30-9599-4c80-89e3-6a60eb90c25a",
+    "data": [
+      {
+        "text": "change ",
+        "userDefined": false
+      },
+      {
+        "text": "architecture",
+        "meta": "@keyword-architecture",
+        "alias": "keyword-architecture",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "695a8c99-b37c-47c7-a96f-9a6be3c080ec",
+    "data": [
+      {
+        "text": "step ",
+        "userDefined": false
+      },
+      {
+        "text": "1",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "4cab201c-acaf-4ebd-b396-bc032efa2cfe",
+    "data": [
+      {
+        "text": "select ",
+        "userDefined": false
+      },
+      {
+        "text": "architecture",
+        "meta": "@keyword-architecture",
+        "alias": "keyword-architecture",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "74df39df-6a48-4b49-bb8c-96fec3ed6106",
+    "data": [
+      {
+        "text": "configure ",
+        "userDefined": false
+      },
+      {
+        "text": "architecture",
+        "meta": "@keyword-architecture",
+        "alias": "keyword-architecture",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "bf624e8e-6717-4e25-90d8-2bb745837dc4",
+    "data": [
+      {
+        "text": "set ",
+        "userDefined": false
+      },
+      {
+        "text": "architecture",
+        "meta": "@keyword-architecture",
+        "alias": "keyword-architecture",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "18718780-a37f-4475-9c71-393a2b3554b9",
+    "data": [
+      {
+        "text": "specify ",
+        "userDefined": false
+      },
+      {
+        "text": "architecture",
+        "meta": "@keyword-architecture",
+        "alias": "keyword-architecture",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

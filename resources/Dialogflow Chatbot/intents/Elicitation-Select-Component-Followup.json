@@ -1,0 +1,75 @@
+{
+  "id": "7fb5eb19-af23-4aa5-87b3-44393fc6afb5",
+  "parentId": "933a9787-94d3-436e-a1ce-0c66ca551d2d",
+  "rootParentId": "933a9787-94d3-436e-a1ce-0c66ca551d2d",
+  "name": "Elicitation-Select-Component-Followup",
+  "auto": true,
+  "contexts": [
+    "c-elicitation",
+    "Elicitation-Select-Component-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "Elicitation-Select-Component.Elicitation-Select-Component-custom",
+      "affectedContexts": [
+        {
+          "name": "c-elicitation",
+          "lifespan": 100
+        },
+        {
+          "name": "c-config",
+          "lifespan": 1
+        }
+      ],
+      "parameters": [
+        {
+          "id": "3b68bd2e-5bbf-4676-91e4-407e102553c4",
+          "name": "component-type",
+          "required": false,
+          "dataType": "@component",
+          "value": "$component-type",
+          "defaultValue": "",
+          "isList": true,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        },
+        {
+          "id": "a97ebfd3-a660-4083-8407-642c53cfe386",
+          "name": "component-name",
+          "required": false,
+          "dataType": "@artifact",
+          "value": "$component-name",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 1000000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

@@ -1,0 +1,182 @@
+[
+  {
+    "id": "860633c9-0f22-474a-aad5-3db108ce0126",
+    "data": [
+      {
+        "text": "description",
+        "meta": "@keyword-description",
+        "alias": "keyword-description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "0569112c-362b-4359-9290-206556858725",
+    "data": [
+      {
+        "text": "set ",
+        "userDefined": false
+      },
+      {
+        "text": "description",
+        "meta": "@keyword-description",
+        "alias": "keyword-description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "b3ba7c1f-c255-4775-9d61-7d719851b83b",
+    "data": [
+      {
+        "text": "add the ",
+        "userDefined": false
+      },
+      {
+        "text": "scenario description",
+        "meta": "@keyword-description",
+        "alias": "keyword-description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "36ba1bd1-da7a-4f89-a877-1c4f87e15d07",
+    "data": [
+      {
+        "text": "change the ",
+        "userDefined": false
+      },
+      {
+        "text": "scenario description",
+        "meta": "@keyword-description",
+        "alias": "keyword-description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "17277a69-f31c-488d-9e91-695e878bdd1e",
+    "data": [
+      {
+        "text": "choose the ",
+        "userDefined": false
+      },
+      {
+        "text": "scenario title",
+        "meta": "@keyword-description",
+        "alias": "keyword-description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "1e7e9210-a601-4ff0-8fdf-61f6c36b22f0",
+    "data": [
+      {
+        "text": "set",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "the",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "description",
+        "meta": "@keyword-description",
+        "alias": "keyword-description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "c477004f-23b5-4813-a7d6-87d190dda034",
+    "data": [
+      {
+        "text": "modify",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "the",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "description",
+        "meta": "@keyword-description",
+        "alias": "keyword-description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "73583554-69b4-4ba0-be40-eca1dea80ba8",
+    "data": [
+      {
+        "text": "step",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      },
+      {
+        "text": " ",
+        "userDefined": false
+      },
+      {
+        "text": "6",
+        "meta": "@sys.ignore",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

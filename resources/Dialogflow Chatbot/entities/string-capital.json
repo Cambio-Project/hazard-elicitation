@@ -1,0 +1,9 @@
+{
+  "id": "dd4695ab-4416-43f4-840c-d219ba86cadb",
+  "name": "string-capital",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": true,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": false
+}

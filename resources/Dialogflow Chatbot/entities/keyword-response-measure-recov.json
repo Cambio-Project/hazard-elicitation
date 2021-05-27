@@ -1,0 +1,9 @@
+{
+  "id": "9ff9cbda-47aa-4720-a8b1-afb0b1557fa6",
+  "name": "keyword-response-measure-recov",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

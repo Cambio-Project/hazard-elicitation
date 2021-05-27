@@ -1,0 +1,9 @@
+{
+  "id": "db106aa7-2b48-432d-9054-d6ffa714286d",
+  "name": "artifact",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

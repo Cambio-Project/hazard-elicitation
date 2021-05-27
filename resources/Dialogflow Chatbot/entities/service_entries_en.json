@@ -1,0 +1,38 @@
+[
+  {
+    "value": "@service-synonyms:",
+    "synonyms": [
+      "@service-synonyms:"
+    ]
+  },
+  {
+    "value": "service @service-synonyms:",
+    "synonyms": [
+      "service @service-synonyms:"
+    ]
+  },
+  {
+    "value": "@string-capital:",
+    "synonyms": [
+      "@string-capital:"
+    ]
+  },
+  {
+    "value": "@string:",
+    "synonyms": [
+      "@string:"
+    ]
+  },
+  {
+    "value": "service @string-capital:",
+    "synonyms": [
+      "service @string-capital:"
+    ]
+  },
+  {
+    "value": "service @string:",
+    "synonyms": [
+      "service @string:"
+    ]
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "id": "a44bdde7-6bda-45a9-82c5-9266db36694e",
+  "name": "string-camel",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": true,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": false
+}

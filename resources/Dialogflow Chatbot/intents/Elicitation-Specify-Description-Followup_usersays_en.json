@@ -1,0 +1,137 @@
+[
+  {
+    "id": "c33adfd8-279c-4616-966e-7c9e6c45c0dd",
+    "data": [
+      {
+        "text": "Detection of failure rates",
+        "meta": "@string",
+        "alias": "description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "8e880efd-a217-40ee-b996-cd0535bc7e22",
+    "data": [
+      {
+        "text": "Response time deviations",
+        "meta": "@string",
+        "alias": "description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "3702dcd0-6067-4615-a7b9-01011aeff5b8",
+    "data": [
+      {
+        "text": "Task 2",
+        "meta": "@string",
+        "alias": "description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "5ccdd962-2ca3-4324-8dcd-8ad085f2965d",
+    "data": [
+      {
+        "text": "Task 1",
+        "meta": "@string",
+        "alias": "description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "d39c49f6-d07b-4c8e-b6f5-7614ea902405",
+    "data": [
+      {
+        "text": "Scenario 1",
+        "meta": "@string",
+        "alias": "description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "8569806b-791f-48b6-8d6c-3b9e6d1890af",
+    "data": [
+      {
+        "text": "Test Scenario",
+        "meta": "@string",
+        "alias": "description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "ffbbc57b-9c41-41c5-9acb-7ba719d0c8fe",
+    "data": [
+      {
+        "text": "High stress for service backend",
+        "meta": "@string",
+        "alias": "description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "baad3112-4961-4621-a9d1-50edab87a42a",
+    "data": [
+      {
+        "text": "Peak response times of operation getUser",
+        "meta": "@string",
+        "alias": "description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "5cd19aad-a421-49c2-911f-a9ba8a0887cc",
+    "data": [
+      {
+        "text": "Failure of the frontend service",
+        "meta": "@string",
+        "alias": "description",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

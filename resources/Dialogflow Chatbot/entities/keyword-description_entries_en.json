@@ -1,0 +1,21 @@
+[
+  {
+    "value": "description",
+    "synonyms": [
+      "description"
+    ]
+  },
+  {
+    "value": "scenario title",
+    "synonyms": [
+      "scenario title",
+      "title"
+    ]
+  },
+  {
+    "value": "scenario caption",
+    "synonyms": [
+      "scenario caption"
+    ]
+  }
+]

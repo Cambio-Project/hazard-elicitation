@@ -1,0 +1,20 @@
+[
+  {
+    "value": "summary",
+    "synonyms": [
+      "summary"
+    ]
+  },
+  {
+    "value": "result",
+    "synonyms": [
+      "result"
+    ]
+  },
+  {
+    "value": "overview",
+    "synonyms": [
+      "overview"
+    ]
+  }
+]

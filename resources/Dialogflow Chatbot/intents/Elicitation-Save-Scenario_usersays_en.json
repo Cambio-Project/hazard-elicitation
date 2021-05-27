@@ -1,0 +1,113 @@
+[
+  {
+    "id": "ab5ea0a6-1fc3-4933-bd59-cfe564bd5744",
+    "data": [
+      {
+        "text": "let me see the ",
+        "userDefined": false
+      },
+      {
+        "text": "overview",
+        "meta": "@keyword-summary",
+        "alias": "keyword-summary",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "c2206302-d99f-40e6-ba70-28ae0545b785",
+    "data": [
+      {
+        "text": "let me see the ",
+        "userDefined": false
+      },
+      {
+        "text": "result",
+        "meta": "@keyword-summary",
+        "alias": "keyword-summary",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "0f97d6fc-7d9d-4116-9d70-921ec595a1f9",
+    "data": [
+      {
+        "text": "jump to the ",
+        "userDefined": false
+      },
+      {
+        "text": "summary",
+        "meta": "@keyword-summary",
+        "alias": "keyword-summary",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "aee498d2-1727-442f-99cc-c04e6033fd23",
+    "data": [
+      {
+        "text": "complete the scenario",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "73928ecc-9232-4c65-9fe1-5cd1d43fbd5b",
+    "data": [
+      {
+        "text": "summary",
+        "meta": "@keyword-summary",
+        "alias": "keyword-summary",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "84d92507-8b9f-4af8-90c8-21777444cf7a",
+    "data": [
+      {
+        "text": "step 7",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "40f7284a-f369-4926-a053-856c116e970b",
+    "data": [
+      {
+        "text": "save scenario",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

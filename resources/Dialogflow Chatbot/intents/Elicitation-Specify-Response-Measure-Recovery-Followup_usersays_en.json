@@ -1,0 +1,270 @@
+[
+  {
+    "id": "2f51fc77-639a-44dc-ae0c-bc6fc010ab49",
+    "data": [
+      {
+        "text": "50 sec",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "b7920382-02b5-4baa-8806-4b8027f4392f",
+    "data": [
+      {
+        "text": "5sec",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "8814aaeb-0e9b-4ba6-8571-d48c529e61e8",
+    "data": [
+      {
+        "text": "3 hour",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "7506bf94-0f70-42cc-a546-8d8ceb9ec8be",
+    "data": [
+      {
+        "text": "1hour",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "8f86b77d-7850-4d53-8ff6-876840ce65a6",
+    "data": [
+      {
+        "text": "6hours",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "695091d4-f30c-48b6-bf9c-e01b3203b1a3",
+    "data": [
+      {
+        "text": "34 hours",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "8e7c338b-9db2-49ca-b336-5830d4ac8ce2",
+    "data": [
+      {
+        "text": "54 m",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "3802f9c8-46ae-4f5a-be40-345ef031f4da",
+    "data": [
+      {
+        "text": "1m",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "f0071442-b7d1-4083-92df-144aa163f7e7",
+    "data": [
+      {
+        "text": "456 milliseconds",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "28814cdc-faca-4085-9ba0-556365a035fd",
+    "data": [
+      {
+        "text": "900milliseconds",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "0b06dea1-6430-4b8c-8074-76c686d9463b",
+    "data": [
+      {
+        "text": "784 ms",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "3a8b4f59-64f4-4c22-b0e9-a6c28c1325e0",
+    "data": [
+      {
+        "text": "45ms",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "feafee86-8300-4967-876c-82f2b2f89e61",
+    "data": [
+      {
+        "text": "13min",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "176f0f91-115a-407b-8dc2-c57adcc24192",
+    "data": [
+      {
+        "text": "1h",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "bc358cb9-7160-4e3d-b808-e7bd0738f901",
+    "data": [
+      {
+        "text": "53 seconds",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "59afc1d1-7f68-4a58-b4f3-96d4982ededd",
+    "data": [
+      {
+        "text": "25s",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "c81dc0b5-9dce-4c9d-96d3-007b2085cbb9",
+    "data": [
+      {
+        "text": "10 minutes",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "5a5b5d40-2b32-4c1c-85c9-470da1129140",
+    "data": [
+      {
+        "text": "25 hours",
+        "meta": "@sys.duration",
+        "alias": "recovery-time",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

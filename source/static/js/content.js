@@ -121,7 +121,7 @@ class Content {
 
 class Scenario {
     static KEYS = ["description", "source", "artifact", "stimulus",
-                   "environment", "response", "response-measure"];
+                   "environment", "response", "response-measure", "measure"];
 
     constructor(json) {
         let default_scenario = {};
@@ -132,23 +132,29 @@ class Scenario {
     normalizeScenario(scenario) {
         let normalized = {};
         for (const key of Scenario.KEYS) {
-            normalized[key] = scenario[key].replaceAll(/<\/?[^>]+(>|$)/g, "");
+            if(isString(scenario[key]))
+                normalized[key] = scenario[key].replaceAll(/<\/?[^>]+(>|$)/g, "");
+            else
+                normalized[key] = scenario[key];
         }
         return normalized;
     }
 
     export() {
-        const scenario_content = [JSON.stringify(this.normalizeScenario(this.json))];
-        const archname = this.json["arch"].substr(this.json["arch"].indexOf("."));
+        const scenario_content = JSON.parse(JSON.stringify(this.normalizeScenario(this.json)));
+        const archname = this.json["arch"].substr(0, this.json["arch"].indexOf(".")).replaceAll(" ", "_");
 
         const button     = document.createElement("button");
         button.className = "btn";
         button.type      = "button";
         button.innerText = "Export scenario";
 
+        scenario_content["response-measure"] = scenario_content["measure"];
+        delete scenario_content["measure"];
+
         const link    = document.createElement("a");
-        link.href     = URL.createObjectURL(new Blob(scenario_content, {type: "application/json"}));
-        link.download = "{}_{}_scenario.json".format(archname, this.json["artifact"]);
+        link.href     = URL.createObjectURL(new Blob([JSON.stringify(scenario_content)], {type: "application/json"}));
+        link.download = "{}_{}_{}_scenario.json".format(archname, this.json["artifact"], this.json["component"]);
         link.append(button);
 
         return this.tableEntry("Export", link.outerHTML);

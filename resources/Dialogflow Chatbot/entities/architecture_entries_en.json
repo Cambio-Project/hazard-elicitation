@@ -1,0 +1,25 @@
+[
+  {
+    "value": "Hotrod.json",
+    "synonyms": [
+      "Hotrod.json",
+      "hotrod",
+      "hotrod.json"
+    ]
+  },
+  {
+    "value": "Train Ticket.json",
+    "synonyms": [
+      "Train Ticket.json",
+      "trainticket",
+      "train ticket"
+    ]
+  },
+  {
+    "value": "Payroll.json",
+    "synonyms": [
+      "Payroll.json",
+      "payroll"
+    ]
+  }
+]

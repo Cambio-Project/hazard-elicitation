@@ -1,0 +1,9 @@
+{
+  "id": "64eb57ef-3b1d-48fe-9554-77b57bf090f0",
+  "name": "keyword-summary",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

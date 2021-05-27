@@ -1,0 +1,77 @@
+[
+  {
+    "id": "06a986d6-288a-4c3c-9f67-d3099abc89f9",
+    "data": [
+      {
+        "text": "software exception",
+        "meta": "@string",
+        "alias": "source",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "b455d81a-71c6-495b-a9de-fd1068138762",
+    "data": [
+      {
+        "text": "technical issue",
+        "meta": "@string",
+        "alias": "source",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "16bd35e7-fe45-4667-9b5b-fc69245f4a85",
+    "data": [
+      {
+        "text": "a bug",
+        "meta": "@string",
+        "alias": "source",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "16c57e1f-d426-442f-a71f-fce17f15517f",
+    "data": [
+      {
+        "text": "high load",
+        "meta": "@string",
+        "alias": "source",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "63c45773-3e96-43bf-b921-542510b4900e",
+    "data": [
+      {
+        "text": "too many requests",
+        "meta": "@string",
+        "alias": "source",
+        "userDefined": true
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

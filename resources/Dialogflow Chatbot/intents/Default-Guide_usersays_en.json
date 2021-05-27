@@ -1,0 +1,158 @@
+[
+  {
+    "id": "10c0cf1e-6502-4f33-bbf5-288b4a728486",
+    "data": [
+      {
+        "text": "explain ",
+        "userDefined": false
+      },
+      {
+        "text": "tracing",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": true
+      },
+      {
+        "text": " to me",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "316d3ff6-3eaa-4d74-af83-14770b679d1b",
+    "data": [
+      {
+        "text": "analysis",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": false
+      },
+      {
+        "text": "?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "cbb989fc-8bd7-46c3-a1e1-4488ccc03e2c",
+    "data": [
+      {
+        "text": "architecture",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": false
+      },
+      {
+        "text": "?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "18f0ceff-e7cc-42e3-86bd-93ea593b2663",
+    "data": [
+      {
+        "text": "Tell me what an ",
+        "userDefined": false
+      },
+      {
+        "text": "architecture",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": true
+      },
+      {
+        "text": " is.",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "1815d411-c27b-4bd8-99c8-b286924f14a1",
+    "data": [
+      {
+        "text": "What is an ",
+        "userDefined": false
+      },
+      {
+        "text": "artifact",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": true
+      },
+      {
+        "text": "?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "0b848902-3a65-40b7-9d1c-566a8405756d",
+    "data": [
+      {
+        "text": "Explain to me what the ",
+        "userDefined": false
+      },
+      {
+        "text": "analysis",
+        "meta": "@guide-option",
+        "alias": "option",
+        "userDefined": true
+      },
+      {
+        "text": " does.",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "0d739d5a-4190-4e25-9cc8-153406c6ce97",
+    "data": [
+      {
+        "text": "Can you explain something to me?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "c5361f5e-86fa-44d8-8b3c-c4eee73795e8",
+    "data": [
+      {
+        "text": "I need an explanation",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

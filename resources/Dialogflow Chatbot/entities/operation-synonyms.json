@@ -1,0 +1,9 @@
+{
+  "id": "090a4c89-b18c-47cd-a2c4-9091057e6a88",
+  "name": "operation-synonyms",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": false
+}

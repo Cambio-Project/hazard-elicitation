@@ -1,0 +1,9 @@
+{
+  "id": "848e64bb-8abc-4d26-ae64-1af93094cd65",
+  "name": "duration",
+  "isOverridable": true,
+  "isEnum": true,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

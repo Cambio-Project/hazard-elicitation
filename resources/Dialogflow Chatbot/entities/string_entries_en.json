@@ -1,0 +1,8 @@
+[
+  {
+    "value": "[A-Za-z]+",
+    "synonyms": [
+      "[A-Za-z]+"
+    ]
+  }
+]

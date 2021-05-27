@@ -1,0 +1,61 @@
+{
+  "id": "224641dc-c4bb-4c6c-acd0-20bcecb97cb0",
+  "parentId": "42520ca5-13ea-4c9a-9f5c-4ed4d319bb51",
+  "rootParentId": "42520ca5-13ea-4c9a-9f5c-4ed4d319bb51",
+  "name": "Elicitation-Specify-Response-Followup",
+  "auto": true,
+  "contexts": [
+    "c-elicitation",
+    "Elicitation-Specify-Response-followup"
+  ],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "Elicitation-Specify-Response.Elicitation-Specify-Response-custom",
+      "affectedContexts": [
+        {
+          "name": "c-elicitation",
+          "lifespan": 100
+        },
+        {
+          "name": "c-config",
+          "lifespan": 1
+        }
+      ],
+      "parameters": [
+        {
+          "id": "78ddb495-80ed-4da5-96bb-d57cbd9ef095",
+          "name": "response",
+          "required": true,
+          "dataType": "@string",
+          "value": "$response",
+          "defaultValue": "",
+          "isList": true,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 1000000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

@@ -39,18 +39,24 @@ def get_scenario(result):
         scenario['source'] = elicitation.parameters['source']
         scenario['environment'] = elicitation.parameters['environment']
         scenario['response'] = elicitation.parameters['response']
+        scenario['measure'] = {}
 
         if artifact == 'Service':
             measure_cases_normal = elicitation.parameters['normal-cases']
             measure_recovery = elicitation.parameters['recovery-time']
             measure = text(INTENT_ELICITATION_SUMMARY_SERVICE_MEASURE_TEXT).format(
                 measure_cases_normal, measure_recovery)
+            scenario['measure']['normal-availability'] = elicitation.parameters['normal-cases']
+            scenario['measure']['recovery-time'] = elicitation.parameters['recovery-time']
         else:
             measure_time_normal = elicitation.parameters['normal-response-time']
             measure_cases_normal = elicitation.parameters['normal-cases']
             measure_recovery = elicitation.parameters['recovery-time']
             measure = text(INTENT_ELICITATION_SUMMARY_OPERATION_MEASURE_TEXT).format(
                 measure_time_normal, measure_cases_normal, measure_recovery)
+            scenario['measure']['normal-response-time'] = elicitation.parameters['normal-response-time']
+            scenario['measure']['normal-cases'] = elicitation.parameters['normal-cases']
+            scenario['measure']['recovery-time'] = elicitation.parameters['recovery-time']
 
         scenario['response-measure'] = measure
 

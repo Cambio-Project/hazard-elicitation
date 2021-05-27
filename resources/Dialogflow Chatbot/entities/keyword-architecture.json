@@ -1,0 +1,9 @@
+{
+  "id": "9b76f0a3-ae2e-4190-8868-f013609f1ff2",
+  "name": "keyword-architecture",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

@@ -1,0 +1,106 @@
+[
+  {
+    "id": "b13945e7-0131-4bb8-8cde-1a02d8bf8abb",
+    "data": [
+      {
+        "text": "I don\u0027t know what to do",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "4db4d9b6-be09-465f-829e-772a1a5371ac",
+    "data": [
+      {
+        "text": "What now?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "9ebd7d79-a75e-48d2-a09d-0d9337c35e76",
+    "data": [
+      {
+        "text": "Tell me what to do?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "254a48b8-9908-4751-a4af-fe1f65c815d2",
+    "data": [
+      {
+        "text": "what?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "667f2e30-26f7-4a57-9bd3-fbdfbebf40f7",
+    "data": [
+      {
+        "text": "What am I supposed to do?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "381e31e1-8be5-42f0-b8fa-ee5e1fd36a65",
+    "data": [
+      {
+        "text": "What is your purpose?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "4c0b8c33-eadf-4c2a-baac-7ab8a625e4cc",
+    "data": [
+      {
+        "text": "What do you do?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "5d5dcf6f-57d8-4297-bd7a-7d1c1111aab7",
+    "data": [
+      {
+        "text": "help",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

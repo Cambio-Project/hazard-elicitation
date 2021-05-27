@@ -1,0 +1,60 @@
+{
+  "id": "06968f84-e855-4e44-91a1-d3795679e3f5",
+  "name": "Elicitation-Save-Scenario",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "",
+      "affectedContexts": [
+        {
+          "name": "c-elicitation",
+          "lifespan": 100
+        },
+        {
+          "name": "Elicitation-Save-Scenario-followup",
+          "lifespan": 5
+        }
+      ],
+      "parameters": [
+        {
+          "id": "814abad4-8cc4-42ce-b41d-4e1bf52db3dc",
+          "name": "keyword-summary",
+          "required": false,
+          "dataType": "@keyword-summary",
+          "value": "$keyword-summary",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [
+        {
+          "type": "0",
+          "title": "",
+          "textToSpeech": "",
+          "lang": "en",
+          "condition": ""
+        }
+      ],
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [
+    {
+      "name": "e-save-scenario"
+    }
+  ],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}

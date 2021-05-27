@@ -1,0 +1,9 @@
+{
+  "id": "e99b8153-4eb8-4042-82eb-8c6d1c31ce35",
+  "name": "keyword-response-measure-time",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

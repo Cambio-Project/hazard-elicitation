@@ -1,0 +1,67 @@
+[
+  {
+    "id": "9a8d74c3-9d4b-422b-b9e7-9f9e89f4bc14",
+    "data": [
+      {
+        "text": "joke",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "c6e7b767-494b-47e2-aa02-5c36de5f4925",
+    "data": [
+      {
+        "text": "joke!",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "b8810053-6ca3-4b9c-816d-ddd3d5b0406e",
+    "data": [
+      {
+        "text": "Tell me seomthing funny.",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "a8e12aa2-33f9-4e6e-9f36-ba5f48a91ea1",
+    "data": [
+      {
+        "text": "Joke?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "7ec30179-a6ec-4d34-a93f-7a8479bce402",
+    "data": [
+      {
+        "text": "Tell me a joke.",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "id": "12e8f1c5-2e78-4b31-bd4c-f8012188d279",
+  "name": "keyword-stimulus",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

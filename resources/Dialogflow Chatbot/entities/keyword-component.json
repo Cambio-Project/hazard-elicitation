@@ -1,0 +1,9 @@
+{
+  "id": "c90c2c15-bf28-4798-8c81-7ba00a5857c0",
+  "name": "keyword-component",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": true,
+  "allowFuzzyExtraction": true
+}
