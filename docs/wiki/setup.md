@@ -30,7 +30,8 @@
 
 6. Fill the Google Cloud project name into the `keys.json` file.
 7. Generate Google Cloud credentials ([here](https://cloud.google.com/docs/authentication/getting-started) is a detailed HOWTO).
-8. Put the credentials in the `credentials.json` file.
+8. Store the absolute file path of the Google Cloud credentials file to the environment variable GOOGLE_APPLICATION_CREDENTIALS (Linux: `export GOOGLE_APPLICATION_CREDENTIALS="/home/user/credentials.json"`, Windows: `setx GOOGLE_APPLICATION_CREDENTIALS "C:/Users/You/credentials.json"`)
+9. Put the credentials in the `credentials.json` file.
 
 ## Setup Cloud Foundry
 
