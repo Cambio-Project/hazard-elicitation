@@ -10,7 +10,7 @@ mimetypes.add_type("text/javascript", ".js", True)
 ALLOWED_HOSTS = ['*']
 BASE_DIR = path(__file__, '..', '..')
 CONFIG = Config(path(BASE_DIR, '..', 'config.json'))
-COLLECT_STUDY = True
+COLLECT_STUDY = False
 CSRF_COOKIE_SECURE = True
 DEBUG = False
 FORMATTED_LOGGING = True
