@@ -3,7 +3,6 @@
   --upload-image    : url("../img/upload.png");
   --scenario-image  : url("../img/scenario.png");
   --settings-image  : url("../img/settings.png");
-  --tip-1-img       : url("../img/tip_1.png");
 }
 
 .dark-theme {
@@ -11,7 +10,6 @@
   --upload-image    : url("../img/upload_dark.png");
   --scenario-image  : url("../img/scenario.png");
   --settings-image  : url("../img/settings_dark.png");
-  --tip-1-img       : url("../img/tip_1_dark.png");
 }
 
 .content { background-color : var(--primary-text-color-bg); }
@@ -114,8 +112,6 @@
   min-width           : 100%;
   min-height          : 100%
 }
-
-.tip-1 { background-image : var(--tip-1-img); }
 
 .icon {
   display             : inline-block;
