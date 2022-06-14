@@ -5,6 +5,7 @@ COPY requirements.txt .
 COPY source/ .
 
 RUN apt-get update && apt-get install -y --no-install-recommends gcc python-dev
+RUN pip install -r ./software_architecture_extraction/requirements.txt
 RUN pip install -r requirements.txt
 RUN apt-get purge -y --auto-remove gcc python-dev
 

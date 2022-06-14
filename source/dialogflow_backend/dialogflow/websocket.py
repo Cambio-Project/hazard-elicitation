@@ -3,7 +3,7 @@ import json
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from architecture_extraction_backend.models.study import InteractionModel
+from software_architecture_extraction.source.extractor.models.study import InteractionModel
 from dialogflow_backend.dialogflow.client import DialogFlowClient
 from dialogflow_backend.dialogflow.response_handler import create_response
 from dialogflow_backend.dialogflow.response_types import ActionResponse

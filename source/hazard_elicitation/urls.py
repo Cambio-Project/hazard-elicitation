@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 from rest_framework import routers
 
-from architecture_extraction_backend.models.architecture import ArchitectureModelViewSet, ArchitectureModelListViewSet
+from software_architecture_extraction.source.extractor.models.architecture import ArchitectureModelViewSet, ArchitectureModelListViewSet
 from . import views
 
 
@@ -15,7 +15,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('favicon.ico', RedirectView.as_view(url='/static/img/hazard.png', permanent=True)),
 
-    path('archex/', include('architecture_extraction_backend.urls')),
+    path('archex/', include('software_architecture_extraction.source.extractor.urls')),
     path('df/', include('dialogflow_backend.urls')),
 
     path('', views.ui),

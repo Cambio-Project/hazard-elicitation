@@ -7,7 +7,7 @@ from dialogflow_backend.dialogflow.client import DialogFlowClient
 from dialogflow_backend.dialogflow.response_handler import create_response
 from util.log import error
 
-from architecture_extraction_backend.models.study import InteractionModel, ScenarioModel
+from software_architecture_extraction.source.extractor.models.study import InteractionModel, ScenarioModel
 
 
 async def detect_intent(request):

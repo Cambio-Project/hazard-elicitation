@@ -63,8 +63,7 @@ INSTALLED_APPS = [
 
     'channels',
     'rest_framework',
-
-    'architecture_extraction_backend',
+    'software_architecture_extraction',
     'dialogflow_backend'
 ]
 

@@ -1,0 +1,3 @@
+[submodule "source/software_architecture_extraction"]
+	path = source/software_architecture_extraction
+	url = https://github.com/Cambio-Project/software-architecture-extraction.git
