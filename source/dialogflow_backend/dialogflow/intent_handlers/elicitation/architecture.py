@@ -2,7 +2,7 @@ from typing import List, Dict
 
 from asgiref.sync import sync_to_async
 
-from architecture_extraction_backend.models.architecture import ArchitectureModel
+from software_architecture_extraction.source.extractor.models.architecture import ArchitectureModel
 from dialogflow_backend.dialogflow.response_types import ActionResponse, TextResponse, FormattingResponse, CardResponse, \
     QuickReplyResponse
 from dialogflow_backend.dialogflow.util import get_context, is_in_context, set_context_parameters

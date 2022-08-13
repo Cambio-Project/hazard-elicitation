@@ -2,7 +2,7 @@ from typing import List, Dict
 
 from asgiref.sync import sync_to_async
 
-from architecture_extraction_backend.models.study import ScenarioModel
+from software_architecture_extraction.source.extractor.models.study import ScenarioModel
 from dialogflow_backend.dialogflow.intent_handlers.elicitation.description import elicitation_description_handler
 from dialogflow_backend.dialogflow.response_types import *
 from dialogflow_backend.dialogflow.util import get_context, next_event, is_in_context
